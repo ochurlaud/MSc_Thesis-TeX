@@ -1,0 +1,35 @@
+\documentclass[12pt,a4paper]{article}
+\usepackage[utf8]{inputenc}
+\usepackage{amsmath}
+\usepackage{amsfonts}
+\usepackage{amssymb}
+\usepackage{graphicx}
+\author{Olivier CHURLAUD}
+\title{Notes}
+\begin{document}
+	\maketitle
+	
+	\section{Get kick position}
+	
+	\subsection{Parameters =) Still wrong.. read again}
+	\begin{itemize}
+		\item $s$ = position in in the orbit (in m)
+		\item $Q$ = tune (cf 3.207)
+		\begin{equation}
+			Q = \frac{\Delta \Psi}{2 \pi}= \frac{1}{2 \pi} \oint \frac{ds}{\beta(s)}
+		\end{equation}
+		
+		\item $\phi(s)$ = phase (in rad)  (cf 3.216)
+		\begin{equation}
+			\phi(s) = \frac{1}{Q} \int\limits_{0}^s \frac{d\sigma}{\beta(\sigma)}
+		\end{equation}
+		
+		\item $x(s)$ = transverse oscillation of the orbit (cf 3.206) 
+		\begin{equation}
+			x(s) = \sqrt{\epsilon}\sqrt{\beta(s)}\cos[\Psi(s)+\phi(s)]
+		\end{equation}
+	\end{itemize}
+	
+	\subsection{...}
+	If there is one kick, at $\phi = \phi_0$
+\end{document}
