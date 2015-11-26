@@ -1,5 +1,6 @@
 *
 !.gitignore
 !*.tex
+!*.bib
 !*.png
 !*.eps
