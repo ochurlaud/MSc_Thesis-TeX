@@ -9,7 +9,21 @@
 \usepackage{amssymb}
 \usepackage{graphicx}
 
-\usepackage[colorinlistoftodos,prependcaption,textsize=tiny]{todonotes}
+\usepackage[colorinlistoftodos,textsize=tiny]{todonotes}
+
+
+% % % % % % % % % % % % % % % % % %
+% trick not to release comments   %
+  \newif\ifrelease
+%	                              %
+	%\releasetrue
+	\releasefalse
+%	                              %
+	\ifrelease
+		\renewcommand{\todo}[1]{}
+	\fi
+% end of trick                    %
+% % % % % % % % % % % % % % % % % %
 
 \renewcommand{\vec}[1]{\underline{#1}}
 \newcommand{\mat}[1]{\underline{\underline{#1}}}
@@ -110,9 +124,13 @@
 		k_0 = \underset{k \in [0, m-1]}{\textrm{argmin}}\{||\tilde{\vec{x}}-\vec{x}^k||_2\}
 	\end{equation}
 	
-	The kick is then between $\phi_{k_0-1}$ and $\phi_{k_0+1}$, and we assess that the closest sinus is $\tilde{x}(\phi) = b \sin(\phi + c) $.
-	To find the exact position of the kick, we use the property of closed orbit: the kick is at 
+	The kick is then between $\phi_{k_0-1}$ and $\phi_{k_0+1}$\todo{The code doesn't do that for now}, and we assess that the closest sinus is $\tilde{x}(\phi) = b \sin(\phi + c) $.
 	
+	To find the exact position of the kick, we use the property of closed orbit: the orbit must be continuous also at the kick phase, which means that $\hat{\phi}$ is the solution of
+	\begin{equation}
+		 b \sin(\phi + c) = b\sin(\phi+c-2 \pi Q), \qquad \mathrm{with}~ \phi \in [\phi_{k_0-1}, \phi_{k_0+1}]
+	\end{equation}
+	or, with the numerical approach, 
 	\begin{equation}
 		\hat{\phi} =  \underset{\phi \in [\phi_{k_0-1}, \phi_{k_0+1}]}{\textrm{argmin}}\{|b \sin(\phi + c) - b\sin(\phi+c-2 \pi Q)|\}
 	\end{equation}
