@@ -11,6 +11,7 @@
 
 \usepackage[colorinlistoftodos,textsize=tiny]{todonotes}
 
+\input{code_env}
 
 % % % % % % % % % % % % % % % % % %
 % trick not to release comments   %
@@ -71,7 +72,7 @@
 	\end{itemize}
 	
 	\section{Get kick position}
-
+	\label{sec:get_kick}
 	\subsection{Setting of the problem}
 	\subsubsection{Theoretical setting}
 	\todo{explain somewhere that that it's continuous in the kick so for a sinus the solution must be....}
@@ -185,6 +186,85 @@
 		\tilde{x}(\phi) = a + b \sin(\phi + c).
 	\end{equation*} 
 		
+	\begin{python}[caption=Get the kick]
+		import matplotlib.plt as plt
+		import search_kick.core as skcore
+		
+		# Dataset
+		orbit = ..
+		phase = ..
+		tune = ..
+		
+		# Get the kick and rebuild the ideal sinus
+		kick_phase, sin_coef = skcore.get_kick(orbit, phase, tune)
+		sine, phase_th = skcore.build_sine(kick_phase, tune, sin_coef)
+		
+		# Plot the results
+		plt.plot(phase, orbit, '-b')
+		plt.plot(phase_th, sine, '-g')
+		plt.axvline(kick, -2, 2)	
+	\end{python}
+	
+	
+	\section{Getting the position of a perturbation at a given frequency}
+	In this section, we deal with a perturbation at a given frequency $f$. The training data is the time signal of all BPMs.
+	
+	As the perturbation has a known frequency, we extract its complex amplitude from the signal of each BPM with a Fourier transform:
+	
+	\begin{equation}
+	\forall i \in [1, \mathrm{BPM\_nb}], \qquad 
+	\begin{cases}
+	\vec{X}_i = \mathrm{FFT}(\vec{x}_i) \\
+	c_i = \vec{X}_i(f)
+	\end{cases}
+	\end{equation}
+	
+	\subsection{Case of a unique perturbation source}
+
+	If the perturbation is unique, then all complex amplitude exactly describe the same sine of frequency $f$ and phase $\alpha_0$. It allows us to describe the complex vector $\vec{c}$ with $\vec{\hat{c}}$, which is real.
+	
+	\begin{align}
+		&\alpha_0 = \underset{\alpha \in [0, 2\pi]}{\textrm{argmin}}\{\mathcal{R}e (\vec{c} \cdot e^{-j\alpha}) \} \\
+		&\vec{\hat{c}} = \mathcal{I}m (\vec{c} \cdot e^{-j\alpha_0})
+	\end{align}
+	
+	The new signal $\vec{\hat{c}}$ can be used as an orbit signal: we have one orbit amplitude for each BPM: the kick can be extracted from it with the previous method described in Section \ref{sec:get_kick}.
+	
+	\begin{python}[caption={Perturbation localisation, f = 10 Hz}]
+		import matplotlib.plt as plt
+		import search_kick.core as skcore
+		import search_kick.tools as sktools
+		
+		# Dataset
+		phase = ...
+		tune = ...
+		time_signal = ....  # nb_bpms lines, nb_samples colunms
+		fs = 500  # sampling rate (Hz)
+		
+		f = 10  # frequency to extract (Hz)
+		
+		# Extract cosine and sine amplitude with a FFT transform
+		a, b = skcore.extract_cos_sin_withfft(values, fs, f)
+	
+		# Optimize to only have the sine amplitude
+		step_size = 0.1
+		a_opt, b_opt, alpha_0 = sktools.maths.optimize_rotation(a, b, step_size)
+		
+		# Get the kick
+		kick, sin_coef = skcore.get_kick(a_opt, phase, tune)
+		sine, phase_th = skcore.build_sine(kick_phase, tune, sin_coef)
+		
+		# Plot the results
+		plt.plot(phase, a_opt, '-b')
+		plt.plot(phase, b_opt, '-m')  # cosine amplitudes: to be sure that it was a unique perturbation
+		plt.plot(phase_th, sine, '-g')
+		plt.axvline(kick, -2, 2)
+
+	\end{python}
+	
+	\subsection{Case of several perturbation sources}
+	If there are several perturbation sources, a $\alpha_0$ that let the cosine part vanish cannot be found. 
+	
 	%%
 	%  Bibliography
 	%%
