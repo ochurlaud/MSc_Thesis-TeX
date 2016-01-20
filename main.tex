@@ -8,9 +8,10 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{epstopdf}
 \usepackage{hyperref}
 
-\usepackage[colorinlistoftodos,textsize=tiny]{todonotes}
+\usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
 
 \input{code_env}
 
@@ -29,250 +30,84 @@
 
 \renewcommand{\vec}[1]{\underline{#1}}
 \newcommand{\mat}[1]{\underline{\underline{#1}}}
+\newcommand{\scal}[2]{\langle #1 {,} #2 \rangle}
 
-\author{Olivier CHURLAUD}
-\title{Notes}
+\def\thetitle{Notes for the Master thesis}
+\def\thesubject{Master Thesis}
+\def\theauthor{Master Thesis}
+\author{\theauthor}
+\title{\thetitle}
+
+\hypersetup{
+	bookmarks=true,
+	unicode=false
+	pdftitle={\thetitle},    % title
+	pdfauthor={\theauthor},     % author
+	pdfsubject={\thesubject},   % subject of the document
+	colorlinks=true,       % false: boxed links; true: colored links
+	linkcolor=black,          % color of internal links (change box color with linkbordercolor)
+	citecolor=green,    % color of links to bibliography
+	filecolor=red,      % color of file links
+	urlcolor=cyan       % color of external links
+}
+
 \begin{document}
-	\maketitle
-	\tableofcontents
-	\section{Physics of particle accelerators -- Definitions}
-	This section is mostly based on~\cite{book:wille}.
 	
-	\subsection{Notations}
-	\begin{itemize}
-		\item The frame of reference is $K = (\mathbf{x},\mathbf{y},\mathbf{s})$ which origin follow the beam, $\mathbf{x}$ being the horizontal axis (directed toward the exterior of the orbit and normal its the curve), $\mathbf{y}$ being the vertical axis, and $\mathbf{s}$ the tangential axis of the orbit.
-		\item $x'(s) = \frac{dx}{ds}$
-	\end{itemize}
-	
-	\subsection{Parameters $\implies$ Still wrong.. read again}
-	\begin{itemize}
-		\item $s$ = position in in the orbit (in m)
-		\item $Q$ = tune (cf 3.207)
-		\begin{equation}
-			Q = \frac{\Delta \Psi}{2 \pi}= \frac{1}{2 \pi} \oint \frac{ds}{\beta(s)}
-		\end{equation}
-		
-		\item $\phi(s)$ = phase (in rad)  (cf 3.216)
-		\begin{equation}
-			\phi(s) = \frac{1}{Q} \int\limits_{0}^s \frac{d\sigma}{\beta(\sigma)} \qquad \in [0, 2 \pi Q]
-		\end{equation}
-		
-		\item $x(s)$ = transverse oscillation of the orbit (cf 3.206) 
-		\begin{equation}
-			x(s) = \sqrt{\epsilon}\sqrt{\beta(s)}\cos[\Psi(s)+\phi(s)]
-		\end{equation}
-	\end{itemize}
-	\subsubsection{Condition to fulfill}
-	\begin{itemize}
-		\item Closed orbit: the orbit is circularly continuous in all points. Especially:
-		\begin{equation}
-		\begin{cases}
-		x(\phi = 0) = x(\phi = 2 \pi Q) \\
-		y(\phi = 0) = y(\phi = 2 \pi Q)
-		\end{cases}
-		\end{equation}
-	\end{itemize}
-	
-	\section{Get kick position}
-	\label{sec:get_kick}
-	\subsection{Setting of the problem}
-	\subsubsection{Theoretical setting}
-	\todo{explain somewhere that that it's continuous in the kick so for a sinus the solution must be....}
-	Everything is described here with the phase variable $\phi$. The spacial variable is only used to have a connection between the result and the actual ring. The explanation will be led with the $x$ variable, but is also valid with the $y$ one.
-	
-	Let one kick be at $\phi = \hat{\phi}$. The orbit is modified and oscillates with a constant period of $2 \pi$. Because there is {\em only one kick} and according to the closed orbit condition, the oscillation after the kick will be stable for one revolution.
-	
-	Let's consider two revolutions, in order to be sure to find one full revolution without kick. Let $\phi_\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\phi_0$ where the kick happens is the one so that 
-	\begin{equation}
-		\exists (b, c) \in \mathbb{R}^2:
-		\forall \phi \in [\phi_0, \phi_0 + 2 \pi Q], \quad
-		x(\phi) = b \sin(\phi + c)
-	\end{equation}
-	
-	We have a problem with 3 unknowns to determine: $\phi_0, b, c$. 
-	
-	\subsubsection{Practical setting}
-	
-	We have $m$ BPMs only, distributed around the orbit.
-	Therefore we define:
-	\begin{align}
-		\begin{cases}
-			\vec{\phi} = [\phi_0, \phi_1, ..., \phi_{m-1}] \\
-			\vec{x} = [x_0, x_1, ..., x_{m-1}]
-		\end{cases} \quad \mathrm{and} \quad
-		\begin{cases}
-			\vec{\phi}_\mathrm{ext} = [\vec{\phi}, \vec{\phi}+2\pi Q ]\\
-			\vec{x}_\mathrm{ext} = [\vec{x}, \vec{x}]
-		\end{cases}
-	\end{align}
-	
-	\subsection{Solving the problem}
+\maketitle
 
-	\todo{not well said}
-	As explained above, finding the kick is the same as finding the a sinus in the $\vec{x}_\mathrm{ext}$.
-	
-	The algorithm will then try to find a sinus over a revolution, beginning at each BPM and keep the one that fit at best:
+\abstract{....}
+
+\tableofcontents
+
+\input{0_background}
+\input{1_correction}
+\input{2_localization}
+\input{3_harmonic_perturb}
+
+\section{Physics of particle accelerators -- Definitions}
+This section is mostly based on~\cite{book:wille}.
+
+\subsection{Notations}
+\begin{itemize}
+	\item The frame of reference is $K = (\mathbf{x},\mathbf{y},\mathbf{s})$ which origin follow the beam, $\mathbf{x}$ being the horizontal axis (directed toward the exterior of the orbit and normal its the curve), $\mathbf{y}$ being the vertical axis, and $\mathbf{s}$ the tangential axis of the orbit.
+	\item $x'(s) = \frac{dx}{ds}$
+\end{itemize}
+
+\subsection{Parameters $\implies$ Still wrong.. read again}
+\begin{itemize}
+	\item $s$ = position in in the orbit (in m)
+	\item $Q$ = tune (cf 3.207)
 	\begin{equation}
-		\forall k \in [0, m-1], \qquad
-			\begin{cases}
-				\vec{\phi}^k = [\vec{\phi}_\mathrm{ext}(k), \vec{\phi}_\mathrm{ext}(k+1), ... \vec{\phi}_\mathrm{ext}(k+m-1)]\\
-				\vec{x}^k = [\vec{x}_\mathrm{ext}(k), \vec{x}_\mathrm{ext}(k+1), ... \vec{x}_\mathrm{ext}(k+m-1)]\\
-				\tilde{\vec{x}} = \mathtt{fit\_sinus}(\vec{x}^k, \vec{\phi}^k)
-			\end{cases}
+		Q = \frac{\Delta \Psi}{2 \pi}= \frac{1}{2 \pi} \oint \frac{ds}{\beta(s)}
 	\end{equation}
 	
-	We then define
-	
+	\item $\phi(s)$ = phase (in rad)  (cf 3.216)
 	\begin{equation}
-		k_0 = \underset{k \in [0, m-1]}{\textrm{argmin}}\{||\tilde{\vec{x}}-\vec{x}^k||_2\}
+		\phi(s) = \frac{1}{Q} \int\limits_{0}^s \frac{d\sigma}{\beta(\sigma)} \qquad \in [0, 2 \pi Q]
 	\end{equation}
 	
-	The kick is then between $\phi_{k_0-1}$ and $\phi_{k_0+1}$\todo{The code doesn't do that for now}, and we assess that the closest sinus is $\tilde{x}(\phi) = b \sin(\phi + c) $.
-	
-	To find the exact position of the kick, we use the property of closed orbit: the orbit must be continuous also at the kick phase, which means that $\hat{\phi}$ is the solution of
+	\item $x(s)$ = transverse oscillation of the orbit (cf 3.206) 
 	\begin{equation}
-		 b \sin(\phi + c) = b\sin(\phi+c-2 \pi Q), \qquad \mathrm{with}~ \phi \in [\phi_{k_0-1}, \phi_{k_0+1}]
+		x(s) = \sqrt{\epsilon}\sqrt{\beta(s)}\cos[\Psi(s)+\phi(s)]
 	\end{equation}
-	or, with the numerical approach, 
+\end{itemize}
+\subsubsection{Condition to fulfill}
+\begin{itemize}
+	\item Closed orbit: the orbit is circularly continuous in all points. Especially:
 	\begin{equation}
-		\hat{\phi} =  \underset{\phi \in [\phi_{k_0-1}, \phi_{k_0+1}]}{\textrm{argmin}}\{|b \sin(\phi + c) - b\sin(\phi+c-2 \pi Q)|\}
-	\end{equation}
-	
-	\paragraph{Remark ---} For this last step, we use a \textit{linspace} between $\phi_{k_0-1}$ and $\phi_{k_0+1}$ with more than 1000 points.
-	
-	\paragraph{Remark ---} One should be careful if $k_0 = 0$ (resp. $k_0 = m-1$) and set $\phi_{k_0-1} =\phi_{m-1}$ (resp. $\phi_{k_0+1} = \phi_{0}$). 
-	
-	\subsection{Finding the good sinus}
-	Several methods are possible to find the best matching sinus. For example, in the general case:
-	\begin{align}
-		&\forall k \in [0,m-1], \tilde{x}(\phi_k) = a_1 \cos(\phi_k) + a_2 \sin(\phi_k) + a \nonumber \\
-	%
-		\implies &
-		\begin{pmatrix}
-			1 & \cos(\phi_0) & \sin(\phi_0) \\
-			1 & \cos(\phi_1) & \sin(\phi_1) \\
-			\vdots & \vdots & \vdots \\
-			1 & \cos(\phi_{m-1}) & \sin(\phi_{m-1}) \\
-		\end{pmatrix}
-		\begin{pmatrix}
-			a \\ a_1 \\ a_2
-		\end{pmatrix}
-		=
-		\begin{pmatrix}
-			x_0 \\ x_2 \\ \vdots \\ x_{m-1}
-		\end{pmatrix} \nonumber
-		\\
-	%
-		\implies &
-		\begin{pmatrix}
-		a \\ a_1 \\ a_2
-		\end{pmatrix}
-		= 
-		\mathrm{pseudo\_inv}
-		\begin{pmatrix}
-		1 & \cos(\phi_0) & \sin(\phi_0) \\
-		1 & \cos(\phi_1) & \sin(\phi_1) \\
-		\vdots & \vdots & \vdots \\
-		1 & \cos(\phi_{m-1}) & \sin(\phi_{m-1}) \\
-		\end{pmatrix}
-		\begin{pmatrix}
-		x_0 \\ x_2 \\ \vdots \\ x_{m-1}
-		\end{pmatrix}
-	\end{align}
-		
-	The pseudo inverse is calculated in \texttt{Matlab} with \texttt{a = M\textbackslash x} and in \texttt{python} with \texttt{a = numpy.linalg.lstsq(M, x)} (least-squares solution).
-	
-	Then, defining $b = \sqrt{a_1^2+a_2^2}$ and $c = \mathrm{atan2}(a_1, a_2)$ let us write
-	
-	\begin{equation*}
-		\tilde{x}(\phi) = a + b \sin(\phi + c).
-	\end{equation*} 
-		
-	\begin{python}[caption=Get the kick]
-		import matplotlib.plt as plt
-		import search_kick.core as skcore
-		
-		# Dataset
-		orbit = ..
-		phase = ..
-		tune = ..
-		
-		# Get the kick and rebuild the ideal sinus
-		kick_phase, sin_coef = skcore.get_kick(orbit, phase, tune)
-		sine, phase_th = skcore.build_sine(kick_phase, tune, sin_coef)
-		
-		# Plot the results
-		plt.plot(phase, orbit, '-b')
-		plt.plot(phase_th, sine, '-g')
-		plt.axvline(kick, -2, 2)	
-	\end{python}
-	
-	
-	\section{Getting the position of a perturbation at a given frequency}
-	In this section, we deal with a perturbation at a given frequency $f$. The training data is the time signal of all BPMs.
-	
-	As the perturbation has a known frequency, we extract its complex amplitude from the signal of each BPM with a Fourier transform:
-	
-	\begin{equation}
-	\forall i \in [1, \mathrm{BPM\_nb}], \qquad 
 	\begin{cases}
-	\vec{X}_i = \mathrm{FFT}(\vec{x}_i) \\
-	c_i = \vec{X}_i(f)
+	x(\phi = 0) = x(\phi = 2 \pi Q) \\
+	y(\phi = 0) = y(\phi = 2 \pi Q)
 	\end{cases}
 	\end{equation}
-	
-	\subsection{Case of a unique perturbation source}
+\end{itemize}
 
-	If the perturbation is unique, then all complex amplitude exactly describe the same sine of frequency $f$ and phase $\alpha_0$. It allows us to describe the complex vector $\vec{c}$ with $\vec{\hat{c}}$, which is real.
-	
-	\begin{align}
-		&\alpha_0 = \underset{\alpha \in [0, 2\pi]}{\textrm{argmin}}\{\mathcal{R}e (\vec{c} \cdot e^{-j\alpha}) \} \\
-		&\vec{\hat{c}} = \mathcal{I}m (\vec{c} \cdot e^{-j\alpha_0})
-	\end{align}
-	
-	The new signal $\vec{\hat{c}}$ can be used as an orbit signal: we have one orbit amplitude for each BPM: the kick can be extracted from it with the previous method described in Section \ref{sec:get_kick}.
-	
-	\begin{python}[caption={Perturbation localisation, f = 10 Hz}]
-		import matplotlib.plt as plt
-		import search_kick.core as skcore
-		import search_kick.tools as sktools
-		
-		# Dataset
-		phase = ...
-		tune = ...
-		time_signal = ....  # nb_bpms lines, nb_samples colunms
-		fs = 500  # sampling rate (Hz)
-		
-		f = 10  # frequency to extract (Hz)
-		
-		# Extract cosine and sine amplitude with a FFT transform
-		a, b = skcore.extract_cos_sin_withfft(values, fs, f)
-	
-		# Optimize to only have the sine amplitude
-		step_size = 0.1
-		a_opt, b_opt, alpha_0 = sktools.maths.optimize_rotation(a, b, step_size)
-		
-		# Get the kick
-		kick, sin_coef = skcore.get_kick(a_opt, phase, tune)
-		sine, phase_th = skcore.build_sine(kick_phase, tune, sin_coef)
-		
-		# Plot the results
-		plt.plot(phase, a_opt, '-b')
-		plt.plot(phase, b_opt, '-m')  # cosine amplitudes: to be sure that it was a unique perturbation
-		plt.plot(phase_th, sine, '-g')
-		plt.axvline(kick, -2, 2)
+KLT~\cite{book:wang_2012}
+%%
+%  Bibliography
+%%
+\bibliographystyle{plain}
+\bibliography{biblio.bib}
 
-	\end{python}
-	
-	\subsection{Case of several perturbation sources}
-	If there are several perturbation sources, a $\alpha_0$ that let the cosine part vanish cannot be found. 
-	
-	KLT~\cite{book:wang_2012}
-	%%
-	%  Bibliography
-	%%
-	\bibliographystyle{plain}
-	\bibliography{biblio.bib}
-	
 \end{document}
 
