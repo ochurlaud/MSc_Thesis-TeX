@@ -1,7 +1,8 @@
-*
+/*
 !.gitignore
 !*.tex
 !*.bib
 !*.png
 !*.eps
-!./img/*
+!/img/**
+!/scripts/**
