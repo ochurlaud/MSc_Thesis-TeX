@@ -2,7 +2,7 @@
 % !TeX spellcheck = en_US
 % !TeX root = main.tex
 
-\documentclass[12pt,a4paper]{article}
+\documentclass[12pt,a4paper]{memoir}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -10,6 +10,9 @@
 \usepackage{graphicx}
 \usepackage{epstopdf}
 \usepackage{hyperref}
+\usepackage{indentfirst}
+
+\usepackage[english]{babel}
 
 \usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
 
@@ -37,13 +40,12 @@
 
 \def\thetitle{Notes for the Master thesis}
 \def\thesubject{Master Thesis}
-\def\theauthor{Master Thesis}
+\def\theauthor{Olivier Churlaud}
 \author{\theauthor}
 \title{\thetitle}
 
 \hypersetup{
-	bookmarks=true,
-	unicode=false
+	unicode=true,
 	pdftitle={\thetitle},    % title
 	pdfauthor={\theauthor},     % author
 	pdfsubject={\thesubject},   % subject of the document
@@ -55,10 +57,11 @@
 }
 
 \begin{document}
-	
 \maketitle
 
-\abstract{....}
+\begin{abstract}
+       ......
+\end{abstract}
 
 \tableofcontents
 

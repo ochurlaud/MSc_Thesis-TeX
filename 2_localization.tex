@@ -1,5 +1,5 @@
 
-\section{Localization of orbit distortion}
+\chapter{Localization of orbit distortion}
 \label{sec:localisation}
 
 Correcting the orbit is costly and has never a perfect result. Instead of dealing with the effects, we can deal with the sources of the distortions. If none is really obvious (\textit{eg.} a non-isolated transformer, the 50~Hz perturbation of the main power), the orbit can give us some hints.
@@ -12,10 +12,10 @@ We call kick the place where the orbit brutally changes its angle as shown in Fi
 	\caption{\label{fig:kick}Example of kick in the orbit}
 \end{figure}
 
-\subsection{Theory}
+\section{Theory}
 \label{ssec:loc_theory}
 
-\subsubsection{Theoretical setting of the problem}
+\subsection{Theoretical setting of the problem}
 
 Everything is described here with the phase variable $\phi = \int\limits_{0}^s \frac{d\sigma}{\beta(\sigma)}$. The spatial variable is only used to have a connection between the result and the actual ring. The explanation will be led with the $x$ variable, but is also valid with the $y$ one.
 
@@ -30,7 +30,7 @@ x(\phi) = b \sin(\phi + c)
 
 We have a problem with 3 unknowns to determine: $\phi_0, b, c$. 
 
-\subsubsection{Practical setting}
+\subsection{Practical setting}
 
 We have $m$ BPMs only, distributed around the orbit.
 Therefore we define:
@@ -45,7 +45,7 @@ Therefore we define:
 \end{cases}
 \end{align}
 
-\subsubsection{Solving the problem}
+\subsection{Solving the problem}
 
 To find the kick in the orbit it suffices to find a sine that fits in $\vec{x}_\mathrm{ext}$.
 
@@ -80,7 +80,7 @@ or, with the numerical approach,
 
 \remark One should be careful if $k_0 = 0$ (resp. $k_0 = m-1$) and set $\phi_{k_0-1} =\phi_{m-1}$ (resp. $\phi_{k_0+1} = \phi_{0}$). 
 
-\subsubsection{Finding the good sine}
+\subsection{Finding the good sine}
 Several methods are possible to find the best matching sine, for example by using:
 \begin{itemize}
 	\item a pseudo-inversion
@@ -153,9 +153,9 @@ By defining $b = \sqrt{a_1^2+a_2^2}$ and $c = \mathrm{atan2}(a_1, a_2)$  we can 
 \tilde{x}(\phi) = a + a_1 \cos(\phi) + a_2 \sin(\phi) = a + b \sin(\phi + c).
 \end{equation*} 
 
-\subsection{Applications}
+\section{Applications}
 \todo[inline]{NOT UPDATED: DO NOT CORRECT THIS}
-\subsubsection{Getting the position of a perturbation at a given frequency}
+\subsection{Getting the position of a perturbation at a given frequency}
 In this section, we deal with a perturbation at a given frequency $f$. The training data is the time signal of all BPMs.
 
 As the perturbation has a known frequency, we extract its complex amplitude from the signal of each BPM with a Fourier transform:
@@ -184,7 +184,7 @@ The new signal $\vec{\hat{c}}$ can be used as an orbit signal: we have one orbit
 If there are several perturbation sources, a $\alpha_0$ that let the cosine part vanish cannot be found. 
 
 
-\subsection{Implementation}
+\section{Implementation}
 \begin{python}[caption=Get the kick]
 	import matplotlib.plt as plt
 	import search_kick.core as skcore
@@ -205,5 +205,5 @@ If there are several perturbation sources, a $\alpha_0$ that let the cosine part
 \end{python}
 
 
-\subsection{Examples}
+\section{Examples}
 
