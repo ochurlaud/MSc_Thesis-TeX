@@ -8,16 +8,15 @@
 \usepackage{amsfonts}
 \usepackage{amssymb}
 \usepackage{graphicx}
+\usepackage{rotating}
 \usepackage{epstopdf}
 \usepackage{hyperref}
-\usepackage{indentfirst}
-
+%\usepackage{indentfirst}
 \usepackage[english]{babel}
 
 \usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
 
 \input{code_env}
-
 % % % % % % % % % % % % % % % % % %
 % trick not to release comments   %
   \newif\ifrelease
@@ -37,7 +36,6 @@
 
 \newcommand{\remark}{\paragraph{Remark ---}}
 
-
 \def\thetitle{Notes for the Master thesis}
 \def\thesubject{Master Thesis}
 \def\theauthor{Olivier Churlaud}
@@ -45,32 +43,41 @@
 \title{\thetitle}
 
 \hypersetup{
-	unicode=true,
-	pdftitle={\thetitle},    % title
-	pdfauthor={\theauthor},     % author
-	pdfsubject={\thesubject},   % subject of the document
-	colorlinks=true,       % false: boxed links; true: colored links
-	linkcolor=black,          % color of internal links (change box color with linkbordercolor)
-	citecolor=green,    % color of links to bibliography
-	filecolor=red,      % color of file links
-	urlcolor=cyan       % color of external links
+    unicode=true,
+    pdftitle={\thetitle},
+    pdfauthor={\theauthor},
+    pdfsubject={\thesubject},
+    colorlinks=true,       % false: boxed links; true: colored links
+    linkcolor=black,       % color of internal links (change box color with linkbordercolor)
+    citecolor=green,
+    filecolor=red,
+    urlcolor=cyan
 }
 
 \begin{document}
+\frontmatter
+\clearpage
+\thispagestyle{empty}
 \maketitle
-
+\
+\vfill
 \begin{abstract}
        ......
 \end{abstract}
+\vfill
+
+\cleardoublepage
 
 \tableofcontents
+\listoffigures
 
+\mainmatter
 \input{0_background}
 \input{1_correction}
 \input{2_localization}
 \input{3_harmonic_perturb}
 
-\section{Physics of particle accelerators -- Definitions}
+\chapter{Physics of particle accelerators -- Definitions}
 This section is mostly based on~\cite{book:wille}.
 
 \subsection{Notations}
@@ -79,7 +86,7 @@ This section is mostly based on~\cite{book:wille}.
 	\item $x'(s) = \frac{dx}{ds}$
 \end{itemize}
 
-\subsection{Parameters $\implies$ Still wrong.. read again}
+\subsection{Parameters ===== Still wrong.. read again}
 \begin{itemize}
 	\item $s$ = position in in the orbit (in m)
 	\item $Q$ = tune (cf 3.207)
