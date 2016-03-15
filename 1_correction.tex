@@ -4,7 +4,19 @@
 \label{sec:correction}
 \section{Some documented methods}
 
-Several common corrections
+Several corrections methods are well documented in the literature. The most common ones are the best corrector method, ...
+
+\subsection{Best corrector method}
+This is an iterative method.
+
+Given an orbit distortion, the corrector which provides the best correction is selected and its gain is determined\todo{how?}. The new orbit is used as the next input, and the same process is applied with the remaining correctors. 
+
+By doing this until all corrector are used (or that adding a correction does not change the quality\todo{quality?} of the orbit) a comprehensive correction is reached.
+
+\subsection{Fourier analysis}
+
+\subsection{Matrix inversion}
+
 \todo[inline]{Best corrector, "...", inverse pb = 3 pages}
 \section{State of the art at BESSY II}
 \todo[inline]{2 pages}
