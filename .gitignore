@@ -4,5 +4,5 @@
 !*.bib
 !*.png
 !*.eps
-!/img/**
+!/img
 !/scripts/**
