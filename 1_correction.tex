@@ -4,19 +4,26 @@
 \label{sec:correction}
 \section{Some documented methods}
 
-Several corrections methods are well documented in the literature. The most common ones are the best corrector method, ...
+Several global corrections methods are well documented in the literature. The most common ones are the best corrector method and the response matrix method (see Sections~\ref{ssec:most_effective_corr}) and \ref{ssec:response_matrix}). 
+
+Local orbit bumps (presented in Section~\ref{ssec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example).
+
+\subsection{Local orbit bumps}
+\label{ssec:orbit_bump}
+\todo[inline]{see Wille p286}
 
 \subsection{Most effective corrector method}
+\label{ssec:most_effective_corr}
 This method is based on the fact that orbit shifts are often caused by strong localized disturbances. Its goal is to correct particularly each disturbance.
 
 \subsubsection{Principle}
 
 Given a distorted orbit, the optimal gain for each corrector is calculated by a mean square error algorithm (see \eqref{eq:gain_bestcorr}, \cite{book:wille}). The corrector which provides the best correction is selected: it is the most effective corrector.
 
-Let's assume that the $i$th corrector, at position $s_i$, has the optical parameters $\beta_i$, $\alpha_i$ and $\Psi_i$, and that $m$ monitors are set around the orbit with parameters $\beta_j$, $\alpha_j$ and $\Psi_j$ ($1 \leq j \leq m$).
+Let's assume that the $i$th corrector, at position $s_i$, has the optical parameters $\beta_i$, $\alpha_i$ and $\Psi_i$, and that $m$ monitors are set around the orbit with parameters $\beta_j$, $\alpha_j$ and $\Psi_j$, and read a displacement $u_j$ from the reference orbit ($1 \leq j \leq m$).
 
-The gain $\kappa_i$ of a this corrector is obtained minimizing the function
-\todo{Explain from chap 1.3}
+The strength $\kappa_i$ of the field at the position $s_i$ is obtained minimizing the function
+\todo{Explain in chap 1.3}
 \begin{equation}
     \label{eq:gain_bestcorr}
     f_i(\kappa_i) = \sum\limits_{j=1}^{m} (u_j-x_{ij}(\kappa_i))^2 
@@ -26,13 +33,21 @@ The gain $\kappa_i$ of a this corrector is obtained minimizing the function
 with, if $\Delta \Psi_{ij} := \Psi_j-\Psi_i$,
 
 \begin{align}
+    \label{eq:hij}
     x_{ij}(\kappa_i) &= \kappa_i h_{ij} \nonumber\\
                      &= \kappa_i \frac{\sqrt{\beta_i \beta_j}}{2}
                          \left[
                              \frac{\cos(\Delta \Psi_{ij}) - 2\alpha_i \sin(\Delta\Psi_{ij})}
                                   {\tan (\pi Q)} + \sin (\Delta\Psi_{ij})
-                         \right]
+                         \right].
 \end{align}
+
+It follows that 
+\begin{equation}
+    \kappa_i = \frac{\sum\limits_{j=1}^m u_j h_{ij}}{\sum\limits_{j=1}^m h_{ij}^2}
+\end{equation}
+
+The $i$th corrector is attributed the gain $-\kappa_i$ to compensate the field.
 
 \subsubsection{Iterative version}
 When the most effective corrector is found, the process is reiterated on the corrected orbit with the remaining correctors. 
@@ -42,13 +57,23 @@ By doing this until all corrector are used (or that adding a correction does not
 \subsubsection{Practical issue}
 The problem of this method is that each corrector must be tested once, and this for each iteration: the initialization of the correction is long and is then fixed.
 
-\subsection{Fourier analysis}
+Moreover, the correction is less efficient than the other ones presented here~\cite{book:wille}.
 
-\subsection{Matrix inversion}
-Can be obtained empirically or using the theory. However, because accelerator diff from theoretical model, empirical is better. \cite{art:decker-1991}
+\subsection{Response matrix}
+\label{ssec:response_matrix}
 
-Brute force
-\todo[inline]{Best corrector, "...", inverse pb = 3 pages}
+This section is mainly based on~\cite{book:wille}, \cite{art:decker-1991} and \cite{art:plouviez-1999}.
+
+The response matrix $\mat{S}$ is defined by the equation $\vec{X} = \mat{S} \vec{\Theta}$ where $\vec{\Theta}$ is the \emph{kick vector} and $\vec{X}$ the vector of \emph{orbit change}. If the accelerator has $M$ monitors and $N$ correctors, $\mat{S}$ is a $M \times N$ matrix.
+
+Every coefficient $\mat{S}_{ij}$ is the orbit change at the position $s_i$ (of the $i$th monitor), for a kick of unity 1 at the position $s_j$ (of the $j$th corrector).
+
+This matrix can be theoretically calculated by using the accelerator model and physics: $\mat{S}_{ij} = h_{ij}$ with the formula in \eqref{eq:hij}. However, the actual storage ring is never exactly the same as the designed one, because of several inaccuracies in its building. A more common way of constructing the response matrix is empirical: each measure cycle, a corrector is given a unitary value and the monitor are read, providing a column of the response matrix.
+
+To do the correction, the inverse problem must be solved. We know the orbit change that we need to obtain a cleaner orbit, using the inverse of the response matrix will provide the correction to apply. Since it's very common to have more monitors than correctors, the matrix is not square. A \emph{singular value decomposition} (SVD) is used on the matrix to provide a pseudo-inversion.
+
+Using the SVD also allows to use only the most significant singular values in the correction.\todo{why do we want this?}
+
 \section{State of the art at BESSY II}
 \todo[inline]{2 pages}
 \section{Acquisition of the transfer matrix}
