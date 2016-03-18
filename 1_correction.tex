@@ -75,5 +75,55 @@ To do the correction, the inverse problem must be solved. We know the orbit chan
 Using the SVD also allows to use only the most significant singular values in the correction.\todo{why do we want this?}
 
 \section{State of the art at BESSY II}
-\todo[inline]{2 pages}
+
+\subsection{The correction}
+BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID correction (proportional response with gain P, integral response with gain I and derivative response with gain D) and the response matrix inversion. The full process goes as presented in Fig.~\ref{fig:block_correction}.
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=.85\linewidth]{img/correction}
+    \caption{\label{fig:block_correction}The correction process}
+\end{figure}
+
+\todo[inline]{Should I explain this here with words as well? \newline
+    is it $\Delta \Theta$ or $\Theta$ (The real corrector value or the change to add)?\newline
+    Why do we need this PID \textbf{\textit{exactly}}?}
+
+\begin{align}
+   & \Delta \vec{X} := \vec{X}-\vec{X}_\text{ref} \nonumber \\
+   & \Delta \vec{\Theta}_t :=  \mat{S}^{-1} \Delta \vec{X} \odot \vec{W} \nonumber\\
+   & G(\omega) = P + \frac{I}{\omega} + D \omega \qquad \text{(the PID)}\nonumber \\
+   & \Delta \vec{\Theta} = \left[1-G(\omega)\right] (\Delta \vec{\Theta}_t)
+\end{align}
+with $\odot$ the point-wise multiplication and, $\vec{W}$ the vector of weights.
+
+\remark The PID gains is not exactly as presented here: to prevent a too violent correction that might destabilize the current in the ring, the proportional gain is increased every correction round by 1\% until it reaches its nominal value.
+
+\remark The PID is implemented as (for the $n$th correction round): 
+\begin{equation*}
+    P \times \Delta \vec{\Theta}_t(n) + I \times \sum\limits_{k=0}^{n-1}\Delta \vec{\Theta}_t(k) + D \times \left[\Delta \vec{\Theta}_t(n) - \Delta \vec{\Theta}_t(n-1)\right]
+\end{equation*}
+
+\subsection{Technical overview}
+
+The correction is naturally automatized. Because the read/write actions should be really fast, a specific infrastructure was designed. This is represented on Fig.~\ref{fig:cbox_mbox}. 
+
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=.85\linewidth]{img/mBox_cBox}
+    \caption{\label{fig:cbox_mbox}cBox and mBox: the correction infrastructure in BESSY II}
+\end{figure}
+
+All elements are connected to a reflective memory (RFM), which provides a high speed and low latency interface. This memory space is split in specified divisions to prevent data collisions.
+
+Two main processes are operating:
+\begin{itemize}
+    \item the \textbf{cBox}. It controls (= \textit{c}) the correction. It defines when to read the values of the BPMs and when to write the new correction values, it provides initializations values. The operators are communicating with this process to configure the correction.
+    \item the \textbf{mBox}. It does the math (= \textit{m}) of the correction. When allowed by the cBox, it reads the BPMs values, do the maths to define the new correction values and write them to the communication bus. This process also publish the values it reads and write so that client programs can subscribe to this data stream and reuse the values internally.
+\end{itemize}
+
+After having received the command to run from the cBox, the mBox queries the ADC (Analog-to-Digital Converter) to provide the BPM values in the RFM. The correction is then calculated (in Amperes) and the values are converted in a format easily transmissible. This data is written back to RFM and read by the IOCs (Input-Output Controllers) that relay to the power supplies alimenting the corrector magnets.
+
+The full process is repeated at a frequency of 150~Hz. 
+
 \section{Acquisition of the transfer matrix}
