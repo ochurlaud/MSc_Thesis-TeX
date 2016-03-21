@@ -23,7 +23,7 @@ where $c$ is the speed of light, $m_0$ the rest mass (independent of the velocit
 
 Considering their low mass, the electrons are very good candidates to produce high energy radiation.
 
-The most important properties of the synchrotron radiation are its brilliance and brightness. \todo{define...} The brightness is defined as [...] and the brilliance as [...]
+The most important properties of the synchrotron radiation are its brilliance and brightness, which describe the quality of the beam. The brightness describes the angular divergence of the beam, and the brillance its transverse dimension: both are expected to be as small as possible to be in the configuration in which the beam is the most point-like. (See Section~\ref{sec:brightness_brillance} for the exact definitions).
 
 The main purpose of BESSY II is to provide a light radiation with stable brilliance and brightness over time. To achieve this, the light source itself must be very stable as well. Therefore a significant attention is drawn to the control of the storage ring.
 \begin{figure}
@@ -50,14 +50,99 @@ When this energy is reached, the electrons are injected to the storage ring, whi
 
 Because of the synchrotron radiation, the bunches of particles lose regularly their energy; therefore a new injections from the accelerations chain take place every XXX\todo{time} to repopulate the storage ring and stabilize its energy.
 
-\section{Focus on the booster and the storage ring}
-Both the booster and the storage ring are synchrotrons. The former aims at accelerating the particles, whereas the latter aims at storing them with a constant energy.
+\section{Particle accelerator physics}
+In order to understand the trajectory perturbations, the basic physics of the particle accelerator must be addressed.
 
-\subsection{Booster -- Synchrotron basics}
+\subsection{Synchrotron basics}
 \todo[inline]{General physics of the synchrotron}
+To study the beam trajectory, one possibility is to use the linear beam optics (by analogy between beam and light focusing and steering). We solely describe here what is needed in the next sections. A full reference can be found in~\cite{book:wille}. This section is mostly inspired by the chapter 3 of this same reference.
 
-\subsection{Storage ring}
+\subsubsection{Geometry and trajectory}
+The term \emph{orbit} refers to the ideal trajectory of the particles, which is fixed by the construction of the accelerator.
+
+The frame of reference is $K=(\vec{e}_x,\vec{e}_y, \vec{e}_s)$, which origin follows the beam. $\vec{e}_x$ is the horizontal axis directed towards the exterior of the orbit and normal to its curve, $\vec{e}_y$ is the vertical axis and $\vec{e}_s$ the tangential axis to the orbit.
+
+Let $\varphi$ be the azimuth angle. Then we have:
+\begin{equation}
+\frac{d \vec{e}_s}{d \varphi} = -\vec{e}_x \qquad \frac{d \vec{e}_x}{d \varphi} = \vec{e}_s
+\end{equation}
+and because $ds = R d\varphi$ we can write
+\begin{equation}
+\frac{d \varphi}{d t}  = \frac{1}{R} \frac{d s}{d t}.
+\end{equation}
+
+Therefore we can write
+\begin{align}
+&\dot{e}_x = \frac{\vec{e}_x}{d \varphi}\frac{d \varphi}{dt} = \frac{1}{R} \dot{s}\vec{e}_s \nonumber \\
+&\dot{e}_y = 0 \\
+&\dot{e}_s = \frac{\vec{e}_s}{d \varphi}\frac{d \varphi}{dt} = -\frac{1}{R} \dot{s}\vec{e}_x \nonumber.
+\end{align}
+
+Let $\vec{r} = \vec{r}_0 + x\vec{e}_x + y \vec{e}_y$ be the position of a given particle in a Galilean reference frame (with $\vec{r}_0$ the position of the origin of the moving coordinates) and let's define $x'$ the spatial derivative with respect to $s$ so that:
+\begin{align}
+&\dot{x}= \frac{dx}{ds}\frac{ds}{dt} = x'\dot{s} \nonumber \\
+&\ddot{x}= x''\dot{s}^2+x'\ddot{s}.
+\end{align}
+
+It follows, after some algebraic manipulations:
+\begin{align}
+&\vec{r} = \vec{r}_0 + x\vec{e}_x + y \vec{e}_y \nonumber \\
+&\dot{\vec{r}}= x' \dot{s} \vec{e}_x + y'\dot{s} \vec{e}_y  + \left(1+\frac{x}{R}\right)\dot{s}\vec{e}_s\\
+&\ddot{\vec{r}}= \left[x'' \dot{s}^2 + x' \ddot{s} - \left( 1+\frac{x}{R} \right)\frac{\dot{s}^2}{R}\right] \vec{e}_x + (y''\dot{s}^2 + y'\ddot{s}) \vec{e}_y \nonumber \\
+& \hspace{14em} + \left[\frac{2}{R}x'\dot{s}^2 +\left(1+\frac{x}{R}\right)\ddot{s}\right]\vec{e}_s \nonumber
+\end{align}
+
+Newton's second law can now be applied with the Lorentz force:
+\begin{equation}
+\dot{\vec{p}} = e(\vec{E}+\vec{v} \times \vec{B}) 
+\end{equation}
+
+We only operate with a magnetic field ($\vec{e} = )$
+\begin{equation}
+\ddot{\vec{r}} = \frac{e}{m}(\dot{\vec{r}} \times \vec{B})
+\end{equation}
+
+It is reasonable to assume that the magnetic field is only transversal, \textit{ie} $\vec{B} = (B_x,B_y,0)$:
+\begin{equation}
+\label{eq:lorentz_transv}
+\ddot{\vec{r}} = \frac{e}{m}(\dot{\vec{r}} \times \vec{B})
+= \frac{e}{m}
+    \begin{pmatrix}
+        -\left(1+\frac{x}{R}\right)\dot{s}B_y \\
+        \left(1+\frac{x}{R}\right)\dot{s}B_x \\
+        x'\dot{s}B_y - y'\dot{s}B_x
+    \end{pmatrix}.
+\end{equation}
+
+This can be simplified by stating that since the particles are moving with relativistic velocities, the magnetic field has a negligible effect on their longitudinal velocities (we only consider transverse components). Furthermore it can be assumed that the velocity of the particle varies very slowly in one magnet: $\ddot{s} \approx 0$.  Finally, because $p=mv$ and \todo{why is it true?}
+\begin{equation}
+v = \dot{s} \frac{R+x}{R} = \dot{s} \left(1+\frac{x}{R}\right)
+\end{equation}
+eq. \ref{eq:lorentz_transv} can be written as:
+
+\begin{align}
+x''-\left(1+\frac{x}{R}\right)\frac{1}{R} &= -\frac{v}{\dot{s}}\frac{e}{p} B_y\left(1+\frac{x}{R}\right) \nonumber\\
+y'' &= \frac{v}{\dot{s}}\frac{e}{p} B_x\left(1+\frac{x}{R}\right)
+\end{align}
+
+The momentum of the particles is $p = p_0+\Delta p$, with the condition $\Delta p \ll p_0$ which is well satisfied in accelerators.
+
+\todo[inline]{p50}
+\subsubsection{Brightness and brilliance}
+\label{sec:brightness_brillance}
+(given by $\sigma'_{x,z}=\sqrt{\frac{\epsilon_{x,z}}{\beta_{x,z}}}$):
+\begin{equation}
+S = \frac{F}{2 \pi \sigma'_x \sigma'_z} = \frac{F \sqrt{\beta_x \beta_z}}{2 \pi \sqrt{\epsilon_x \epsilon_z}} = \frac{\text{photons}}{\text{s 0.1\% BW mrad$^2$ A}}
+\end{equation}
+while the brilliance relates to the transverse dimensions ($\sigma_{x,z}=\sqrt{\epsilon_{x,z}\beta_{x,z}}$):
+\begin{equation}
+B = \frac{F}{4 \pi^2 \sigma_x \sigma_z \sigma'_x \sigma'_z} = \frac{F}{4 \pi^2 \epsilon_x \epsilon_z} = \frac{\text{photons}}{\text{s 0.1\% mm$^2$ BW mrad$^2$ A}}
+\end{equation}
+
+These definitions vary in literature. These are taken from the K.~Wille book~\cite{book:wille}, and apply to Gaussian-shaped electron beams. The invariant idea is that both values are determinated by the beam emittance $\sigma$: the design of the accelerators and the correction are aimed at obtaining the smallest emittance $\sigma_{x,z}$ as possible.
+\subsection{Booster and storage ring}
 \todo[inline]{What is particular in storage ring}
+Both the booster and the storage ring are synchrotrons. The former aims at accelerating the particles, whereas the latter aims at storing them with a constant energy. 
 
 \section{Orbit and distortions}
 \todo[inline]{Physics + examples = 1/2 - 1 pges}
