@@ -4,16 +4,16 @@
 \label{sec:correction}
 \section{Some documented methods}
 
-Several global corrections methods are well documented in the literature. The most common ones are the best corrector method and the response matrix method (see Sections~\ref{ssec:most_effective_corr}) and \ref{ssec:response_matrix}). 
+Several global corrections methods are well documented in the literature. The most common ones are the best corrector method and the response matrix method (see Sections~\ref{sec:most_effective_corr}) and \ref{sec:response_matrix}). 
 
-Local orbit bumps (presented in Section~\ref{ssec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example).
+Local orbit bumps (presented in Section~\ref{sec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example).
 
 \subsection{Local orbit bumps}
-\label{ssec:orbit_bump}
+\label{sec:orbit_bump}
 \todo[inline]{see Wille p286}
 
 \subsection{Most effective corrector method}
-\label{ssec:most_effective_corr}
+\label{sec:most_effective_corr}
 This method is based on the fact that orbit shifts are often caused by strong localized disturbances. Its goal is to correct particularly each disturbance.
 
 \subsubsection{Principle}
@@ -60,11 +60,11 @@ The problem of this method is that each corrector must be tested once, and this 
 Moreover, the correction is less efficient than the other ones presented here~\cite{book:wille}.
 
 \subsection{Response matrix}
-\label{ssec:response_matrix}
+\label{sec:response_matrix}
 
 This section is mainly based on~\cite{book:wille}, \cite{art:decker-1991} and \cite{art:plouviez-1999}.
 
-The response matrix $\mat{S}$ is defined by the equation $\vec{X} = \mat{S} \vec{\Theta}$ where $\vec{\Theta}$ is the \emph{kick vector} and $\vec{X}$ the vector of \emph{orbit change}. If the accelerator has $M$ monitors and $N$ correctors, $\mat{S}$ is a $M \times N$ matrix.
+The response matrix $\mat{S}$ is defined by the equation $\vec{X} = \mat{S}\, \vec{\Theta}$ where $\vec{\Theta}$ is the \emph{kick vector} and $\vec{X}$ the vector of \emph{orbit change}. If the accelerator has $M$ monitors and $N$ correctors, $\mat{S}$ is a $M \times N$ matrix.
 
 Every coefficient $\mat{S}_{ij}$ is the orbit change at the position $s_i$ (of the $i$th monitor), for a kick of unity 1 at the position $s_j$ (of the $j$th corrector).
 
