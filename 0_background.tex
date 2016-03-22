@@ -1,6 +1,6 @@
 % !TeX spellcheck = en_US
 
-\chapter{Background}
+\chapter{Background and theory}
 \label{sec:background}
 
 \section{BESSY II}
@@ -54,55 +54,72 @@ Because of the synchrotron radiation, the bunches of particles lose regularly th
 In order to understand the trajectory perturbations, the basic physics of the particle accelerator must be addressed.
 
 \subsection{Synchrotron basics}
-\todo[inline]{General physics of the synchrotron}
 To study the beam trajectory, one possibility is to use the linear beam optics (by analogy between beam and light focusing and steering). We solely describe here what is needed in the next sections. A full reference can be found in~\cite{book:wille}. This section is mostly inspired by the chapter 3 of this same reference.
 
-\subsubsection{Geometry and trajectory}
+\subsubsection{Geometry -- Frame of reference -- Kinematics}
 The term \emph{orbit} refers to the ideal trajectory of the particles, which is fixed by the construction of the accelerator.
 
 The frame of reference is $K=(\vec{e}_x,\vec{e}_y, \vec{e}_s)$, which origin follows the beam. $\vec{e}_x$ is the horizontal axis directed towards the exterior of the orbit and normal to its curve, $\vec{e}_y$ is the vertical axis and $\vec{e}_s$ the tangential axis to the orbit.
-
-Let $\varphi$ be the azimuth angle. Then we have:
+\begin{figure}[!h]
+    \centering
+    \includegraphics[width=0.8\linewidth]{img/orbit_coordinates.pdf}
+    \caption{\label{fig:coordinate system}Description of the co-moving coordinate system}
+\end{figure}
+Let $\varphi$ be the azimuth angle, oriented by $\vec{e}_y$. Then, since $ds = -R d\varphi$, we can write
 \begin{equation}
-\frac{d \vec{e}_s}{d \varphi} = -\vec{e}_x \qquad \frac{d \vec{e}_x}{d \varphi} = \vec{e}_s
-\end{equation}
-and because $ds = R d\varphi$ we can write
-\begin{equation}
-\frac{d \varphi}{d t}  = \frac{1}{R} \frac{d s}{d t}.
+\frac{d \varphi}{d t}  = -\frac{1}{R} \frac{d s}{d t}.
 \end{equation}
 
-Therefore we can write
+Using the derivation formula of polar coordinate we can write:
 \begin{align}
-&\dot{e}_x = \frac{\vec{e}_x}{d \varphi}\frac{d \varphi}{dt} = \frac{1}{R} \dot{s}\vec{e}_s \nonumber \\
-&\dot{e}_y = 0 \\
-&\dot{e}_s = \frac{\vec{e}_s}{d \varphi}\frac{d \varphi}{dt} = -\frac{1}{R} \dot{s}\vec{e}_x \nonumber.
+&\dot{\vec{e}}_x = \frac{d\vec{e}_x}{d t} = -\dot{\varphi} \vec{e}_s = \frac{1}{R} \dot{s}\vec{e}_s \nonumber \\
+&\dot{\vec{e}}_y = 0 \\
+&\dot{\vec{e}}_s = \frac{d\vec{e}_s}{d t} = \dot{\varphi} \vec{e}_x = -\frac{1}{R} \dot{s}\vec{e}_x \nonumber.
 \end{align}
 
-Let $\vec{r} = \vec{r}_0 + x\vec{e}_x + y \vec{e}_y$ be the position of a given particle in a Galilean reference frame (with $\vec{r}_0$ the position of the origin of the moving coordinates) and let's define $x'$ the spatial derivative with respect to $s$ so that:
-\begin{align}
-&\dot{x}= \frac{dx}{ds}\frac{ds}{dt} = x'\dot{s} \nonumber \\
+Let $\vec{r} = \vec{r}_0 + x\vec{e}_x + y \vec{e}_y$ be the position of a given particle in a Galilean reference frame (with $\vec{r}_0$ the position of the origin of the moving coordinates, see Fig.~\ref{fig:coordinate system}) and let's define $x'$ the spatial derivative with respect to $s$ so that:
+\begin{equation}
+\begin{aligned}
+&\dot{x}= \frac{dx}{ds}\frac{ds}{dt} = x'\dot{s}  \\
 &\ddot{x}= x''\dot{s}^2+x'\ddot{s}.
-\end{align}
-
+\end{aligned}
+\end{equation}
 It follows, after some algebraic manipulations:
 \begin{align}
+\label{eq:kinematics}
 &\vec{r} = \vec{r}_0 + x\vec{e}_x + y \vec{e}_y \nonumber \\
 &\dot{\vec{r}}= x' \dot{s} \vec{e}_x + y'\dot{s} \vec{e}_y  + \left(1+\frac{x}{R}\right)\dot{s}\vec{e}_s\\
 &\ddot{\vec{r}}= \left[x'' \dot{s}^2 + x' \ddot{s} - \left( 1+\frac{x}{R} \right)\frac{\dot{s}^2}{R}\right] \vec{e}_x + (y''\dot{s}^2 + y'\ddot{s}) \vec{e}_y \nonumber \\
 & \hspace{14em} + \left[\frac{2}{R}x'\dot{s}^2 +\left(1+\frac{x}{R}\right)\ddot{s}\right]\vec{e}_s \nonumber
 \end{align}
 
-Newton's second law can now be applied with the Lorentz force:
+\subsubsection{Hypotheses} We assume the following hypotheses are valid.
+\begin{description}
+    \item{H1 --} The particles move essentially parallel to $\vec{e}_s$: in the first order
+    \begin{equation*}
+        \vec{v} = v_s \vec{e}_s.
+    \end{equation*}
+    \item{H2 --} The magnetic field has only transverse components:
+        \begin{equation*}
+        \vec{B} = (B_x, B_y, 0)
+        \end{equation*}
+    \item{H3 --} The electric field is negligible with respect to the magnetic field.
+    \item{H4 --} The velocity of the particle varies very slowly in a magnet: $\ddot{s} \approx 0$
+    \item{H5 --} The particles move at relativistic velocities, so the effect of the magnetic field is negligible on longitudinal components: we consider only transverse components.
+    \item{H6 --} The momentum of the particles is $p = p_0+\Delta p$, with the condition $\Delta p \ll p_0$ (which is well satisfied in accelerators).
+\end{description}
+
+\subsubsection{Equation of motion}
+Newton's second law can be applied with the Lorentz force:
 \begin{equation}
 \dot{\vec{p}} = e(\vec{E}+\vec{v} \times \vec{B}) 
 \end{equation}
-
-We only operate with a magnetic field ($\vec{e} = )$
+which according to (H3) becomes
 \begin{equation}
 \ddot{\vec{r}} = \frac{e}{m}(\dot{\vec{r}} \times \vec{B})
 \end{equation}
 
-It is reasonable to assume that the magnetic field is only transversal, \textit{ie} $\vec{B} = (B_x,B_y,0)$:
+According to (H2), the magnetic field is only transversal, which yields:
 \begin{equation}
 \label{eq:lorentz_transv}
 \ddot{\vec{r}} = \frac{e}{m}(\dot{\vec{r}} \times \vec{B})
@@ -114,20 +131,54 @@ It is reasonable to assume that the magnetic field is only transversal, \textit{
     \end{pmatrix}.
 \end{equation}
 
-This can be simplified by stating that since the particles are moving with relativistic velocities, the magnetic field has a negligible effect on their longitudinal velocities (we only consider transverse components). Furthermore it can be assumed that the velocity of the particle varies very slowly in one magnet: $\ddot{s} \approx 0$.  Finally, because $p=mv$ and \todo{why is it true?}
+Using (H5), we can focus on the x- and y-components, (H4) in Eq.~\eqref{eq:kinematics} allow us to remove every $\ddot{s}$ factors, so that Eq.~\eqref{eq:lorentz_transv} can be rewritten as
 \begin{equation}
-v = \dot{s} \frac{R+x}{R} = \dot{s} \left(1+\frac{x}{R}\right)
+\begin{aligned}
+x'' \dot{s}^2 - \left(1+\frac{x}{R}\right)\frac{\dot{s}^2}{R}
+&= -\frac{e}{m} \left(1+\frac{x}{R}\right)\dot{s}B_y \\
+y'' \dot{s}^2 &=    \left(1+\frac{x}{R}\right)\dot{s}B_x.
+\end{aligned}
 \end{equation}
-eq. \ref{eq:lorentz_transv} can be written as:
+Finally, because $p=mv$ and using Eq.~\eqref{eq:kinematics} combined with (H1), we can replace
+\begin{equation}
+m = \frac{p}{v} = \frac{p}{\scal{\vec{v}}{\vec{e}_s}} = \frac{p}{\left(1+\frac{x}{R}\right)\dot{s}}
+\end{equation}
+to obtain:
+\begin{equation}
+\begin{aligned}
+x''-\left(1+\frac{x}{R}\right)\frac{1}{R} &= -\frac{e}{p} B_y\left(1+\frac{x}{R}\right)^2 \\
+y'' &= \frac{e}{p} B_x\left(1+\frac{x}{R}\right)^2
+\end{aligned}
+\end{equation}
 
-\begin{align}
-x''-\left(1+\frac{x}{R}\right)\frac{1}{R} &= -\frac{v}{\dot{s}}\frac{e}{p} B_y\left(1+\frac{x}{R}\right) \nonumber\\
-y'' &= \frac{v}{\dot{s}}\frac{e}{p} B_x\left(1+\frac{x}{R}\right)
-\end{align}
+(H6) allow us to write, to first order:
 
-The momentum of the particles is $p = p_0+\Delta p$, with the condition $\Delta p \ll p_0$ which is well satisfied in accelerators.
+\begin{equation*}
+\frac{1}{p} = \frac{1}{p_0} \left(1-\frac{\Delta p}{p_0}\right).
+\end{equation*}
 
-\todo[inline]{p50}
+Furthermore the magnetic field can be approximated to first order with:
+\begin{equation}
+\frac{e}{p_0} B_y = \frac{1}{R}-kx \qquad\qquad \frac{e}{p_0} B_x = -ky
+\end{equation}
+which yields
+\begin{equation}
+\begin{aligned}
+x''-\left(1+\frac{x}{R}\right)\frac{1}{R} &= -\left(\frac{1}{R}-kx\right)\left(1-\frac{\Delta p}{p_0}\right)\left(1+\frac{x}{R}\right)^2 \\
+y'' &= -ky\left(1-\frac{\Delta p}{p_0}\right)\left(1+\frac{x}{R}\right)^2
+\end{aligned}
+\end{equation}
+
+Finally by removing terms of second order ($\frac{x}{R} \ll 1$, $\frac{\Delta p}{p_0} \ll 1$) we obtain the linear equations of motion in a magnetic structure:
+
+\begin{empheq}[box=\fbox]{equation}
+\begin{aligned}
+x''(s) + \left(\frac{1}{R^2(s)} - k(s)\right) x(s) &= \frac{1}{R(s)}\frac{\Delta p}{p_0} \\
+y''(s) + k(s) y(s) &= 0
+\end{aligned}
+\end{empheq}
+
+\subsubsection{Beta function and betatron oscillation}
 \subsubsection{Brightness and brilliance}
 \label{sec:brightness_brillance}
 (given by $\sigma'_{x,z}=\sqrt{\frac{\epsilon_{x,z}}{\beta_{x,z}}}$):
