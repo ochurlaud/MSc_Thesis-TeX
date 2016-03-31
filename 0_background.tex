@@ -19,9 +19,9 @@ Additionally to the guest scientists, experts and operators\todo{I don't know ho
 \subsection{General functioning}
 The way BESSY II functions is based on the synchrotron radiation phenomenon: any accelerated particle emits radiations (in the form of photons), with a maximal amplitude in the case of a circular acceleration. \todo{Should I detail the equations?} It can be shown~\cite{book:wille} that the radiated power in circular acceleration can be given as 
 \begin{equation}
-P_s = \frac{e^2 c}{6 \pi \epsilon_0}\frac{1}{(m_0 c^2)^4}\frac{E^4}{R^2}.
+P_s = \frac{e^2 c}{6 \pi \varepsilon_0}\frac{1}{(m_0 c^2)^4}\frac{E^4}{R^2}.
 \end{equation}
-where $c$ is the speed of light, $m_0$ the rest mass (independent of the velocity) of the particle, $e$ its charge, $E$ it's energy, $R$ the bending radius and $\epsilon_0$ the  vacuum permittivity.
+where $c$ is the speed of light, $m_0$ the rest mass (independent of the velocity) of the particle, $e$ its charge, $E$ it's energy, $R$ the bending radius and $\varepsilon_0$ the  vacuum permittivity.
 
 Considering their low mass, the electrons are very good candidates to produce high energy radiation.
 
@@ -174,6 +174,7 @@ y'' &= -ky\left(1-\frac{\Delta p}{p_0}\right)\left(1+\frac{x}{R}\right)^2
 Finally by removing terms of second order ($\frac{x}{R} \ll 1$, $\frac{\Delta p}{p_0} \ll 1$) we obtain the linear equations of motion in a magnetic structure:
 
 \begin{empheq}[box=\fbox]{equation}
+\label{eq:motion_particle}
 \begin{aligned}
 x''(s) + \left(\frac{1}{R^2(s)} - k(s)\right) x(s) &= \frac{1}{R(s)}\frac{\Delta p}{p_0} \\
 y''(s) + k(s) y(s) &= 0
@@ -182,19 +183,95 @@ y''(s) + k(s) y(s) &= 0
 
 \subsubsection{Beta function and betatron oscillation}
 
+The beta function will provide a description of properties of a beam of many particles.
+
+We use \ref{eq:motion_particle} and only assume that $\frac{1}{R} = 0$ and $\frac{\Delta p}{p_0}=0$. The orbit curve is thus assumed almost flat and the momentum deviation negligible. We obtain Hill's differential equation: 
+
+\begin{equation}
+\label{eq:hill_diff}
+	x''(s) - k(s) x(s) = 0
+\end{equation}
+which solution is the transverse oscillation of the orbit, or \emph{betatron oscillation}
+
+\begin{equation}
+\label{eq:hill_sol_cst}
+x(s) = A u(s) \cos \left(\Psi(s)+\phi \right).
+\end{equation}
+
+The phase and the amplitude depend of the position $s$; $A$ and $\phi$ being integration constants.
+
+By inserting \eqref{eq:hill_sol_cst} in \eqref{eq:hill_diff} we obtain
+\begin{equation}
+A\left[u''- u \Psi'^2 - k u \right] \cos\left(\Psi+\phi\right) - A\left[2u'\Psi'+u\Psi''\right]\sin\left(\Psi+\phi\right) = 0.
+\end{equation}
+
+$A \ne 0$ and $\Psi(s)$ having different values for every $s$, the previous equation yields:
+\begin{align}
+u''- u \Psi'^2 - k u = 0 \label{eq:hill_cond1}\\
+2u'\Psi'+u\Psi'' = 0 \label{eq:hill_cond2}
+\end{align}
+
+Eq. \eqref{eq:hill_cond2} leads to:
+\begin{equation}
+2\frac{u'}{u} + \frac{\Psi''}{\Psi'} = 0
+\end{equation}
+which can be integrated as
+\begin{equation}
+\label{eq:phase_psi}
+\Psi(s) = \int \limits_{0}^{s} \frac{d\sigma}{u^2(\sigma)}.
+\end{equation}
+
+%By inserting this result into \eqref{eq:hill_cond1} we obtain
+%\begin{equation}
+%u'' - \frac{1}{u^3} - k u = 0
+%\end{equation}
+
+The \emph{beta function} $\beta(s)$ is defined as
+\begin{equation}
+\label{eq:beta_func}
+\beta(s) := u^2(s)
+\end{equation}
+
+By substituting $A = \sqrt{\varepsilon}$, we obtain the final trajectory equation
+\begin{empheq}[box=\fbox]{equation}
+	\label{eq:orbit_equation}
+	x(s) = \sqrt{\varepsilon \beta(s)} \cos\left(\Psi(s)+\phi \right)
+\end{empheq}
+
+$\varepsilon$ is a constant termed \emph{emittance} and the envelop of the orbit at each position $s$ is $E(s) = \sqrt{\varepsilon \beta(s)}$, which defines the size of the beam.
+
+\remark The calculation done for the $x$ direction can be done similarly for the $z$ one.
+
+\remark Since the beta function controls the size of the beam, it must be finely controlled. A matrix calculation method is presented in \cite{book:wille} in order to calculate it step by step around the orbit. Knowing this, $\Psi$ can be calculated by rewriting Eq.~\eqref{eq:phase_psi} as 
+\begin{equation}
+\Psi(s)=\int \limits_{0}^{s} \frac{d\sigma}{\beta(\sigma)},
+\end{equation}
+and the particle trajectories can be calculated for a given emittance.
 
 \subsubsection{Brightness and brilliance}
 \label{sec:brightness_brillance}
-(given by $\sigma'_{x,z}=\sqrt{\frac{\epsilon_{x,z}}{\beta_{x,z}}}$):
+In the following section, the $\theta$ subscript is either $x$ or $z$.
+
+We first define the \emph{flux} F of photons, normalized to a beam current of 1~A:
 \begin{equation}
-S = \frac{F}{2 \pi \sigma'_x \sigma'_z} = \frac{F \sqrt{\beta_x \beta_z}}{2 \pi \sqrt{\epsilon_x \epsilon_z}} = \frac{\text{photons}}{\text{s 0.1\% BW mrad$^2$ A}}
-\end{equation}
-while the brilliance relates to the transverse dimensions ($\sigma_{x,z}=\sqrt{\epsilon_{x,z}\beta_{x,z}}$):
-\begin{equation}
-B = \frac{F}{4 \pi^2 \sigma_x \sigma_z \sigma'_x \sigma'_z} = \frac{F}{4 \pi^2 \epsilon_x \epsilon_z} = \frac{\text{photons}}{\text{s 0.1\% mm$^2$ BW mrad$^2$ A}}
+F = \frac{\text{photons}}{\text{s 0.1\% BW A}}
 \end{equation}
 
-These definitions vary in literature. These are taken from the book of K.~Wille~\cite{book:wille}, and apply to Gaussian-shaped electron beams. The invariant idea is that both values are determinated by the beam emittance $\sigma$: the design of the accelerators and the correction are aimed at obtaining the smallest emittance $\sigma_{x,z}$ as possible.
+To describe the quality of the beam, which the \emph{brightness} and the \emph{brilliance} are defined.
+
+The brightness describes the angular divergence of the beam (given by $\sigma_\theta'=\sqrt{\frac{\varepsilon_\theta}{\beta_\theta}}$). It is defined as:
+\begin{equation}
+S = \frac{F}{2 \pi \sigma'_x \sigma'_z} = \frac{F \sqrt{\beta_x \beta_z}}{2 \pi \sqrt{\varepsilon_x \varepsilon_z}} = \frac{\text{photons}}{\text{s 0.1\% BW mrad$^2$ A}}
+\end{equation}
+while the brilliance relates to the transverse dimensions ($\sigma_\theta=\sqrt{\varepsilon_\theta \beta_\theta}$):
+\begin{equation}
+B = \frac{F}{4 \pi^2 \sigma_x \sigma_z \sigma'_x \sigma'_z} = \frac{F}{4 \pi^2 \varepsilon_x \varepsilon_z} = \frac{\text{photons}}{\text{s 0.1\% mm$^2$ BW mrad$^2$ A}}
+\end{equation}
+These definitions vary in literature. These are taken from the book of K.~Wille~\cite{book:wille}, and apply to Gaussian-shaped electron beams. The invariant idea is that both values are determinated by the beam emittance $\sigma$: the design of the accelerators and the correction are aimed at obtaining the smallest emittance $\varepsilon_\theta$ as possible.
+
+\subsubsection{Tune}
+
+
 \subsection{Booster and storage ring}
 \todo[inline]{What is particular in storage ring}
 Both the booster and the storage ring are synchrotrons. The former aims at accelerating the particles, whereas the latter aims at storing them with a constant energy. 
