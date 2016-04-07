@@ -14,18 +14,20 @@ The storage ring has a circumference of 240~meters and provides around 50 beamli
 
 BESSY II was inaugurated in 1998 and is since 2009 a facility of the \textit{Helmholtz-Zentrum Berlin für Materialien und Energie} (HZB), to study material structures and processes by guest scientists.
 
-Additionally to the guest scientists, experts and operators\todo{I don't know how to call them} ensure the good functioning of the whole facility and work on refining the quality and the stability of the light rays. 
+Additionally to the guest scientists, operators and researchers ensure the good functioning of the whole facility and work on refining the quality and the stability of the light rays. 
 
 \subsection{General functioning}
+In BESSY II  accelerator, particle are circularly accelerated, all of them turning in the same direction. The goal is indeed not to produce collisions but light.
+ 
 The way BESSY II functions is based on the synchrotron radiation phenomenon: any accelerated particle emits radiations (in the form of photons), with a maximal amplitude in the case of a circular acceleration. \todo{Should I detail the equations?} It can be shown~\cite{book:wille} that the radiated power in circular acceleration can be given as 
 \begin{equation}
 P_s = \frac{e^2 c}{6 \pi \varepsilon_0}\frac{1}{(m_0 c^2)^4}\frac{E^4}{R^2}.
 \end{equation}
-where $c$ is the speed of light, $m_0$ the rest mass (independent of the velocity) of the particle, $e$ its charge, $E$ it's energy, $R$ the bending radius and $\varepsilon_0$ the  vacuum permittivity.
+where $c$ is the speed of light, $m_0$ the rest mass (independent of the velocity) of the particle, $e$ its charge, $E$ its energy, $R$ the bending radius and $\varepsilon_0$ the  vacuum permittivity.
 
-Considering their low mass, the electrons are very good candidates to produce high energy radiation.
+Considering their low mass, the electrons are very good candidates to produce high energy radiation (in comparison, accelerated protons would provide a power $10^{13}$ smaller than electrons).
 
-The most important properties of the synchrotron radiation are its brilliance and brightness, which describe the quality of the beam. The brightness describes the angular divergence of the beam, and the brillance its transverse dimension: both are expected to be as small as possible to be in the configuration in which the beam is the most point-like. (See Section~\ref{sec:brightness_brillance} for the exact definitions).
+The most important properties of the synchrotron radiation are its brilliance and brightness, which describe the quality of the beam. The brightness describes the angular divergence of the beam, and the brillance its transverse dimension: both are expected to be as small as possible to be in the configuration in which the beam is the most point-like. (See \cref{sec:brightness_brillance} for the exact definitions).
 
 The main purpose of BESSY II is to provide a light radiation with stable brilliance and brightness over time. To achieve this, the light source itself must be very stable as well. Therefore a significant attention is drawn to the control of the storage ring.
 \begin{figure}
@@ -40,7 +42,7 @@ The main purpose of BESSY II is to provide a light radiation with stable brillia
     \caption[Bessy II facility]{\label{fig:bessy_acc_web} Bessy II facility (Source:~\cite{web:bessy_homepage})}
 \end{sidewaysfigure}
 
-In order to reach an energy of 1.7~GeV, the electrons undergo several chained accelerations (see \autoref{fig:bessy_acc_web}), namely:\todo{energies}
+In order to reach an energy of 1.7~GeV, the electrons undergo several chained accelerations (see \cref{fig:bessy_acc_web}), namely:\todo{energies}
 \begin{enumerate}
     \item an electron canon gives the electrons their first impulse
     \item a microtron accelerate them to an energy of XXX
@@ -52,10 +54,10 @@ When this energy is reached, the electrons are injected to the storage ring, whi
 
 Because of the synchrotron radiation, the bunches of particles lose regularly their energy; therefore a new injections from the accelerations chain take place every XXX\todo{time} to repopulate the storage ring and stabilize its energy.
 
-\section{Particle accelerator physics}
+\section{Basics of particle accelerator physics}
 In order to understand the trajectory perturbations, the basic physics of the particle accelerator must be addressed.
 
-To study the beam trajectory, one possibility is to use the linear beam optics (by analogy between beam and light focusing and steering). We solely describe here what is needed in the next sections. A full reference can be found in~\cite{book:wille}. This section is mostly inspired by the chapter 3 of this same reference.
+To study the beam trajectory, one possibility is to use the linear beam optics (by analogy between beam and light focusing and steering). Here will be solely described what is needed in the next sections. A full reference can be found in~\cite{book:wille}. This section is mostly inspired by the chapter 3 of this same reference.
 
 \subsection{Geometry -- Frame of reference -- Kinematics}
 The term \emph{orbit} refers to the ideal trajectory of the particles, which is fixed by the construction of the accelerator.
@@ -66,19 +68,19 @@ The frame of reference is $K=(\vec{e}_x,\vec{e}_y, \vec{e}_s)$, which origin fol
     \includegraphics[width=0.8\linewidth]{img/orbit_coordinates.pdf}
     \caption{\label{fig:coordinate system}Description of the co-moving coordinate system}
 \end{figure}
-Let $\varphi$ be the azimuth angle, oriented by $\vec{e}_y$. Then, since $ds = -R d\varphi$, we can write
+Let $\varphi$ be the azimuth angle, oriented by $\vec{e}_y$. Then, since $ds = -R d\varphi$, it can be writen
 \begin{equation}
 \frac{d \varphi}{d t}  = -\frac{1}{R} \frac{d s}{d t}.
 \end{equation}
 
-Using the derivation formula of polar coordinate we can write:
+Using the derivation formula of polar coordinate yields
 \begin{align}
 &\dot{\vec{e}}_x = \frac{d\vec{e}_x}{d t} = -\dot{\varphi} \vec{e}_s = \frac{1}{R} \dot{s}\vec{e}_s \nonumber \\
 &\dot{\vec{e}}_y = 0 \\
 &\dot{\vec{e}}_s = \frac{d\vec{e}_s}{d t} = \dot{\varphi} \vec{e}_x = -\frac{1}{R} \dot{s}\vec{e}_x \nonumber.
 \end{align}
 
-Let $\vec{r} = \vec{r}_0 + x\vec{e}_x + y \vec{e}_y$ be the position of a given particle in a Galilean reference frame (with $\vec{r}_0$ the position of the origin of the moving coordinates, see Fig.~\ref{fig:coordinate system}) and let's define $x'$ the spatial derivative with respect to $s$ so that:
+Let $\vec{r} = \vec{r}_0 + x\vec{e}_x + y \vec{e}_y$ be the position of a given particle in a Galilean reference frame (with $\vec{r}_0$ the position of the origin of the moving coordinates, see \cref{fig:coordinate system}) and let $x'$ be the spatial derivative with respect to $s$ so that:
 \begin{equation}
 \begin{aligned}
 &\dot{x}= \frac{dx}{ds}\frac{ds}{dt} = x'\dot{s}  \\
@@ -94,7 +96,8 @@ It follows, after some algebraic manipulations:
 & \hspace{14em} + \left[\frac{2}{R}x'\dot{s}^2 +\left(1+\frac{x}{R}\right)\ddot{s}\right]\vec{e}_s \nonumber
 \end{align}
 
-\subsection{Hypotheses} We assume the following hypotheses are valid.
+\subsection{Hypotheses}
+The following hypotheses are assumed to be valid.
 \begin{description}
     \item{H1 --} The particles move essentially parallel to $\vec{e}_s$: in the first order
     \begin{equation*}
@@ -102,17 +105,17 @@ It follows, after some algebraic manipulations:
     \end{equation*}
     \item{H2 --} The magnetic field has only transverse components:
         \begin{equation*}
-        \vec{B} = (B_x, B_y, 0)
+        \vec{B} = (B_x, B_y, 0).
         \end{equation*}
     \item{H3 --} The electric field is negligible with respect to the magnetic field.
-    \item{H4 --} The velocity of the particle varies very slowly in a magnet: $\ddot{s} \approx 0$
+    \item{H4 --} The velocity of the particle varies very slowly in a magnet: $\ddot{s} \approx 0$.
     \item{H5 --} The particles move at relativistic velocities, so the effect of the magnetic field is negligible on longitudinal components: we consider only transverse components.
     \item{H6 --} The momentum of the particles is $p = p_0+\Delta p$, with the condition $\Delta p \ll p_0$ (which is well satisfied in accelerators).
 \end{description}
 
 \subsection{Equation of motion}
 \label{sec:eq_motion}
-Newton's second law can be applied with the Lorentz force:
+Newton's second law can be applied with the Lorentz force
 \begin{equation}
 \dot{\vec{p}} = e(\vec{E}+\vec{v} \times \vec{B}) 
 \end{equation}
@@ -121,7 +124,7 @@ which according to (H3) becomes
 \ddot{\vec{r}} = \frac{e}{m}(\dot{\vec{r}} \times \vec{B})
 \end{equation}
 
-According to (H2), the magnetic field is only transversal, which yields:
+According to (H2), the magnetic field is only transversal, which yields
 \begin{equation}
 \label{eq:lorentz_transv}
 \ddot{\vec{r}} = \frac{e}{m}(\dot{\vec{r}} \times \vec{B})
@@ -133,7 +136,7 @@ According to (H2), the magnetic field is only transversal, which yields:
     \end{pmatrix}.
 \end{equation}
 
-Using (H5), we can focus on the x- and y-components, (H4) in Eq.~\eqref{eq:kinematics} allow us to remove every $\ddot{s}$ factors, so that Eq.~\eqref{eq:lorentz_transv} can be rewritten as
+Using (H5), the s-component does not need to be considered and using (H4) in \cref{eq:kinematics} allows to remove every $\ddot{s}$ factors, so that \cref{eq:lorentz_transv} can be rewritten as
 \begin{equation}
 \begin{aligned}
 x'' \dot{s}^2 - \left(1+\frac{x}{R}\right)\frac{\dot{s}^2}{R}
@@ -141,11 +144,11 @@ x'' \dot{s}^2 - \left(1+\frac{x}{R}\right)\frac{\dot{s}^2}{R}
 y'' \dot{s}^2 &=    \left(1+\frac{x}{R}\right)\dot{s}B_x.
 \end{aligned}
 \end{equation}
-Finally, because $p=mv$ and using Eq.~\eqref{eq:kinematics} combined with (H1), we can replace
+Finally, because $p=mv$ and using \cref{eq:kinematics} combined with (H1),
 \begin{equation}
 m = \frac{p}{v} = \frac{p}{\scal{\vec{v}}{\vec{e}_s}} = \frac{p}{\left(1+\frac{x}{R}\right)\dot{s}}
 \end{equation}
-to obtain:
+can be substituted to obtain
 \begin{equation}
 \begin{aligned}
 x''-\left(1+\frac{x}{R}\right)\frac{1}{R} &= -\frac{e}{p} B_y\left(1+\frac{x}{R}\right)^2 \\
@@ -153,8 +156,7 @@ y'' &= \frac{e}{p} B_x\left(1+\frac{x}{R}\right)^2
 \end{aligned}
 \end{equation}
 
-(H6) allow us to write, to first order:
-
+According to (H6), it can be written to first order
 \begin{equation*}
 \frac{1}{p} = \frac{1}{p_0} \left(1-\frac{\Delta p}{p_0}\right).
 \end{equation*}
@@ -171,7 +173,7 @@ y'' &= -ky\left(1-\frac{\Delta p}{p_0}\right)\left(1+\frac{x}{R}\right)^2
 \end{aligned}
 \end{equation}
 
-Finally by removing terms of second order ($\frac{x}{R} \ll 1$, $\frac{\Delta p}{p_0} \ll 1$) we obtain the linear equations of motion in a magnetic structure:
+Finally removing terms of second order ($\frac{x}{R} \ll 1$, $\frac{\Delta p}{p_0} \ll 1$) leads to the linear equations of motion in a magnetic structure:
 
 \begin{empheq}[box=\fbox]{equation}
 \label{eq:motion_particle}
@@ -185,14 +187,12 @@ y''(s) + k(s) y(s) &= 0
 \label{sec:beta_func}
 The beta function will provide a description of properties of a beam of many particles.
 
-We use \ref{eq:motion_particle} and only assume that $\frac{1}{R} = 0$ and $\frac{\Delta p}{p_0}=0$. The orbit curve is thus assumed almost flat and the momentum deviation negligible. We obtain Hill's differential equation: 
-
+The only further assumption is that $\frac{1}{R} = 0$ and $\frac{\Delta p}{p_0}=0$. The orbit curve is thus assumed almost flat and the momentum deviation negligible. \Cref{eq:motion_particle} turns in Hill's differential equation: 
 \begin{equation}
 \label{eq:hill_diff}
 	x''(s) - k(s) x(s) = 0
 \end{equation}
 which solution is the transverse oscillation of the orbit, or \emph{betatron oscillation}
-
 \begin{equation}
 \label{eq:hill_sol_cst}
 x(s) = A u(s) \cos \left(\Psi(s)+\phi \right).
@@ -200,18 +200,18 @@ x(s) = A u(s) \cos \left(\Psi(s)+\phi \right).
 
 The phase and the amplitude depend of the position $s$; $A$ and $\phi$ being integration constants.
 
-By inserting \eqref{eq:hill_sol_cst} in \eqref{eq:hill_diff} we obtain
+Inserting \cref{eq:hill_sol_cst} in \eqref{eq:hill_diff} it follows
 \begin{equation}
 A\left[u''- u \Psi'^2 - k u \right] \cos\left(\Psi+\phi\right) - A\left[2u'\Psi'+u\Psi''\right]\sin\left(\Psi+\phi\right) = 0.
 \end{equation}
 
-$A \ne 0$ and $\Psi(s)$ having different values for every $s$, the previous equation yields:
+$A \ne 0$ and $\Psi(s)$ having different values for every $s$, the previous equation provides two conditions
 \begin{align}
 u''- u \Psi'^2 - k u = 0 \label{eq:hill_cond1}\\
-2u'\Psi'+u\Psi'' = 0 \label{eq:hill_cond2}
+2u'\Psi'+u\Psi'' = 0 \label{eq:hill_cond2}.
 \end{align}
 
-Eq. \eqref{eq:hill_cond2} leads to:
+\Cref{eq:hill_cond2} leads to
 \begin{equation}
 2\frac{u'}{u} + \frac{\Psi''}{\Psi'} = 0
 \end{equation}
@@ -221,43 +221,38 @@ which can be integrated as
 \Psi(s) = \int \limits_{0}^{s} \frac{d\sigma}{u^2(\sigma)}.
 \end{equation}
 
-%By inserting this result into \eqref{eq:hill_cond1} we obtain
-%\begin{equation}
-%u'' - \frac{1}{u^3} - k u = 0
-%\end{equation}
-
 The \emph{beta function} $\beta(s)$ is defined as
 \begin{equation}
 \label{eq:beta_func}
-\beta(s) := u^2(s)
+\beta(s) := u^2(s).
 \end{equation}
 
-By substituting $A = \sqrt{\varepsilon}$, we obtain the final trajectory equation
+Substituting $A = \sqrt{\varepsilon}$ provides the final trajectory equation
 \begin{empheq}[box=\fbox]{equation}
 	\label{eq:orbit_equation}
 	x(s) = \sqrt{\varepsilon \beta(s)} \cos\left(\Psi(s)+\phi \right)
 \end{empheq}
 
-$\varepsilon$ is a constant termed \emph{emittance} and the envelop of the orbit at each position $s$ is $E(s) = \sqrt{\varepsilon \beta(s)}$, which defines the size of the beam.
+The constant $\varepsilon$ is termed \emph{emittance} and the envelop of the orbit at each position $s$ is $E(s) = \sqrt{\varepsilon \beta(s)}$, which defines the size of the beam.
 
-\remark The calculation done for the $x$ direction can be done similarly for the $y$ one.
-
-\remark Since the beta function controls the size of the beam, it must be finely controlled. A matrix calculation method is presented in \cite{book:wille} in order to calculate it step by step around the orbit. Knowing this, $\Psi$ can be calculated by rewriting Eq.~\eqref{eq:phase_psi} as 
+Since the beta function controls the size of the beam, it must be finely controlled. A matrix calculation method is presented in \cite{book:wille} in order to calculate it step by step around the orbit. Knowing this, $\Psi$ can be calculated by rewriting \cref{eq:phase_psi} as 
 \begin{equation}
 \Psi(s)=\int \limits_{0}^{s} \frac{d\sigma}{\beta(\sigma)},
 \end{equation}
 and the particle trajectories can be calculated for a given emittance.
 
+\remark The calculation done for the $x$ direction can be done similarly for the $y$ one, which defines a $\beta_x(s)$, $\beta_y(s)$, $\varepsilon_x$, $\varepsilon_y$, $\Psi_x(s)$ and $\Psi_y(s)$
+
 \subsection{Brightness and brilliance}
 \label{sec:brightness_brillance}
 In the following section, the $\theta$ subscript is either $x$ or $y$.
 
-We first define the \emph{flux} F of photons, normalized to a beam current of 1~A:
-\begin{equation}
-F = \frac{\text{photons}}{\text{s 0.1\% BW A}}
-\end{equation}
+The quality of the beam is described by the \emph{brightness} and the \emph{brilliance}.
 
-To describe the quality of the beam, which the \emph{brightness} and the \emph{brilliance} are defined.
+Let F be the \emph{flux} of photons, normalized to a beam current of 1~A
+\begin{equation}
+F = \frac{\text{photons}}{\text{s 0.1\% BW A}},
+\end{equation}
 
 The brightness describes the angular divergence of the beam (given by $\sigma_\theta'=\sqrt{\frac{\varepsilon_\theta}{\beta_\theta}}$). It is defined as:
 \begin{equation}
@@ -267,22 +262,22 @@ while the brilliance relates to the transverse dimensions ($\sigma_\theta=\sqrt{
 \begin{equation}
 B = \frac{F}{4 \pi^2 \sigma_x \sigma_y \sigma'_x \sigma'_y} = \frac{F}{4 \pi^2 \varepsilon_x \varepsilon_y} = \frac{\text{photons}}{\text{s 0.1\% mm$^2$ BW mrad$^2$ A}}
 \end{equation}
+
 These definitions vary in literature. These are taken from the book of K.~Wille~\cite{book:wille}, and apply to Gaussian-shaped electron beams. The invariant idea is that both values are determinated by the beam emittance $\sigma$: the design of the accelerators and the correction are aimed at obtaining the smallest emittance $\varepsilon_\theta$ as possible.
 
 \subsection{Tune}
 In circular accelerator, the particle undergo periodically the same magnetic fields and therefore the same force. This can lead the amplitude of the beam transverse oscillation to increase, risking to lose the particles in the vacuum chamber walls. This phenomenon is called optical resonance and must be avoided.
 
-As exposed in Section~\ref{sec:eq_motion} and \ref{sec:beta_func}, if $\frac{\Delta p}{p_0} = 0$ and $K(s)=\frac{1}{R(s)}-k(s)$, the trajectory is given by
+As exposed in \cref{sec:eq_motion,sec:beta_func}, if $\frac{\Delta p}{p_0} = 0$ and $K(s)=\frac{1}{R(s)}-k(s)$, the trajectory is given by
 \begin{equation}
-x''(s)+K(s) x(s) = 0
+x''(s)+K(s) x(s) = 0.
 \end{equation}
 
 Since $K(s)$ is periodic with the circumference $L$ of the ring, then the trajectory is again (according to Floquet's theorem)
 \begin{equation}
 x(s) = \sqrt{\varepsilon \beta(s)} \cos\left(\Psi(s)+\Phi\right)
 \end{equation}
-with $\beta(s)$ periodic of period $L$ as well. The resonant behavior depending on the betatron phase $\Delta \Psi = \Psi(s+L)-\Psi(s)$, we define the tune of the accelerator as
-
+with $\beta(s)$ periodic of period $L$ as well. The resonant behavior depending on the betatron phase $\Delta \Psi = \Psi(s+L)-\Psi(s)$, the tune $Q$ of the accelerator is defined as
 \begin{equation}
 \label{eq:tune}
 Q = \frac{\Delta \Psi}{2 \pi} = \frac{1}{2 \pi} \oint\frac{ds}{\beta(s)}.
@@ -291,12 +286,11 @@ Q = \frac{\Delta \Psi}{2 \pi} = \frac{1}{2 \pi} \oint\frac{ds}{\beta(s)}.
 The tune is a constant for the accelerators: it describes the number of betatron oscillation undergone by a particle per revolution.
 
 It can be shown that tune values that satisfy 
-
 \begin{equation}
 \label{eq:coupled_resonance}
 m Q_x + n Q_y = p \qquad (m, n, p) \in \mathbb{Z}
 \end{equation}
-produce coupled resonance of order $|m|+|n|$. A pair of value $(Q_x,Q_y)$ is used as working point so that it either does not satisfy \eqref{eq:coupled_resonance} or with a high order (above the 5th order for instance).
+produce coupled resonance of order $|m|+|n|$. A pair of value $(Q_x,Q_y)$ is used as working point so that it either does not satisfy \cref{eq:coupled_resonance} or with a high order (above the 5th order for instance).
 
 
 \section{Orbit and distortions}
