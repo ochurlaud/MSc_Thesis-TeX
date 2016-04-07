@@ -2,7 +2,7 @@
 % !TeX spellcheck = en_US
 % !TeX root = main.tex
 
-\documentclass[12pt,a4paper]{memoir}
+\documentclass[11pt,oneside,a4paper]{memoir}
 \usepackage[utf8]{inputenc}
 \usepackage{amsmath}
 \usepackage{amsfonts}
@@ -11,7 +11,7 @@
 \usepackage{rotating}
 \usepackage{epstopdf}
 \usepackage{hyperref}
-%\usepackage{indentfirst}
+\usepackage[noabbrev]{cleveref}
 \usepackage[english]{babel}
 \usepackage{empheq}
 
@@ -38,6 +38,10 @@
 \newcommand{\remark}{\paragraph{Remark ---}}
 \setsecnumdepth{subsection}
 %\maxtocdepth{subsection}
+\renewcommand{\baselinestretch}{1.5} 
+\setlrmarginsandblock{3cm}{2.5cm}{*}
+\setulmarginsandblock{3cm}{2.5cm}{*}
+\checkandfixthelayout
 
 \def\thetitle{Localization and correction of orbit perturbations in BESSY II storage ring}
 \def\thesubject{Master Thesis}
@@ -51,8 +55,8 @@
     pdfauthor={\theauthor},
     pdfsubject={\thesubject},
     colorlinks=true,       % false: boxed links; true: colored links
-    linkcolor=black,       % color of internal links (change box color with linkbordercolor)
-    citecolor=green,
+    linkcolor=teal,       % color of internal links (change box color with linkbordercolor)
+    citecolor=olive,
     filecolor=red,
     urlcolor=blue
 }
@@ -71,21 +75,49 @@
 
 \cleardoublepage
 
-\tableofcontents
-\listoffigures
+\tableofcontents*
+\listoffigures*
 
 \mainmatter
 \input{0_background}
 \input{1_correction}
 \input{2_localization}
 \input{3_harmonic_perturb}
-
-KLT~\cite{book:wang_2012}
+\renewcommand\cftappendixname{\appendixname~}
 %%
 %  Bibliography
 %%
 \bibliographystyle{IEEEtran}
 \bibliography{biblio.bib}
 
+\appendix
+\appendixpage
+\chapter{Principal components analysis -- Karhunen-Loève transform (KLT)}
+\label{apx:KLT}
+
+Let $\mat{X}$ be a signal with n dimensions.
+
+\begin{equation}
+\mat{X} = \left[
+\begin{array}{@{}c|c|c|c@{}}
+&&&\\ \vec{X}_1 & \vec{X}_2 & \dots & \vec{X}_n \\ &&&
+\end{array}
+\right]
+\end{equation} 
+
+The covariance matrix is extracted
+\begin{equation}
+\mat{A} = \text{covar}(X) 
+\end{equation}
+and diagonalized so that the eigenvalues are sorted in a decreasing order (the first one being the most significant). The covariance being symmetric, it is always diagonalizable in $\mathbb{R}$.
+\begin{equation}
+\mat{D} = \mat{P}^{t} \mat{A} \, \mat{P} 
+\end{equation}
+
+The principal components are 
+\begin{equation}
+\hat{\mat{X}} = \mat{P}^{t} \mat{X}
+\end{equation}
+and in the first column of the matrix is the most significant one.
 \end{document}
 

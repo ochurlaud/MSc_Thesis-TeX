@@ -6,9 +6,9 @@
 \label{sec:correction}
 \section{Some documented methods}
 
-Several global corrections methods are well documented in the literature. The most common ones are the best corrector method and the response matrix method (see Sections~\ref{sec:most_effective_corr}) and \ref{sec:response_matrix}). 
+Several global corrections methods are well documented in the literature. The most common ones are the best corrector method and the response matrix method (see \cref{sec:most_effective_corr,sec:response_matrix}). 
 
-Local orbit bumps (presented in Section~\ref{sec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example).
+Local orbit bumps (presented in \cref{sec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example).
 
 \subsection{Local orbit bumps}
 \label{sec:orbit_bump}
@@ -20,7 +20,7 @@ This method is based on the fact that orbit shifts are often caused by strong lo
 
 \subsubsection{Principle}
 
-Given a distorted orbit, the optimal gain for each corrector is calculated by a mean square error algorithm (see Eq.~\eqref{eq:gain_bestcorr}, \cite{book:wille}). The corrector which provides the best correction is selected: it is the most effective corrector.
+Given a distorted orbit, the optimal gain for each corrector is calculated by a mean square error algorithm (see \cref{eq:gain_bestcorr} and \cite{book:wille}). The corrector which provides the best correction is selected: it is the most effective corrector.
 
 Let's assume that the $i$th corrector, at position $s_i$, has the optical parameters $\beta_i$, $\alpha_i$ and $\Psi_i$, and that $m$ monitors are set around the orbit with parameters $\beta_j$, $\alpha_j$ and $\Psi_j$, and read a displacement $u_j$ from the reference orbit ($1 \leq j \leq m$).
 
@@ -52,14 +52,10 @@ It follows that
 The $i$th corrector is attributed the gain $-\kappa_i$ to compensate the field.
 
 \subsubsection{Iterative version}
-When the most effective corrector is found, the process is reiterated on the corrected orbit with the remaining correctors. 
-
-By doing this until all corrector are used (or that adding a correction does not improve the orbit) a comprehensive correction is reached.
+When the most effective corrector is found, the process is reiterated on the corrected orbit with the remaining correctors. By doing this until all corrector are used (or that adding a correction does not improve the orbit) a comprehensive correction is reached.
 
 \subsubsection{Practical issue}
-The problem of this method is that each corrector must be tested once, and this for each iteration: the initialization of the correction is long and is then fixed.
-
-Moreover, the correction is less efficient than the other ones presented here~\cite{book:wille}.
+The problem of this method is that each corrector must be tested once, and this for each iteration: the initialization of the correction is long and is then fixed. Moreover, the correction is less efficient than the other ones presented here~\cite{book:wille}.
 
 \subsection{Response matrix}
 \label{sec:response_matrix}
@@ -70,16 +66,16 @@ The response matrix $\mat{S}$ is defined by the equation $\vec{X} = \mat{S}\, \v
 
 Every coefficient $\mat{S}_{ij}$ is the orbit change at the position $s_i$ (of the $i$th monitor), for a kick of unity 1 at the position $s_j$ (of the $j$th corrector).
 
-This matrix can be theoretically calculated by using the accelerator model and physics: $\mat{S}_{ij} = h_{ij}$ with the formula in \eqref{eq:hij}. However, the actual storage ring is never exactly the same as the designed one, because of several inaccuracies in its building. A more common way of constructing the response matrix is empirical: each measure cycle, a corrector is given a unitary value and the monitor are read, providing a column of the response matrix.
+This matrix can be theoretically calculated by using the accelerator model and physics: $\mat{S}_{ij} = h_{ij}$ with $h_{ij}$ as defined in \cref{eq:hij}. However, the actual storage ring is never exactly the same as the designed one, because of several inaccuracies in its building. A more common way of constructing the response matrix is empirical: each measure cycle, a corrector is given a unitary value and the monitor are read, providing a column of the response matrix.
 
-To do the correction, the inverse problem must be solved. We know the orbit change that we need to obtain a cleaner orbit, using the inverse of the response matrix will provide the correction to apply. Since it's very common to have more monitors than correctors, the matrix is not square. A \emph{singular value decomposition} (SVD) is used on the matrix to provide a pseudo-inversion.
+To do the correction, the inverse problem must be solved. The orbit change needed to obtain a cleaner orbit is known; using the inverse of the response matrix will provide the correction to apply. Since it's very common to have more monitors than correctors, the matrix is not square. A \emph{singular value decomposition} (SVD) is used on the matrix to provide a pseudo-inversion.
 
 Using the SVD also allows to use only the most significant singular values in the correction.\todo{why do we want this?}
 
 \section{State of the art at BESSY II}
 
 \subsection{The correction}
-BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID correction (proportional response with gain P, integral response with gain I and derivative response with gain D) and the response matrix inversion. The full process goes as presented in Fig.~\ref{fig:block_correction}.
+BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID correction\todo{why do we need a PID?} (proportional response with gain P, integral response with gain I and derivative response with gain D) and the response matrix inversion. The full process goes as presented in \cref{fig:block_correction}.
 
 \begin{figure}[!h]
     \centering
@@ -87,28 +83,37 @@ BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID cor
     \caption{\label{fig:block_correction}The correction process}
 \end{figure}
 
-\todo[inline]{Should I explain this here with words as well? \newline
-    is it $\Delta \Theta$ or $\Theta$ (The real corrector value or the change to add)?\newline
-    Why do we need this PID \textbf{\textit{exactly}}?}
+The control value at round $n$ is the differential orbit 
+\begin{equation}
+ \Delta \vec{X}(n) := \vec{X}(n)-\vec{X}_\text{ref}
+\end{equation}
+which is expected to be 0. The correction provided by the weighted response matrix is then processed
+\begin{equation}
+\Delta \vec{\Theta}_t(n) :=  \left[ \mat{S}^{-1} \cdot \Delta \vec{X}(n) \right] \odot \vec{W}
+\end{equation}
+(with $\odot$ the point-wise multiplication and $\vec{W}$ the vector of weights) and modulated by the PID correction. The ideal PID has the form
+\begin{equation}
+H_{PID}(s) = K_p + \frac{K_i}{s} + K_d \cdot s 
+\end{equation}
+or, with the z transform (calculated with Euler's method),
+\begin{equation}
+H_{PID}(z) = K_p + \frac{K_i}{1-z} + K_d \cdot (1-z)
+\end{equation}
+which yields
+\begin{equation}
+\Delta \vec{\Theta}(n) =  K_p \cdot \Delta \vec{\Theta}_t(n) + K_i \cdot \sum\limits_{k=0}^{n-1}\Delta \vec{\Theta}_t(k) + K_d \cdot \left[\Delta \vec{\Theta}_t(n) - \Delta \vec{\Theta}_t(n-1)\right].
+\end{equation}
 
-\begin{align}
-   & \Delta \vec{X} := \vec{X}-\vec{X}_\text{ref} \nonumber \\
-   & \Delta \vec{\Theta}_t :=  \mat{S}^{-1} \Delta \vec{X} \odot \vec{W} \nonumber\\
-   & G(\omega) = P + \frac{I}{\omega} + D \omega \qquad \text{(the PID)}\nonumber \\
-   & \Delta \vec{\Theta} = \left[1-G(\omega)\right] (\Delta \vec{\Theta}_t)
-\end{align}
-with $\odot$ the point-wise multiplication and, $\vec{W}$ the vector of weights.
+The real correction is eventually the accumulation of all corrections
+\begin{equation}
+\vec{\Theta}(n) = \vec{\Theta}(n-1) - \Delta \vec{\Theta}(n).
+\end{equation}
 
 \remark The PID gains is not exactly as presented here: to prevent a too violent correction that might destabilize the current in the ring, the proportional gain is increased every correction round by 1\% until it reaches its nominal value.
 
-\remark The PID is implemented as (for the $n$th correction round): 
-\begin{equation*}
-    P \times \Delta \vec{\Theta}_t(n) + I \times \sum\limits_{k=0}^{n-1}\Delta \vec{\Theta}_t(k) + D \times \left[\Delta \vec{\Theta}_t(n) - \Delta \vec{\Theta}_t(n-1)\right]
-\end{equation*}
-
 \subsection{Technical overview}
 
-The correction is naturally automatized. Because the read/write actions should be really fast, a specific infrastructure was designed. This is represented on Fig.~\ref{fig:cbox_mbox}. 
+The correction is naturally automatized. Because the read/write actions should be really fast, a specific infrastructure was designed. This is represented on \cref{fig:cbox_mbox}. 
 
 \begin{figure}[!h]
     \centering

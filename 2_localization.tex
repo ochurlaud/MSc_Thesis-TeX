@@ -2,12 +2,12 @@
 % !TeX spellcheck = en_US
 % !TeX root = main.tex
 
-\chapter{Localization of orbit distortion}
+\chapter{Localization of orbit perturbations}
 \label{sec:localisation}
 
 Correcting the orbit is costly and has never a perfect result. Instead of dealing with the effects, we can deal with the sources of the distortions. If none is really obvious (\textit{eg.} a non-isolated transformer, the 50~Hz perturbation of the main power), the orbit can give us some hints.
 
-We call kick the place where the orbit brutally changes its angle as shown in Fig.~\ref{fig:kick}.
+We call kick the place where the orbit brutally changes its angle as shown in \cref{fig:kick}.
 
 \begin{figure}[!h]
 	\centering
@@ -15,23 +15,27 @@ We call kick the place where the orbit brutally changes its angle as shown in Fi
 	\caption{\label{fig:kick}Example of kick in the orbit}
 \end{figure}
 
-\section{Theory}
-\label{ssec:loc_theory}
+\section{Static perturbation}
+\label{sec:loc_static}
 
 \subsection{Theoretical setting of the problem}
 
-Everything is described here with the phase variable $\phi = \int\limits_{0}^s \frac{d\sigma}{\beta(\sigma)}$. The spatial variable is only used to have a connection between the result and the actual ring. The explanation will be led with the $x$ variable, but is also valid with the $y$ one.
+Everything is described here with the phase variable 
+\begin{equation}
+\Psi = \int\limits_{0}^s \frac{d\sigma}{\beta(\sigma)}.
+\end{equation}
+The spatial variable is only used to have a connection between the result and the actual ring. The explanation will be led with the $x$ variable, but is also valid with the $y$ one.
 
-Let one kick be at $\phi = \hat{\phi}$. The orbit is modified and oscillates with a constant period of $2 \pi$. Because there is {\em only one} kick and according to the closed orbit condition, the oscillation after the kick will be stable for one revolution. Furthermore, the orbit must be continuous on all points, thus at the kick position too.
+Let one kick be at $\Psi = \hat{\Psi}$. The orbit is modified and oscillates with a constant period of $2 \pi$. Because there is {\em only one} kick and according to the closed orbit condition, the oscillation after the kick will be stable for one revolution. Furthermore, the orbit must be continuous on all points, thus at the kick position too.
 
-Let's consider two revolutions, in order to be sure to find one full revolution without kick. Let $\phi_\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\phi_0$ where the kick happens is the one so that 
+Let's consider two revolutions, in order to be sure to find one full revolution without kick. Let $\Psi_\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\Psi_0$ where the kick happens is the one so that 
 \begin{equation}
 \exists (b, c) \in \mathbb{R}^2:
-\forall \phi \in [\phi_0, \phi_0 + 2 \pi Q], \quad
-x(\phi) = b \sin(\phi + c)
+\forall \Psi \in [\Psi_0, \Psi_0 + 2 \pi Q], \quad
+x(\Psi) = b \sin(\Psi + c)
 \end{equation}
 
-We have a problem with 3 unknowns to determine: $\phi_0, b, c$. 
+We have a problem with 3 unknowns to determine: $\Psi_0, b, c$. 
 
 \subsection{Practical setting}
 
@@ -39,49 +43,49 @@ We have $m$ BPMs only, distributed around the orbit.
 Therefore we define:
 \begin{align}
 \begin{cases}
-\vec{\phi} = [\phi_0, \phi_1, ..., \phi_{m-1}] \\
+\vec{\Psi} = [\Psi_0, \Psi_1, ..., \Psi_{m-1}] \\
 \vec{x} = [x_0, x_1, ..., x_{m-1}]
 \end{cases} \quad \mathrm{and} \quad
 \begin{cases}
-\vec{\phi}_\mathrm{ext} = [\vec{\phi}, \vec{\phi}+2\pi Q ]\\
+\vec{\Psi}_\mathrm{ext} = [\vec{\Psi}, \vec{\Psi}+2\pi Q ]\\
 \vec{x}_\mathrm{ext} = [\vec{x}, \vec{x}]
 \end{cases}
 \end{align}
 
 \subsection{Solving the problem}
 
-To find the kick in the orbit it suffices to find a sine that fits in $\vec{x}_\mathrm{ext}$.
+The problem is solved in two steps: first the sine that fits at best the orbit is determined, and second the position of the kick verifying the closed orbit condition (or continuity condition) is found.
 
-An algorithm is designed to find a sine over a revolution, beginning at each BPM and keep the one that fit at best:
+An algorithm is designed to find a sine over a revolution, beginning at each BPM and keep the one that fits at best:
 \begin{align}
 \forall k \in &[0, m-1], \nonumber \\
 &\begin{cases}
-\vec{\phi}^k = [\vec{\phi}_\mathrm{ext}(k), \vec{\phi}_\mathrm{ext}(k+1), \cdots,  \vec{\phi}_\mathrm{ext}(k+m-1)]\\
+\vec{\Psi}^k = [\vec{\Psi}_\mathrm{ext}(k), \vec{\Psi}_\mathrm{ext}(k+1), \cdots,  \vec{\Psi}_\mathrm{ext}(k+m-1)]\\
 \vec{x}^k = [\vec{x}_\mathrm{ext}(k), \vec{x}_\mathrm{ext}(k+1), \cdots,  \vec{x}_\mathrm{ext}(k+m-1)]\\
-\tilde{\vec{x}} = \mathtt{fit\_sine}(\vec{x}^k, \vec{\phi}^k)
+\tilde{\vec{x}} = \mathtt{fit\_sine}(\vec{x}^k, \vec{\Psi}^k)
 \end{cases}
 \end{align}
 
 It is then defined
-
 \begin{equation}
 k_0 = \underset{k \in [0, m-1]}{\textrm{argmin}}\{||\tilde{\vec{x}}-\vec{x}^k||_2\}
 \end{equation}
 
-The kick is between $\phi_{k_0-1}$ and $\phi_{k_0+1}$, and we assume that the closest sine is $\tilde{x}(\phi) = b \sin(\phi + c) $.
+If there where no noise in the signal, and if the precision over the phase $\Psi$ was infinite, then the kick would be exactly at $\Psi_{k_0}$. However in this case, it can only be said that the kick is around $\Psi_{k_0}$, and the closest sine is $\tilde{x}(\Psi) = b \sin(\Psi + c)$.
 
-To find the exact position of the kick, we use the property of closed orbit: the orbit must be continuous also at the kick phase, which means that $\hat{\phi}$ is the solution of
-\begin{equation}
-b \sin(\phi + c) = b\sin(\phi+c-2 \pi Q), \qquad \mathrm{with}~ \phi \in [\phi_{k_0-1}, \phi_{k_0+1}]
-\end{equation}
+To find the exact position of the kick, the property of closed orbit is used: the orbit must be continuous also at the kick phase, which means that $\hat{\Psi}$ is the solution of
+\begin{align}
+b \sin(\Psi + c) &= b\sin(\Psi+c+2 \pi Q),\\
+& \mathrm{with}~ \Psi \in [\Psi_{k_0}-A, \Psi_{k_0}+A] , A>0 \nonumber
+\end{align}
 or, with the numerical approach, 
 \begin{equation}
-\hat{\phi} =  \underset{\phi \in [\phi_{k_0-1}, \phi_{k_0+1}]}{\textrm{argmin}}\{|b \sin(\phi + c) - b\sin(\phi+c-2 \pi Q)|\}
+\hat{\Psi} =  \underset{\Psi \in [\Psi_{k_0-A}, \Psi_{k_0+A}]}{\textrm{argmin}}\{|b \sin(\Psi + c) - b\sin(\Psi+c-2 \pi Q)|\}.
 \end{equation}
 
-\remark For this last step, we use a \textit{linspace} between $\phi_{k_0-1}$ and $\phi_{k_0+1}$ with more than 1000 points.
+$A$ was defined with the \textit{try-and-see} method and in the specific case of BESSY~II, $A=\frac{\pi}{4}$ suits.
 
-\remark One should be careful if $k_0 = 0$ (resp. $k_0 = m-1$) and set $\phi_{k_0-1} =\phi_{m-1}$ (resp. $\phi_{k_0+1} = \phi_{0}$). 
+\remark For this last step, we use a \textit{linspace} between $\Psi_{k_0}-A$ and $\Psi_{k_0}+A$ with more than 1000 points.
 
 \subsection{Finding the good sine}
 Several methods are possible to find the best matching sine, for example by using:
@@ -93,14 +97,14 @@ Several methods are possible to find the best matching sine, for example by usin
 \paragraph{Pseudo-inversion}
 The problem can be set as a linear equation problem as follow.
 \begin{align}
-&\forall k \in [0,m-1], \tilde{x}(\phi_k) = a_1 \cos(\phi_k) + a_2 \sin(\phi_k) + a \nonumber \\
+&\forall k \in [0,m-1], \tilde{x}(\Psi_k) = a_1 \sin(\Psi_k) + a_2 \cos(\Psi_k) + a \nonumber \\
 %
 \implies &
 \begin{pmatrix}
-1 & \cos(\phi_0) & \sin(\phi_0) \\
-1 & \cos(\phi_1) & \sin(\phi_1) \\
+1 & \sin(\Psi_0) & \cos(\Psi_0) \\
+1 & \sin(\Psi_1) & \cos(\Psi_1) \\
 \vdots & \vdots & \vdots \\
-1 & \cos(\phi_{m-1}) & \sin(\phi_{m-1}) \\
+1 & \sin(\Psi_{m-1}) & \cos(\Psi_{m-1}) \\
 \end{pmatrix}
 \begin{pmatrix}
 a \\ a_1 \\ a_2
@@ -118,30 +122,37 @@ a \\ a_1 \\ a_2
 = 
 \mathrm{pseudo\_inv}
 \begin{pmatrix}
-1 & \cos(\phi_0) & \sin(\phi_0) \\
-1 & \cos(\phi_1) & \sin(\phi_1) \\
+1 & \sin(\Psi_0) & \cos(\Psi_0) \\
+1 & \sin(\Psi_1) & \cos(\Psi_1) \\
 \vdots & \vdots & \vdots \\
-1 & \cos(\phi_{m-1}) & \sin(\phi_{m-1}) \\
+1 & \sin(\Psi_{m-1}) & \cos(\Psi_{m-1}) \\
 \end{pmatrix}
 \begin{pmatrix}
 x_0 \\ x_2 \\ \vdots \\ x_{m-1}
 \end{pmatrix}
 \end{align}
 
-The pseudo inverse is calculated in \texttt{Matlab} with \verb$a = M\x$ and in \texttt{python} with \verb$a = numpy.linalg.lstsq(M, x)$ (least-squares solution).
+The pseudo inverse is calculated in \texttt{Matlab} with 
+\begin{verbatim}
+        a = M\x
+\end{verbatim}
+and in \texttt{python} with the least-squares method
+\begin{verbatim}
+        a = numpy.linalg.lstsq(M, x).
+\end{verbatim}
 
 \paragraph{Scalar product with a sine (resp. cosine)}
 Since the orbit is expected to be written as
 \begin{equation*}
-x(\phi) = a_1 \cos(\phi) + a_2 \sin(\phi) + a
+x(\Psi) = a+ a_1 \sin(\Psi) + a_2 \cos(\Psi)
 \end{equation*}
-we can also describe it as
+it can also be described as
 \begin{equation}
-x(\phi) = \scal{x}{\cos} \cos(\phi) + \scal{x}{\sin} \sin(\phi) + \scal{x}{1}
+x(\Psi) = \scal{x}{1} + \scal{x}{\sin} \sin(\Psi) + \scal{x}{\cos} \cos(\Psi)
 \end{equation}
 with $\scal{f}{g}$ being the scalar product for real functions: $\int_T f(t)g(u)dt$.
 
-In our numerical case, we approximate this scalar product by its vectorial counterpart by:
+In the numerical case, the scalar product is approximated by its vectorial counterpart by
 
 \begin{align*}
 \scal{\vec{f}}{\vec{g}}: \quad
@@ -150,18 +161,15 @@ In our numerical case, we approximate this scalar product by its vectorial count
 \end{align*}
 
 \paragraph{Coefficient format}
-By defining $b = \sqrt{a_1^2+a_2^2}$ and $c = \mathrm{atan2}(a_1, a_2)$  we can write
-
+By defining $b = \sqrt{a_1^2+a_2^2}$ and $c = \mathrm{atan2}(a_2, a_1)$ the previous formulas can be written
 \begin{equation*}
-\tilde{x}(\phi) = a + a_1 \cos(\phi) + a_2 \sin(\phi) = a + b \sin(\phi + c).
+\tilde{x}(\Psi) = a + a_1 \sin(\Psi) + a_2 \cos(\Psi) = a + b \sin(\Psi + c).
 \end{equation*} 
 
-\section{Applications}
-\todo[inline]{NOT UPDATED: DO NOT CORRECT THIS}
-\subsection{Getting the position of a perturbation at a given frequency}
+\section{Harmonic perturbations}
 In this section, we deal with a perturbation at a given frequency $f$. The training data is the time signal of all BPMs.
 
-As the perturbation has a known frequency, we extract its complex amplitude from the signal of each BPM with a Fourier transform:
+As the perturbation has a known frequency, its complex amplitude can be extracted from the signal of each BPM with a Fourier transform:
 
 \begin{equation}
 \forall i \in [1, \mathrm{BPM\_nb}], \qquad 
@@ -171,19 +179,20 @@ c_i = \vec{X}_i(f)
 \end{cases}
 \end{equation}
 
-\paragraph{Case of a unique perturbation source}
+\subsection{Case of a unique perturbation source}
 
-If the perturbation is unique, then all complex amplitude exactly describe the same sine of frequency $f$ and phase $\alpha_0$. It allows us to describe the complex vector $\vec{c}$ with $\vec{\hat{c}}$, which is real.
+If the perturbation is unique, then all complex amplitude exactly describe the same sine of frequency $f$ and phase $\alpha_0$. The complex vector $\vec{c}$ can thus be fully described with $\vec{\hat{c}}$, which is real.
 
 \begin{align}
-&\alpha_0 = \underset{\alpha \in [0, 2\pi]}{\textrm{argmin}}\{\mathcal{R}e (\vec{c} \cdot e^{-j\alpha}) \} \\
+&\alpha_0 = \underset{\alpha \in [0, 2\pi]}{\textrm{argmin}}\{\mathcal{R}e (\vec{c} \cdot e^{-j\alpha}) \} \label{eq:harm_perturb_opt}\\
 &\vec{\hat{c}} = \mathcal{I}m (\vec{c} \cdot e^{-j\alpha_0})
 \end{align}
 
-The new signal $\vec{\hat{c}}$ can be used as an orbit signal: we have one orbit amplitude for each BPM: the kick can be extracted from it with the previous method described in Section \ref{ssec:loc_theory}.
+The new signal $\vec{\hat{c}}$ can be used as an orbit signal: each BPM have one orbit amplitude. The kick can be extracted from it with the previous method described in \cref{sec:loc_static}.
 
+\remark To achieve the phase optimization given in \cref{eq:harm_perturb_opt}, the Karhunen–Loève transform (or principal component analysis) can be used~\cite{book:wang_2012}. A description of the algorithm is given in \cref{apx:KLT}. If the results are exactly the same, this allows the problem to be solved within a broader theoretical setting. The goal is not anymore to see the cosine part vanish but to deal with the perturbation space in which the distortion is the largest. In theory, dealing with each principal component would allow to find the position of each perturbation source.
 
-\paragraph{Case of several perturbation sources}
+\subsection{Case of several perturbation sources}
 If there are several perturbation sources, a $\alpha_0$ that let the cosine part vanish cannot be found. 
 
 
