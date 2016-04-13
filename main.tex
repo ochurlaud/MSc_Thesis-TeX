@@ -12,8 +12,11 @@
 \usepackage{epstopdf}
 \usepackage{hyperref}
 \usepackage[noabbrev]{cleveref}
-\usepackage[english]{babel}
+\usepackage[shorthands=off,english]{babel}
 \usepackage{empheq}
+\usepackage{tikz}
+
+\usetikzlibrary{shapes,arrows}\usetikzlibrary{shapes,arrows}
 
 \usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
 
@@ -62,11 +65,11 @@
 }
 
 \begin{document}
+
 \frontmatter
 \clearpage
 \thispagestyle{empty}
 \maketitle
-\
 \vfill
 \begin{abstract}
        ......
@@ -79,6 +82,7 @@
 \listoffigures*
 
 \mainmatter
+
 \input{0_background}
 \input{1_correction}
 \input{2_localization}
@@ -88,7 +92,7 @@
 %  Bibliography
 %%
 \bibliographystyle{IEEEtran}
-\bibliography{biblio.bib}
+\bibliography{biblio}
 
 \appendix
 \appendixpage
