@@ -1,11 +1,18 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
 % !TeX root = main.tex
-
+\begin{figure}
+    \centering
+\begin{tikzpicture}[scale=5]
+\draw [->] (0,0) -- (2,0);
+\draw [<-] (0, -0.5) -- (2,-0.5);
+\draw [|->] (0,-1) -- (2,-1);
+\end{tikzpicture}
+\caption{rere}
+\end{figure}
 \chapter{Orbit correction}
 \label{sec:correction}
 \section{Some documented methods}
-
 Several global corrections methods are well documented in the literature. The most common ones are the best corrector method and the response matrix method (see \cref{sec:most_effective_corr,sec:response_matrix}). 
 
 Local orbit bumps (presented in \cref{sec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example).
@@ -77,9 +84,48 @@ Using the SVD also allows to use only the most significant singular values in th
 \subsection{The correction}
 BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID correction\todo{why do we need a PID?} (proportional response with gain P, integral response with gain I and derivative response with gain D) and the response matrix inversion. The full process goes as presented in \cref{fig:block_correction}.
 
-\begin{figure}[!h]
+
+\tikzset{
+    block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=3em},
+    gain/.style = {draw, fill=white, isosceles triangle, minimum height=3em, minimum width=2em},
+    operator/.style= {draw, fill=white, circle, node distance=2cm},
+    input/.style = {coordinate},
+    output/.style= {coordinate},
+    pinstyle/.style = {pin edge={to-,thin,black}},
+}
+\begin{figure}
     \centering
-    \includegraphics[width=.85\linewidth]{img/correction}
+    \begin{tikzpicture}[auto, node distance=2cm,>=latex']
+        % We start by placing the blocks
+        \node [input] (xref) {};
+        \node [input] (input) {};
+        \node [operator, below of=xref] (sum) {$+$};
+        \node [operator, right of=sum] (prod) {$\times$};
+        \node [input, above of=prod] (invS) {};
+        \node [gain, right of=prod] (gain) {$\vec{W}$};
+        \node [block, right of=gain] (PID) {PID};
+        \node [input, above of=PID] (pidcoef) {};
+        \node [operator, right of=PID] (sum2) {$+$};
+        \coordinate [right of=sum2, right=0.8cm] (straight) {};
+        \node [block, above of=straight, left=0.8cm] (delay) {T};
+        \node [draw, ellipse, minimum height=1.5cm, minimum width=6cm, below of=straight] (ring) {Storage Ring};
+        \coordinate [below of = sum, left=1cm] (leftback) {};
+        
+        % Once the nodes are placed, connecting them is easy. 
+        \draw [->] (xref) -- node [pos=0.85, left]{$-$} node {$\vec{X}_\text{ref}$}(sum);
+        \draw [->] (sum) -- node {$\Delta\vec{X}$} (prod);
+        \draw [->] (invS) -- node {$S^*$} (prod);
+        \draw [->] (prod) -- node {} (gain);              
+        \draw [->] (gain) -- node {} (PID);
+        \draw [->] (PID) -- node {} (sum2);
+        \draw [->] (pidcoef) -- node[pos=0.70, above, fill=white] {PID coeff.} (PID);
+        \draw [-] (sum2) -- node {} (straight);
+        \draw [->] (straight) |- node {} (delay);
+        \draw [->] (delay) -| node[pos=0.92, left] {$-$} (sum2);
+        \draw [->](straight) -- node {} (ring.north);
+        \draw [-] (ring) -- node{}  (leftback);
+        \draw [->] (leftback) |- node {$\vec{X} $}  (sum);
+\end{tikzpicture}
     \caption{\label{fig:block_correction}The correction process}
 \end{figure}
 
