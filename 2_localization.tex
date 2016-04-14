@@ -5,9 +5,9 @@
 \chapter{Localization of orbit perturbations}
 \label{sec:localisation}
 
-Correcting the orbit is costly and has never a perfect result. Instead of dealing with the effects, we can deal with the sources of the distortions. If none is really obvious (\textit{eg.} a non-isolated transformer, the 50~Hz perturbation of the main power), the orbit can give us some hints.
+Correcting the orbit is costly and has never a perfect result. Instead of dealing with the effects, the sources of the distortions can be investigated. If none is really obvious (e.g. a non-isolated transformer, the 50~Hz perturbation of the main power), the orbit itself can give some hints.
 
-We call kick the place where the orbit brutally changes its angle as shown in \cref{fig:kick}.
+The place where the orbit brutally changes its angle (as shown in \cref{fig:kick}) is termed \textit{kick}.
 
 \begin{figure}[!h]
 	\centering
@@ -28,19 +28,18 @@ The spatial variable is only used to have a connection between the result and th
 
 Let one kick be at $\Psi = \hat{\Psi}$. The orbit is modified and oscillates with a constant period of $2 \pi$. Because there is {\em only one} kick and according to the closed orbit condition, the oscillation after the kick will be stable for one revolution. Furthermore, the orbit must be continuous on all points, thus at the kick position too.
 
-Let's consider two revolutions, in order to be sure to find one full revolution without kick. Let $\Psi_\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\Psi_0$ where the kick happens is the one so that 
+Two revolutions are considered, in order to be sure to find one full revolution without kick. Let $\Psi_\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\Psi_0$ where the kick happens is the one so that 
 \begin{equation}
 \exists (b, c) \in \mathbb{R}^2:
 \forall \Psi \in [\Psi_0, \Psi_0 + 2 \pi Q], \quad
 x(\Psi) = b \sin(\Psi + c)
 \end{equation}
 
-We have a problem with 3 unknowns to determine: $\Psi_0, b, c$. 
+This problem has 3 unknowns which should be determined: $\Psi_0, b, c$. 
 
 \subsection{Practical setting}
 
-We have $m$ BPMs only, distributed around the orbit.
-Therefore we define:
+Only $m$ BPMs are distributed around the orbit. The previous variable can thus be described in a vectorial form
 \begin{align}
 \begin{cases}
 \vec{\Psi} = [\Psi_0, \Psi_1, ..., \Psi_{m-1}] \\
@@ -136,7 +135,7 @@ The pseudo inverse is calculated in \texttt{Matlab} with
 \begin{verbatim}
         a = M\x
 \end{verbatim}
-and in \texttt{python} with the least-squares method
+and in \texttt{Python} with the least-squares method
 \begin{verbatim}
         a = numpy.linalg.lstsq(M, x).
 \end{verbatim}
@@ -153,7 +152,6 @@ x(\Psi) = \scal{x}{1} + \scal{x}{\sin} \sin(\Psi) + \scal{x}{\cos} \cos(\Psi)
 with $\scal{f}{g}$ being the scalar product for real functions: $\int_T f(t)g(u)dt$.
 
 In the numerical case, the scalar product is approximated by its vectorial counterpart by
-
 \begin{align*}
 \scal{\vec{f}}{\vec{g}}: \quad
  &\mathcal{R}^n \times \mathcal{R}^n \longrightarrow \mathcal{R} \\
@@ -167,7 +165,7 @@ By defining $b = \sqrt{a_1^2+a_2^2}$ and $c = \mathrm{atan2}(a_2, a_1)$ the prev
 \end{equation*} 
 
 \section{Harmonic perturbations}
-In this section, we deal with a perturbation at a given frequency $f$. The training data is the time signal of all BPMs.
+In this section, the perturbation is harmonic with a given frequency $f$. The training data is the time signal of all BPMs.
 
 As the perturbation has a known frequency, its complex amplitude can be extracted from the signal of each BPM with a Fourier transform:
 
