@@ -2,12 +2,10 @@
 % !TeX spellcheck = en_US
 % !TeX root = main.tex
 
-\chapter{Background and theory}
+\chapter{Introduction}
 \label{sec:background}
 
-\section{BESSY II}
-
-\subsection{General presentation}
+\section{BESSY II -- General presentation}
 BESSY II (\textbf{B}erliner \textbf{E}lektronen\-\textbf{S}peicherring-Gesellschaft für \textbf{Sy}n\-chro\-tron\-strahlung m.b.H.) is Berlin electron storage ring, aimed at producing high energy light ray by synchrotron radiation. It emits extremely brillant photons pulse ranging from the long wave terahertz region to hard X rays, with an emphasis on the soft X-ray range~\cite{web:bessy_homepage}. Scientific projects can freely apply to an experimental station, where they are able to adjust the wavelength, polarization and photon energy. More than 2000 scientists per year are using BESSY II equipment.
 
 The storage ring has a circumference of 240~meters and provides around 50 beamlines (paths of light rays between the accelerator and experimental stations). The electrons are accelerated to an energy up to 1.7~GeV.
@@ -16,7 +14,7 @@ BESSY II was inaugurated in 1998 and is since 2009 a facility of the \textit{Hel
 
 Additionally to the guest scientists, operators and researchers ensure the good functioning of the whole facility and work on refining the quality and the stability of the light rays. 
 
-\subsection{General functioning}
+\section{BESSY II -- General functioning}
 In BESSY II  accelerator, particle are circularly accelerated, all of them turning in the same direction. The goal is indeed not to produce collisions but light.
  
 The way BESSY II functions is based on the synchrotron radiation phenomenon: any accelerated particle emits radiations (in the form of photons), with a maximal amplitude in the case of a circular acceleration. \todo{Should I detail the equations?} It can be shown~\cite{book:wille} that the radiated power in circular acceleration can be given as 
@@ -25,21 +23,18 @@ P_s = \frac{e^2 c}{6 \pi \varepsilon_0}\frac{1}{(m_0 c^2)^4}\frac{E^4}{R^2}.
 \end{equation}
 where $c$ is the speed of light, $m_0$ the rest mass (independent of the velocity) of the particle, $e$ its charge, $E$ its energy, $R$ the bending radius and $\varepsilon_0$ the  vacuum permittivity.
 
-Considering their low mass, the electrons are very good candidates to produce high energy radiation (in comparison, accelerated protons would provide a power $10^{13}$ smaller than electrons).
+Considering their low mass, the electrons are very good candidates to produce high energy radiation (in comparison, accelerated protons would provide a power $10^{13}$ smaller than electrons), and are therefore used in BESSY~II.
 
-The most important properties of the synchrotron radiation are its brilliance and brightness, which describe the quality of the beam. The brightness describes the angular divergence of the beam, and the brillance its transverse dimension: both are expected to be as small as possible to be in the configuration in which the beam is the most point-like. (See \cref{sec:brightness_brillance} for the exact definitions).
-
-The main purpose of BESSY II is to provide a light radiation with stable brilliance and brightness over time. To achieve this, the light source itself must be very stable as well. Therefore a significant attention is drawn to the control of the storage ring.
 \begin{figure}
-	\centering
-	\includegraphics[width=0.8\textwidth]{img/bessy_acc_chain_web.jpg}
-	\caption[Bessy II -- Accelerator chain]{\label{fig:bessy_acc_web_simple} Bessy II -- Accelerator chain (Source:~\cite{web:bessy_homepage})}
+    \centering
+    \includegraphics[width=0.8\textwidth]{img/bessy_acc_chain_web.jpg}
+    \caption[BESSY~II -- Accelerator chain]{\label{fig:bessy_acc_web_simple} BESSY~II -- Accelerator chain (Source:~\cite{web:bessy_homepage})}
 \end{figure}
 
 \begin{sidewaysfigure}
     \centering
     \includegraphics[width=0.8\textwidth,height=0.8\textheight,keepaspectratio]{img/bessy_acc_web.pdf}
-    \caption[Bessy II facility]{\label{fig:bessy_acc_web} Bessy II facility (Source:~\cite{web:bessy_homepage})}
+    \caption[BESSY~II facility]{\label{fig:bessy_acc_web} BESSY~II facility (Source:~\cite{web:bessy_homepage})}
 \end{sidewaysfigure}
 
 In order to reach an energy of 1.7~GeV, the electrons undergo several chained accelerations (see \cref{fig:bessy_acc_web}), namely:\todo{energies}
@@ -54,12 +49,17 @@ When this energy is reached, the electrons are injected to the storage ring, whi
 
 Because of the synchrotron radiation, the bunches of particles lose regularly their energy; therefore a new injections from the accelerations chain take place every XXX\todo{time} to repopulate the storage ring and stabilize its energy.
 
-\section{Basics of particle accelerator physics}
+\section{Motivation}
+The most important properties of the synchrotron radiation are its brilliance and brightness, which represent the quality of the beam. The brightness describes the angular divergence of the beam, and the brillance its transverse dimension: both are expected to be as small as possible to be in the configuration in which the beam is the most point-like. (See \cref{sec:brightness_brillance} for the exact definitions).
+
+The main purpose of BESSY II is to provide a light radiation with stable brilliance and brightness over time. To achieve this, the light source itself must be very stable as well. Therefore a significant attention is drawn to the control of the storage ring: the orbit should be well centered in the vacuum chamber, with a beam diameter as small as possible.
+
+\chapter{Basics of particle accelerator physics}
 In order to understand the trajectory perturbations, the basic physics of the particle accelerator must be addressed.
 
 To study the beam trajectory, one possibility is to use the linear beam optics (by analogy between beam and light focusing and steering). Here will be solely described what is needed in the next sections. A full reference can be found in~\cite{book:wille}. This section is mostly inspired by the chapter 3 of this same reference.
 
-\subsection{Geometry -- Frame of reference -- Kinematics}
+\section{Geometry -- Frame of reference -- Kinematics}
 The term \emph{orbit} refers to the ideal trajectory of the particles, which is fixed by the construction of the accelerator.
 
 The frame of reference is $K=(\vec{e}_x,\vec{e}_y, \vec{e}_s)$, which origin follows the beam. $\vec{e}_x$ is the horizontal axis directed towards the exterior of the orbit and normal to its curve, $\vec{e}_y$ is the vertical axis and $\vec{e}_s$ the tangential axis to the orbit.
@@ -96,7 +96,7 @@ It follows, after some algebraic manipulations:
 & \hspace{14em} + \left[\frac{2}{R}x'\dot{s}^2 +\left(1+\frac{x}{R}\right)\ddot{s}\right]\vec{e}_s \nonumber
 \end{align}
 
-\subsection{Hypotheses}
+\section{Hypotheses}
 The following hypotheses are assumed to be valid.
 \begin{description}
     \item{H1 --} The particles move essentially parallel to $\vec{e}_s$: in the first order
@@ -113,7 +113,7 @@ The following hypotheses are assumed to be valid.
     \item{H6 --} The momentum of the particles is $p = p_0+\Delta p$, with the condition $\Delta p \ll p_0$ (which is well satisfied in accelerators).
 \end{description}
 
-\subsection{Equation of motion}
+\section{Equation of motion}
 \label{sec:eq_motion}
 Newton's second law can be applied with the Lorentz force
 \begin{equation}
@@ -183,7 +183,7 @@ y''(s) + k(s) y(s) &= 0
 \end{aligned}
 \end{empheq}
 
-\subsection{Beta function and betatron oscillation}
+\section{Beta function and betatron oscillation}
 \label{sec:beta_func}
 The beta function will provide a description of properties of a beam of many particles.
 
@@ -243,7 +243,7 @@ and the particle trajectories can be calculated for a given emittance.
 
 \remark The calculation done for the $x$ direction can be done similarly for the $y$ one, which defines a $\beta_x(s)$, $\beta_y(s)$, $\varepsilon_x$, $\varepsilon_y$, $\Psi_x(s)$ and $\Psi_y(s)$
 
-\subsection{Brightness and brilliance}
+\section{Brightness and brilliance}
 \label{sec:brightness_brillance}
 In the following section, the $\theta$ subscript is either $x$ or $y$.
 
@@ -265,7 +265,7 @@ B = \frac{F}{4 \pi^2 \sigma_x \sigma_y \sigma'_x \sigma'_y} = \frac{F}{4 \pi^2 \
 
 These definitions vary in literature. These are taken from the book of K.~Wille~\cite{book:wille}, and apply to Gaussian-shaped electron beams. The invariant idea is that both values are determinated by the beam emittance $\sigma$: the design of the accelerators and the correction are aimed at obtaining the smallest emittance $\varepsilon_\theta$ as possible.
 
-\subsection{Tune}
+\section{Tune}
 In circular accelerator, the particle undergo periodically the same magnetic fields and therefore the same force. This can lead the amplitude of the beam transverse oscillation to increase, risking to lose the particles in the vacuum chamber walls. This phenomenon is called optical resonance and must be avoided.
 
 As exposed in \cref{sec:eq_motion,sec:beta_func}, if $\frac{\Delta p}{p_0} = 0$ and $K(s)=\frac{1}{R(s)}-k(s)$, the trajectory is given by
@@ -291,15 +291,3 @@ It can be shown that tune values that satisfy
 m Q_x + n Q_y = p \qquad (m, n, p) \in \mathbb{Z}
 \end{equation}
 produce coupled resonance of order $|m|+|n|$. A pair of value $(Q_x,Q_y)$ is used as working point so that it either does not satisfy \cref{eq:coupled_resonance} or with a high order (above the 5th order for instance).
-
-
-\section{Orbit and distortions}
-\todo[inline]{Physics + examples = 1/2 - 1 pges}
-\subsection{Theory}
-The accelerators are designed so that the particles follow a given path, which is defined in the case of synchrotrons by the successive bendings involved by the magnets. As the precision of the positioning of the magnets is limited, some errors may destabilize the orbit and increase the dispersion of the particles around the theoretical orbit. In addition, the environment produces perturbations: for instance the 50~Hz of the main power, some not perfectly isolated magnetic sources.
-
-In order not to lose electrons in the walls of the vacuum chamber but also to increase the brightness of the synchrotron radiations (and therefore to have focused electron beams), all these residual misalignment and magnetic field errors must be corrected.
-
-\subsection{Distortions in BESSY II}
-
-
