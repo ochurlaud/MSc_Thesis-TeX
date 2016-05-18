@@ -3,22 +3,28 @@
 % !TeX root = main.tex
 
 \documentclass[11pt,oneside,a4paper]{memoir}
+
+% General
 \usepackage[utf8]{inputenc}
+\usepackage[shorthands=off,english]{babel}
+\usepackage{hyperref}
+\usepackage{titlesec} 
+\usepackage[noabbrev]{cleveref}
+\usepackage[acronym,xindy,toc]{glossaries}
+
+% Maths
 \usepackage{amsmath}
-\usepackage{amsfonts}
-\usepackage{amssymb}
+\usepackage{amsfonts} % caligraphic fonts
+\usepackage{amssymb}  % symbols
+\usepackage{empheq}   % frame equations
+\usepackage{siunitx}  % correct units
+
+% Pictures
 \usepackage{graphicx}
 \usepackage{rotating}
 \usepackage{epstopdf}
-\usepackage{hyperref}
-\usepackage[noabbrev]{cleveref}
-\usepackage[shorthands=off,english]{babel}
-\usepackage{empheq}
 \usepackage{tikz}
-
-\usetikzlibrary{shapes,arrows}\usetikzlibrary{shapes,arrows}
-
-\usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
+\usetikzlibrary{shapes,arrows}
 
 \input{code_env}
 % % % % % % % % % % % % % % % % % %
@@ -29,7 +35,8 @@
 	\releasefalse
 %	                              %
 	\ifrelease
-		\renewcommand{\todo}[1]{}
+	\else
+		\usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
 	\fi
 % end of trick                    %
 % % % % % % % % % % % % % % % % % %
@@ -51,6 +58,9 @@
 \def\theauthor{Olivier Churlaud}
 \author{\theauthor}
 \title{\thetitle}
+
+\makeglossaries
+\input{acronyms}
 
 \hypersetup{
     unicode=true,
@@ -77,15 +87,15 @@
 \vfill
 
 \cleardoublepage
-
 \tableofcontents*
 \listoffigures*
-
+\printglossaries
 \mainmatter
 
 \input{0_background}
-\input{1_correction}
+\input{1_accphysics}
 \input{2_localization}
+\input{3_correction}
 \renewcommand\cftappendixname{\appendixname~}
 %%
 %  Bibliography
@@ -94,33 +104,13 @@
 \bibliography{biblio}
 
 \appendix
-\appendixpage
-\chapter{Principal components analysis -- Karhunen-Loève transform (KLT)}
-\label{apx:KLT}
+\renewcommand{\appendixname}{}
+%\appendixpage
+\makeatletter
+\titleformat{\chapter}{\bfseries\Huge}{}{0ex}{}
+\makeatother
+\chapter{Appendices}
+\input{9_appendix}
 
-Let $\mat{X}$ be a signal with n dimensions.
-
-\begin{equation}
-\mat{X} = \left[
-\begin{array}{@{}c|c|c|c@{}}
-&&&\\ \vec{X}_1 & \vec{X}_2 & \dots & \vec{X}_n \\ &&&
-\end{array}
-\right]
-\end{equation} 
-
-The covariance matrix is extracted
-\begin{equation}
-\mat{A} = \text{covar}(X) 
-\end{equation}
-and diagonalized so that the eigenvalues are sorted in a decreasing order (the first one being the most significant). The covariance being symmetric, it is always diagonalizable in $\mathbb{R}$.
-\begin{equation}
-\mat{D} = \mat{P}^{t} \mat{A} \, \mat{P} 
-\end{equation}
-
-The principal components are 
-\begin{equation}
-\hat{\mat{X}} = \mat{P}^{t} \mat{X}
-\end{equation}
-and in the first column of the matrix is the most significant one.
 \end{document}
 
