@@ -1,6 +1,14 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
 % !TeX root = main.tex
+\tikzset{
+	block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=4em},
+	gain/.style = {draw, fill=white, isosceles triangle, minimum height=3em, minimum width=2em},
+	operator/.style= {draw, fill=white, circle},
+	input/.style = {coordinate},
+	output/.style= {coordinate},
+	pinstyle/.style = {pin edge={to-,thin,black}},
+}
 
 \chapter{Orbit correction}
 \label{sec:correction}
@@ -17,6 +25,24 @@ Local orbit bumps (presented in \cref{sec:orbit_bump}) allow local correction an
 
 \subsection{Local orbit bumps}
 \label{sec:orbit_bump}
+\begin{figure}
+	\centering
+	\begin{tikzpicture}[auto, node distance=1.2,>=latex']
+	%\draw[help lines, yellow] (-1,-4)grid(15,3);
+	% We start by placing the blocks
+	\coordinate [] (lleft) {};
+	\node [draw, circle, fill=black, right=2 of lleft] (leftm) {};
+	\node [draw, circle, fill=black, above right=2 and 2.5 of leftm] (topm) {};
+	\node [draw, circle, fill=black, right=5 of leftm] (rightm) {};
+	\coordinate [right=2 of rightm] (rright) {};
+	% Once the nodes are placed, connecting them is easy. 
+	\draw [-] (lleft) -- node {}(leftm);
+	\draw [-] (leftm) -- node {}(topm);
+	\draw [-] (topm) -- node {}(rightm);
+	\draw [-] (rightm) -- node {}(rright);
+	\end{tikzpicture}
+	\caption{\label{fig:local_bump}Local bump with 3 magnets}
+\end{figure}
 \todo[inline]{see Wille p127 and p286}
 
 \subsection{Most effective corrector method}
@@ -101,15 +127,6 @@ A more common and precise way of constructing the response matrix is empirical: 
 \subsection{The correction}
 BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID correction\todo{why do we need a PID?} (proportional response with gain P, integral response with gain I and derivative response with gain D) and the response matrix inversion. The full process goes as presented in \cref{fig:block_correction}.
 
-
-\tikzset{
-    block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=4em},
-    gain/.style = {draw, fill=white, isosceles triangle, minimum height=3em, minimum width=2em},
-    operator/.style= {draw, fill=white, circle},
-    input/.style = {coordinate},
-    output/.style= {coordinate},
-    pinstyle/.style = {pin edge={to-,thin,black}},
-}
 \begin{figure}
     \centering
     \begin{tikzpicture}[auto, node distance=1.2,>=latex']
