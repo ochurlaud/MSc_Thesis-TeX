@@ -98,20 +98,19 @@ b \sin(\Psi + c) &= b\sin(\Psi+c+2 \pi Q),\\
 
 The only possible solutions have the form
 \begin{equation}
- \Psi \equiv \left(\frac{1}{2} - Q\right) \pi - c \pmod \pi
+ \Psi \equiv \left(\frac{1}{2} - Q\right) \pi - c \pmod \pi.
 \end{equation}
-and the right one is the closest to $\Psi_{k_0}$.
-
-\todo[inline]{remove the following}
-
-or, with the numerical approach, 
+As the kick is the closest solution to $\Psi_{k_0}$, a constant $K$ is searched so that
+\begin{align}
+&\left(\frac{1}{2} - Q\right) \pi - c + K \pi  \leq \Psi_{k_0} \leq \left(\frac{1}{2} - Q\right) \pi - c + (K+1) \pi \\
+\iff  &\left(Q - \frac{1}{2}\right) + \frac{\Psi_{k_0} + c}{\pi}\leq K \leq \left(Q - \frac{1}{2}\right) + \frac{\Psi_{k_0} + c}{\pi} +1 \\
+\iff & K = \left\lfloor \left(Q - \frac{1}{2}\right) + \frac{\Psi_{k_0}+c}{\pi} \right\rfloor
+\end{align}
+and the two remaining possible values are
 \begin{equation}
-\hat{\Psi} =  \underset{\Psi \in [\Psi_{k_0-A}, \Psi_{k_0+A}]}{\textrm{argmin}}\{|b \sin(\Psi + c) - b\sin(\Psi+c+2 \pi Q)|\}.
+\left\lbrace \left(\frac{1}{2} - Q\right) \pi - c + K \pi , \quad \left(\frac{1}{2} - Q\right) \pi - c + (K+1) \pi\right\rbrace
 \end{equation}
-
-$A$ was defined with the \textit{try-and-see} method and in the specific case of BESSY~II, $A=\frac{\pi}{4}$ suits.
-
-\remark For this last step, we use a \textit{linspace} between $\Psi_{k_0}-A$ and $\Psi_{k_0}+A$ with more than 1000 points.
+the kick being chosen as the closest one from $\Psi_{k_0}$.
 
 \subsection{Finding the good sine}
 Several methods are possible to find the best matching sine, for example by using:
