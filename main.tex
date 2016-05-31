@@ -9,7 +9,6 @@
 \usepackage[shorthands=off,english]{babel}
 \usepackage{hyperref}
 \usepackage{titlesec} 
-\usepackage[noabbrev]{cleveref}
 \usepackage[acronym,xindy,toc]{glossaries}
 
 % Maths
@@ -25,6 +24,9 @@
 \usepackage{epstopdf}
 \usepackage{tikz}
 \usetikzlibrary{shapes,arrows}
+
+% Should be loaded last
+\usepackage[noabbrev]{cleveref}
 
 \input{code_env}
 % % % % % % % % % % % % % % % % % %
@@ -92,10 +94,11 @@
 \printglossaries
 \mainmatter
 
-\input{0_background}
-\input{1_accphysics}
-\input{2_localization}
-\input{3_correction}
+\input{background}
+\input{accphysics}
+\input{correction}
+\input{localization}
+
 \renewcommand\cftappendixname{\appendixname~}
 %%
 %  Bibliography
