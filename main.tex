@@ -9,7 +9,6 @@
 \usepackage[shorthands=off,english]{babel}
 \usepackage{hyperref}
 \usepackage{titlesec} 
-\usepackage[acronym,xindy,toc]{glossaries}
 
 % Maths
 \usepackage{amsmath}
@@ -26,9 +25,10 @@
 \usetikzlibrary{shapes,arrows}
 
 % Should be loaded last
+\usepackage{setspace}
 \usepackage[noabbrev]{cleveref}
 
-\input{code_env}
+\input{tex/code_env}
 % % % % % % % % % % % % % % % % % %
 % trick not to release comments   %
   \newif\ifrelease
@@ -58,11 +58,9 @@
 \def\thetitle{Localization and correction of orbit perturbations in BESSY II storage ring}
 \def\thesubject{Master Thesis}
 \def\theauthor{Olivier Churlaud}
+\def\theauthorinfo{Matriculation number: 366\,964}
 \author{\theauthor}
 \title{\thetitle}
-
-\makeglossaries
-\input{acronyms}
 
 \hypersetup{
     unicode=true,
@@ -79,10 +77,12 @@
 \begin{document}
 
 \frontmatter
-\clearpage
+\cleardoublepage
 \thispagestyle{empty}
-\maketitle
-\vfill
+
+\input{tex/title}
+
+\cleardoublepage
 \begin{abstract}
        ......
 \end{abstract}
@@ -91,20 +91,20 @@
 \cleardoublepage
 \tableofcontents*
 \listoffigures*
-\printglossaries
+
 \mainmatter
 
-\input{background}
-\input{accphysics}
-\input{correction}
-\input{localization}
+\input{tex/background}
+\input{tex/accphysics}
+\input{tex/correction}
+\input{tex/localization}
 
 \renewcommand\cftappendixname{\appendixname~}
 %%
 %  Bibliography
 %%
 \bibliographystyle{IEEEtran}
-\bibliography{biblio}
+\bibliography{tex/biblio}
 
 \appendix
 \renewcommand{\appendixname}{}
@@ -113,7 +113,7 @@
 \titleformat{\chapter}{\bfseries\Huge}{}{0ex}{}
 \makeatother
 \chapter{Appendices}
-\input{9_appendix}
+\input{tex/appendix}
 
 \end{document}
 
