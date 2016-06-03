@@ -194,11 +194,11 @@ BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID cor
         \draw [->] (invS)     -- node {$\mat{S}^*$}        (prod);
         \draw [->] (prod)     -- node {}             (gain);              
         \draw [->] (gain)     -- node {$\Delta\vec{\Theta}_\text{t}$}             (PID);
-        \draw [->] (PID)      -- node {$\Delta\vec{\Theta}$}             (sum2);
+        \draw [->] (PID)      -- node {$\Delta\vec{\Theta}$} node[pos=0.80, below] {$-$}      (sum2);
         \draw [->] (pidcoef)  -- node[pos=0.70, above, fill=white] {PID coeff.} (PID);
         \draw [-]  (sum2)     -- node {}  (straight);
         \draw [->] (straight) |- node[pos=0, right] {$\vec{\Theta}_{(n)}$} (delay);
-        \draw [->] (delay)    -| node[pos=0.92, left] {$-$} node[above] {$\vec{\Theta}_{(n-1)}$} (sum2);
+        \draw [->] (delay)    -| node[above] {$\vec{\Theta}_{(n-1)}$} (sum2);
         \draw [->] (straight) -- node[pos=0.80] {}  (ring);
 
 
