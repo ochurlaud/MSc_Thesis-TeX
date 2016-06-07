@@ -3,25 +3,40 @@
 % !TeX root = ../main.tex
 
 \begin{titlingpage}
-	\noindent
-	\begin{minipage}[t]{\textwidth}
-		\flushright
-		\begin{minipage}[c]{0.6\linewidth}
-			\flushright
-			\begin{SingleSpace}
-				Technische Universität Berlin \\
-				Fakultät IV - Elektrotechnik und Informatik  \\
-				Institut für Energie- und Automatisierungstechnik \\
-				Fachgebiet Regelungssysteme  \\
-				Prof. Dr.-Ing. Jörg Raisch
-			\end{SingleSpace}
-		\end{minipage}
-		\hspace{2em}
-		\begin{minipage}[c]{3.2cm}
-			\includegraphics[width=1\linewidth]{img/tu-logo}
-		\end{minipage}
-	\end{minipage}
-	
+	\noindent 
+    \renewcommand\arraystretch{0}
+    \begin{tabulary}{\linewidth}{l r}
+        \begin{minipage}{.45\linewidth}
+            \includegraphics[height=70pt]{img/hzb_logo_schwarz}
+        \end{minipage}
+        &
+        \begin{minipage}{.45\linewidth}
+            \flushright
+            \includegraphics[height=50pt]{img/TU_logo_schwarz}
+        \end{minipage}
+        \\
+        \begin{minipage}[t]{.45\linewidth}
+            \begin{SingleSpace}
+                \scriptsize
+                Helmholz-Zentrum Berlin für Materialien und Energie \\
+                Light source BESSY~II  \\
+                Department Operation Accelerator (NP-ABS)
+            \end{SingleSpace}
+        \end{minipage}
+        &
+        \begin{minipage}[t]{.45\linewidth}
+            \begin{SingleSpace}
+                \scriptsize
+                \flushright
+                Technische Universität Berlin \\
+                Fakultät IV -- Elektrotechnik und Informatik  \\
+                Institut für Energie- und Automatisierungstechnik \\
+                Fachgebiet Regelungssysteme  \\
+                Prof. Dr.-Ing. Jörg Raisch
+            \end{SingleSpace}
+        \end{minipage}
+    \end{tabulary}
+    	
 	\vfill
 
 	\begin{center}
@@ -59,6 +74,7 @@
 	~
 	
 	\setlength{\tabcolsep}{15pt}
+    \renewcommand\arraystretch{.7}
 	\begin{tabular}{l l}
 		TU Berlin
 		&Prof. Dr.-Ing. Jörg Raisch \\
