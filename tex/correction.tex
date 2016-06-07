@@ -257,7 +257,63 @@ Two main processes are operating:
 After having received the command to run from the cBox, the mBox queries the ADC (Analog-to-Digital Converter) to provide the BPM values in the RFM. The correction is then calculated (in Amperes) and the values are converted in a format easily transmissible. This data is written back to RFM and read by the IOCs (Input-Output Controllers) that relay to the power supplies alimenting the corrector magnets.
 
 The full process is repeated at a frequency of 150~Hz. 
+\todo{description of IOC, RFM etc}
 
 \section{Improvement of the correction of harmonic perturbations}
 \subsection{Acquisition of the frequency-dependent response matrix}
 \subsection{Correction of harmonic perturbations}
+
+\section{System and correction simulation}
+One difficulty in improving the current correction process is that machine time is expensive. A wrong correction can destabilize the orbit or worse, lose the electrons in the vacuum chamber walls, and thus it cannot be tested when the storage ring is on service or other scientists do experiments or measurements for their own research. Simulating the whole environment is expected to mitigate this.
+
+\subsection{System identification}
+The first step in the model is to represent the storage ring. This could be done analytically, by writing the magnet equations and deriving the full differential equations that bind the correction to orbit displacement. However, it would take a full master thesis to realize a good model, as there are very different types of components all around the orbit, with some non linear behavior.
+
+Instead a system identification is conducted. A brief theoretical explanation will be followed by the actual results.
+
+\subsubsection{Theoretical background}
+\todo[inline]{TODO}
+\subsubsection{Results}
+\todo[inline]{TODO}
+\subsection{Simulation model}
+
+\begin{sidewaysfigure}
+    \centering
+    \begin{tikzpicture}[auto, node distance=1,>=latex']
+    %\draw[help lines, yellow] (-1,-4)grid(15,3);
+    % We start by placing the blocks
+    \node [input] (xref) {};
+    \node [block, right=of xref] (ADC1) {$\downarrow$ \SI{150}{\hertz}};
+    \node [operator, right=of ADC1] (sum) {$+$};
+    \node [block, right=of sum] (correct) {Correction};
+    \node [block, right=of correct] (DAC) {$\uparrow$};
+    \node [block, right=of DAC] (delay) {Delay T};
+    \node [block, right=of delay] (Hdip) {$\text{H}_\text{dipole}$};
+    \node [operator, right=of Hdip] (sumperturb) {$+$};
+    \node [input, above=of sumperturb] (perturb) {};
+    \node [block, right=of sumperturb] (Hring) {$\text{H}_\text{ring}$};
+    \node [block, below=of delay] (ADC2) {$\downarrow$ \SI{150}{\hertz}};
+    \coordinate [right= of Hring] (connectout) {};
+    \node [input, right= of connectout] (out) {};
+    
+    % Once the nodes are placed, connecting them is easy. 
+    \draw [->] (xref)     -- node {$\vec{X}_\text{ref}$} (ADC1);
+    \draw [->] (ADC1)     -- node [pos=0.85, below]{$-$}    (sum);
+    \draw [->] (sum)      -- node {$\Delta\vec{X}$}    (correct);
+    \draw [->] (correct)  -- node {}                   (DAC);
+    \draw [->] (DAC)      -- node {}                   (delay);
+    \draw [->] (delay)    -- node[above] {}            (Hdip);
+    \draw [->] (Hdip)     -- node {}                   (sumperturb);
+    \draw [->] (perturb)  -- node {$d$}                (sumperturb);
+    \draw [->]  (sumperturb) -- node {}                (Hring);
+    \draw [-]  (Hring)    -- node {}                 (connectout);
+    \draw [->] (connectout) -- node {}                 (out);
+    \draw [->] (connectout) |- node {}                 (ADC2);
+    \draw [->] (ADC2)     -| node[pos=0.5] {$\vec{X}$}(sum.south);
+    \end{tikzpicture}
+    \caption{\label{fig:model_simul}The full model}
+\end{sidewaysfigure}
+\todo[inline]{TODO}
+
+\subsection{Simulation results}
+\todo[inline]{TODO}
