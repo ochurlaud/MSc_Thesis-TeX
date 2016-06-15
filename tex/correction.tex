@@ -166,7 +166,7 @@ A more common and precise way of constructing the response matrix is empirical: 
 \section{State of the art at BESSY II}
 \label{sec:correction_state_of_art}
 \subsection{The correction}
-BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID correction (proportional response with gain $K_p$, integral response with gain $K_i$ and derivative response with gain $K_d$) and the response matrix inversion. The full process goes as presented in \cref{fig:block_correction}.
+BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID correction (proportional response with gain $K_p$, integral response with gain $K_i$ and derivative response with gain $K_d$) and the response matrix inverse. The full process goes as presented in \cref{fig:block_correction}. \todo{About the PID; theoretically, multiplying with the Smatrix would give the perfect correction. \textbf{Why do we need the PID then?}}
 
 \begin{figure}
     \centering
@@ -234,7 +234,7 @@ The real correction is eventually the accumulation of all corrections
 \vec{\Theta}(n) = \vec{\Theta}(n-1) - \Delta \vec{\Theta}(n).
 \end{equation}
 
-For stability reasons, the PID was always implemented as a proportional corrector ($K_i$ ad $K_d$ being zero) which was behaving as a proportional integrator (PI) because of the last accumulation. \todo{implemented in the future? or see section XXX}
+For stability reasons, the PID was always implemented as a proportional corrector ($K_i$ and $K_d$ being zero). Because of the last accumulation, it was of course behaving like a proportional integrator (PI), which forbid the use of the other coefficients in the PID correction. \todo{implemented in the future? or see section XXX}
 
 \remark The PID gains is not exactly as presented here: to prevent a too violent correction that might destabilize the current in the ring, the proportional gain is increased every correction cycle by 1\% until it reaches its nominal value.
 
@@ -254,11 +254,11 @@ The following actors are playing a role in the process:
 \begin{itemize}
     \item the \textbf{cBox} which controls (= \textit{c}) the correction. It defines when to read the values of the BPMs and when to write the new correction values, it provides initializations values. The operators are communicating with this process to configure the correction.
     \item the \textbf{mBox} which does the math (= \textit{m}) of the correction. When allowed by the cBox, it reads the BPMs values, do the maths to define the new correction values (multiplication with the response matrix, PID correction) and write them to the communication bus. This process also publish the values it reads and writes so that client programs can subscribe to this data stream and reuse the values internally.
-    \item the \textbf{Input-Output Controllers (IOCs)} write the correction values to the power supplies commands when they are available.
+    \item the \textbf{input-output controllers (IOCs)} write the correction values to the power supplies commands when they are available.
     \item the \textbf{power supplies (PS)} provide a given power to the corrector magnets.
 \end{itemize}
 
-After having received the authorization to run from the cBox, the mBox process starts. It first do its full initialization, which only happens on start (the response matrix, the reference orbit, the PID parameters, etc. cannot change while the mBox process is running), and starts the ADC (Analog-to-Digital Converter). From this time, they will write new orbit values to the RFM at a rate of \SI{150}{\hertz}.
+After having received the authorization to run from the cBox, the mBox process starts. It first does its full initialization, which only happens on start (the response matrix, the reference orbit, the PID parameters, etc. cannot change while the mBox process is running), and starts the ADC (Analog-to-Digital Converter). From this time, the ADC will write new orbit values to the RFM at a rate of \SI{150}{\hertz}.
 
 The mBox waits for the ADC interruption to read the new orbit data from the RFM. The correction is then calculated (in Amperes) and the values are converted in a format easily transmissible (basically unsigned integers). This data is written back to RFM and an interruption is sent to inform the other elements that the new values are available. This is read by the IOCs that relay to the power supplies alimenting the corrector magnets. 
 
@@ -270,10 +270,14 @@ The duration of each step is as following:\todo{TIMES}
 \item correction computation: \SI{00}{\milli\second}
 \end{enumerate}
 
-\section{Improvement of the correction for harmonic perturbations}
-The correction presented until now only provides a temporal correction. It has no possibility to correct a specific harmonic or to perform in the spectral domain.
+One of the side works done during this thesis was rewriting the whole mBox in C++ in a very object oriented way to allow a smaller computation time (the original one was written in \textsc{Matlab}), easier improvement and feature additions (like a dynamic correction, easier communication with external scripts, production/experimental modes, etc.).
 
-A simple extension of this method is to analyze a given harmonic of the orbit, and consider the Fourier coefficient of each monitor as the complex amplitude of the orbit
+\section{Improvement of the correction for harmonic perturbations}
+The correction presented until now only provides a correction for the continuous component. It has no possibility to correct a specific harmonic or to perform in the spectral domain. This section will provide a method to correct harmonic perturbations.
+
+\subsection{General method}
+
+A simple extension of the previous method is to analyze a given harmonic of the orbit, and consider the Fourier coefficient of each monitor as the complex amplitude of the orbit
 \begin{equation}
 	\forall f \in \mathbb{R}, \qquad c_f = \frac{2}{T} \int_0^T x(t) e^{-j 2 \pi f t} dt
 \end{equation}
@@ -281,13 +285,13 @@ or, in the digital domain,
 \begin{equation}
 \forall f \in \left[0, \frac{Fs}{2}\right], \qquad c_f = \frac{2}{N} \sum\limits_{k=0}^{N-1} x(k) e^{-j 2 \pi f \frac{k}{F_s}}
 \end{equation}
-where $F_s$ is the sampling frequency, $f = \frac{1}{T}$ the frequency of interest and N the number of samples.
+where $F_s$ is the sampling frequency, $f = \frac{1}{T}$ the frequency of interest and $N$ the number of samples.
 
-Because of the digitalization, $f$ must be a multiple of $\frac{F_s}{N}$, which can be a problem here. The complex amplitude is therefore used as initial value in a least-square-error fit-curve algorithm that will provide a hopefully more precise amplitude if the frequency of interest did met the precedent condition.
+Because of the digitalization, $f$ must be a multiple of $\frac{F_s}{N}$, which can be a problem here, as the frequency to analyze might be exactly \SI{10}{\hertz} (see \cref{sec:dyn_corr_ex_10Hz}) and not \SI{9.975}{\hertz} if $N=2000$, $F_s=150$. The complex amplitude is therefore used as initial value in a least-square-error algorithm for curve-fitting that will provide a hopefully more precise amplitude if the frequency of interest did met the precedent condition.
 
 This provides an complex orbit $\Delta\vec{X}_f$ for the harmonic $f$. From there the corrector values can be calculated with the traditional method
 \begin{equation}
-\Delta\vec{\Theta}_f = \mat{S}^{1}\, \Delta\vec{X}_f   \in \mathbb{C}.
+\Delta\vec{\Theta}_f = \mat{S}^{1}\, \Delta\vec{X}_f   \in \mathbb{C}^n.
 \end{equation}
 
 To apply the correction, an oscillation must finally be generated with the obtained parameters. This is, for the $i$th corrector
@@ -295,22 +299,23 @@ To apply the correction, an oscillation must finally be generated with the obtai
 \forall t \in  \mathbb{R}, \qquad y(t) = \left| \Delta\vec{\Theta}_f(i) \right| \cdot \cos\left(2 \pi f t - \arg\left(\Delta\vec{\Theta}_f(i)\right)\right).
 \end{equation}
 
-The main problem with this method is that the generated signal phase must be synchronized with the time the correction parameters were measured. This was possible only for perturbations for which the source was already known and could be used as reference signal.
+The main problem with the method as presented here is that the generated signal phase must be synchronized with the time the correction parameters were measured. This is possible only for perturbations for which the source is already known and could be used as reference signal.
 
 \subsection{Example of the 10 Hz perturbation}
+\label{sec:dyn_corr_ex_10Hz}
 The \SI{10}{\hertz} perturbation has a well known source which is the booster power supply (pre-accelerator). This perturbation has such a great impact on the orbit spectrum and could be used as a validation case.
 
 A coil was used to measure the field generated by a magnet powered by the same source as the booster. It provides a \SI{10}{\hertz} reference which is synchronized with the perturbation.
 
 The orbit and the reference signal were measured during the exact same time. Both were analyzed with the method presented above. Instead of using \cref{eq:th_dyn_corr}, the reference signal was used and its phase and amplitude where changed for each corrector with the help of a finite impulse response (FIR) filter. Because the sampling frequency is \SI{150}{\hertz}, a FIR with 15 taps for the $i$th corrector can be designed as follow
 \begin{equation}
-	h_i(n) = \frac{\left| \Delta\vec{\Theta}_f(i) \right|}{\left|A_{10}\right|} \cdot \cos\left(2\pi\cdot \frac{10}{150} n - \left[\arg\left(\Delta\vec{\Theta}_f(i)\right) - \phi_{10}\right] \right),\quad n \in 0..14
+	h_i(n) = 2 F_s \cdot \frac{\left| \Delta\vec{\Theta}_f(i) \right|}{\left|A_{10}\right|} \cdot \cos\left(2\pi\cdot \frac{10}{150} n - \left[\arg\left(\Delta\vec{\Theta}_f(i)\right) - \phi_{10}\right] \right),\quad n \in 0..14
 \end{equation}
 where $A_{10}$ and $\phi_{10}$ are respectively the amplitude and the phase of the reference signal.
 
 This can then be applied to the reference signal $x_{10}$: for the $i$th corrector, the dynamic correction is
 \begin{equation}
-y[n] = \sum\limits_{k=0}^{14} h[k] x_{10}[n-k]
+y[n] = h * x_{10} [n] =  \sum\limits_{k=0}^{14} h[k] \cdot x_{10}[n-k]
 \end{equation}
 
 \section{System and correction simulation}
