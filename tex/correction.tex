@@ -1,6 +1,6 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
-% !TeX root = ../main.tex
+% !TeX root = ../MasterThesis_OlivierChurlaud_2016.tex
 \tikzset{
 	block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=4em},
 	gain/.style = {draw, fill=white, isosceles triangle, minimum height=3em, minimum width=2em},
@@ -24,7 +24,7 @@ In order not to lose electrons in the walls of the vacuum chamber but also to in
 To be able to correct the orbit or localize perturbations, some tools must be employed.
 
 \subsection{Beam Position Monitors}
-The position of the beam in a given direction is monitored with beam position monitors (BPM). 
+The position of the beam in a given direction is monitored with beam position monitors (BPM).
 
 Several types of BPMs exist, but the important characteristics of the one used at BESSY~II are that they provide a method
 \begin{itemize}
@@ -40,48 +40,70 @@ The raw values output by the BPMs are thus never considered and every orbit posi
 \end{equation}
 
 \subsection{Correctors}
-To correct the orbit, BESSY~II uses dipoles, also called correctors (CM) disposed around the orbit. Each dipole contributes to correcting in a given direction. 
+To correct the orbit, BESSY~II uses dipoles, also called correctors (CM) disposed around the orbit. Each dipole contributes to correcting in a given direction.
 
 \subsection{Monitor and corrector numbers}
 The number of monitors and correctors is quite important. Because the correction method used is based on an inversion problem (see \cref{sec:response_matrix}), it is important to have an over-constrained problem. Else a perfect correction would be reached at monitor positions but unconstrained (and thus potentially arbitrary bad) elsewhere.
 
 Therefore the number of BPMs is chosen quite greater than the number correctors.
 
-In BESSY~II there are 
+In BESSY~II there are
 \begin{itemize}
 	\item 128~BPMs, measuring both horizontal ($\text{BPM}_x$) and vertical ($\text{BPM}_x$) direction,
 	\item 48~CMs for the horizontal direction ($\text{CM}_x$) and 64 for the vertical one ($\text{CM}_y$).
 \end{itemize}
 
 \section{Some documented methods}
-Several global corrections methods are well documented in the literature. Local orbit bumps (presented in \cref{sec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example). The most common ones are the best corrector method and the response matrix method (see \cref{sec:most_effective_corr,sec:response_matrix}), as they provide a global correction, over the whole orbit. 
+Several global corrections methods are well documented in the literature. Local orbit bumps (presented in \cref{sec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example). The most common ones are the best corrector method and the response matrix method (see \cref{sec:most_effective_corr,sec:response_matrix}), as they provide a global correction, over the whole orbit.
 
 \subsection{Local orbit bumps}
 \label{sec:orbit_bump}
 Using local orbit bumps is a basic method that gives total control on the orbit local modification to the operator.
 
 \subsubsection{Principle}
-Adding a simple dipole on the path of a particle will focus or defocus it. As the particles must eventually return to the planned orbit, a series of dipoles can be set one after the other to design an arbitrary path. \Cref{fig:local_bump} shows a minimal example, where the black points represent the magnets. 
+Adding a simple dipole on the path of a particle will focus or defocus it. As the particles must eventually return to the planned orbit, a series of dipoles can be set one after the other to design an arbitrary path. \Cref{fig:local_bump} shows a minimal example, where the black points represent the magnets, and the dashed line the original orbit. Each magnet $M_i$ has position $s_i$, where the phase is $\Psi_i$ and the beta function  $\beta_i$. The orbit motion at this position is described by the vector $\vec{x}_i = (x_i , x'_i)$.
 \begin{figure}
 	\centering
 	\begin{tikzpicture}[auto, node distance=1.2,>=latex']
 	%\draw[help lines, yellow] (-1,-4)grid(15,3);
 	% We start by placing the blocks
 	\coordinate [] (lleft) {};
-	\node [draw, circle, fill=black, right=2 of lleft] (leftm) {};
-	\node [draw, circle, fill=black, above right=2 and 2.5 of leftm] (topm) {};
-	\node [draw, circle, fill=black, right=5 of leftm] (rightm) {};
+    \coordinate [right=.2 of lleft] (origin) {};
+    \coordinate [below=.2  of origin] (xaxisbottom) {};
+    \coordinate [above=2 of origin] (xaxistop) {};
+	\node [draw, circle, fill=black, right=2 of lleft, label=below:$M_1$] (leftm) {};
+    \node [draw, circle, fill=black, right=3 of leftm, label=below:$M_2$] (middlem) {};
+	\coordinate [above=1.5 of middlem] (topcoord) {};
+	\node [draw, circle, fill=black, right=4 of middlem, label=below:$M_3$] (rightm) {};
 	\coordinate [right=2 of rightm] (rright) {};
-	% Once the nodes are placed, connecting them is easy. 
-	\draw [-] (lleft) -- node {}(leftm);
-	\draw [-] (leftm) -- node {}(topm);
-	\draw [-] (topm) -- node {}(rightm);
-	\draw [-] (rightm) -- node {}(rright);
+	% Once the nodes are placed, connecting them is easy.
+	\draw [-] (lleft) -- (leftm);
+	\draw [-] (leftm) to [bend left=35] (topcoord);
+	\draw [-] (topcoord) to [bend left=35] (rightm);
+	\draw [->] (rightm) -- node [near end] {$s$} (rright);
+    \draw [->] (xaxisbottom)  -- node [near end]{$x$} (xaxistop);
+   	\draw [dashed] (leftm) -- (rightm);
 	\end{tikzpicture}
-	\caption{\label{fig:local_bump}Local bump with 3 magnets}
+	\caption{\label{fig:local_bump}Local bump with 3 magnets (inspired by~\cite{book:wille}, Fig~3.47)}
 \end{figure}
-\todo[inline]{see Wille p127 and p286}
 
+The strengths $\kappa_1$, $\kappa_2$, $\kappa_3$ of each magnets can be calculated with the formalism introduced in \cref{sec:beta_func}, \cref{eq:motion_transfert_matrix} in order to achieve the right displacement and respect the closed orbit condition. The following conditions must be fulfilled (closed orbit):
+\begin{equation}
+\vec{x}_1 = \dbinom{0}{\kappa_1} \qquad \text{and} \qquad
+\vec{x}_3 = \dbinom{0}{-\kappa_3}
+\end{equation}
+
+The orbit motion at $s_3$ is the superposition of the effects of $M_1$ and $M_2$ alone. It can thus be written
+\begin{equation}
+\vec{x}_3 = \mat{M}_{1 \rightarrow 3} \vec{x}_1 + \mat{M}_{2 \rightarrow 3} \dbinom{0}{\kappa_2}
+\end{equation}
+or
+\begin{equation*}
+\begin{pmatrix} 0 \\ -\kappa_3 \end{pmatrix} =
+\begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix} \begin{pmatrix} 0 \\ \kappa_1 \end{pmatrix} +
+\begin{pmatrix} b_{11} & b_{12} \\ b_{21} & b_{22} \end{pmatrix} \begin{pmatrix} 0 \\ \kappa_2 \end{pmatrix}
+\end{equation*}
+Solving this system of equations and replacing the coefficients of the matrix by their expression in \cref{eq:motion_transfert_matrix} leads to the values of $\kappa_2$ and $\kappa_3$ in function of $\kappa_1$ (see \cite{book:wille}, p.130 for the exact equations). This can allow an arbitrary displacement of the orbit at a given position. This can be extended to a version with $N$ magnets, which allows the free setting of $N-2$ parameters ($x$ or $x'$).
 
 \subsubsection{In practice}
 This solution is used for instance to shift a part of the orbit during particle injections, in order to prevent collisions. This can also be used to counter a known localized perturbation which source cannot be removed.
@@ -100,7 +122,7 @@ Let's assume that the $i$th corrector, at position $s_i$, has the optical parame
 The strength $\kappa_i$ of the field at the position $s_i$ is obtained minimizing the function
 \begin{equation}
 	\label{eq:gain_bestcorr}
-    f_i(\kappa_i) = \sum\limits_{j=1}^{m} (u_j-x_{ij}(\kappa_i))^2 
+    f_i(\kappa_i) = \sum\limits_{j=1}^{m} (u_j-x_{ij}(\kappa_i))^2
                   = \sum\limits_{j=1}^{m} (u_j- \kappa_i h_{ij})^2
 \end{equation}
 
@@ -116,7 +138,7 @@ with, if $\Delta \Psi_{ij} := \Psi_j-\Psi_i$,
                          \right].
 \end{align}
 
-It follows that 
+It follows that
 \begin{equation}
     \kappa_i = \frac{\sum\limits_{j=1}^m u_j h_{ij}}{\sum\limits_{j=1}^m h_{ij}^2}
 \end{equation}
@@ -187,12 +209,12 @@ BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID cor
         \node [draw, ellipse, line width=1pt, dotted, minimum height=.5cm, minimum width=.8cm, above=-.25 of ring.north, label=above right:\footnotesize Correctors] () {};
         \node [draw, ellipse, line width=1pt, dotted, minimum height=.5cm, minimum width=.8cm, above=-.25 of ring.west, label=above left:\footnotesize BPMs] (BPM) {};
         \coordinate [left=1 of sum.center](leftback) {};
-        
-        % Once the nodes are placed, connecting them is easy. 
+
+        % Once the nodes are placed, connecting them is easy.
         \draw [->] (xref)     -- node [pos=0.85, left]{$-$} node {$\vec{X}_\text{ref}$}(sum);
         \draw [->] (sum)      -- node {$\Delta\vec{X}$} (prod);
         \draw [->] (invS)     -- node {$\mat{S}^*$}        (prod);
-        \draw [->] (prod)     -- node {}             (gain);              
+        \draw [->] (prod)     -- node {}             (gain);
         \draw [->] (gain)     -- node {$\Delta\vec{\Theta}_\text{t}$}             (PID);
         \draw [->] (PID)      -- node {$\Delta\vec{\Theta}$} node[pos=0.80, below] {$-$}      (sum2);
         \draw [->] (pidcoef)  -- node[pos=0.70, above, fill=white] {PID coeff.} (PID);
@@ -200,15 +222,13 @@ BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on a PID cor
         \draw [->] (straight) |- node[pos=0, right] {$\vec{\Theta}_{(n)}$} (delay);
         \draw [->] (delay)    -| node[above] {$\vec{\Theta}_{(n-1)}$} (sum2);
         \draw [->] (straight) -- node[pos=0.80] {}  (ring);
-
-
         \draw [-]  (ring)     -| node {}             (leftback);
         \draw [->] (leftback) |- node[pos=0.5] {$\vec{X} $}  (sum.west);
 \end{tikzpicture}
     \caption{\label{fig:block_correction}The correction process}
 \end{figure}
 
-The control value at correction cycle $n$ is the differential orbit 
+The control value at correction cycle $n$ is the differential orbit
 \begin{equation}
  \Delta \vec{X}(n) := \vec{X}(n)-\vec{X}_\text{ref}
 \end{equation}
@@ -218,7 +238,7 @@ which is expected to be 0. The correction provided by the weighted response matr
 \end{equation}
 (with $\odot$ the point-wise multiplication and $\vec{W}$ the vector of weights) and modulated by the PID correction. The ideal PID has the form
 \begin{equation}
-H_{PID}(s) = K_p + \frac{K_i}{s} + K_d \cdot s 
+H_{PID}(s) = K_p + \frac{K_i}{s} + K_d \cdot s
 \end{equation}
 or, with the z transform (calculated with Euler's method),
 \begin{equation}
@@ -240,7 +260,7 @@ For stability reasons, the PID was always implemented as a proportional correcto
 
 \subsection{Technical overview}
 
-The correction is naturally automatized. Because the read/write actions should be really fast, a specific infrastructure was designed. This is represented on \cref{fig:cbox_mbox}. 
+The correction is naturally automatized. Because the read/write actions should be really fast, a specific infrastructure was designed. This is represented on \cref{fig:cbox_mbox}.
 
 \begin{figure}[!h]
     \centering
@@ -260,7 +280,7 @@ The following actors are playing a role in the process:
 
 After having received the authorization to run from the cBox, the mBox process starts. It first does its full initialization, which only happens on start (the response matrix, the reference orbit, the PID parameters, etc. cannot change while the mBox process is running), and starts the ADC (Analog-to-Digital Converter). From this time, the ADC will write new orbit values to the RFM at a rate of \SI{150}{\hertz}.
 
-The mBox waits for the ADC interruption to read the new orbit data from the RFM. The correction is then calculated (in Amperes) and the values are converted in a format easily transmissible (basically unsigned integers). This data is written back to RFM and an interruption is sent to inform the other elements that the new values are available. This is read by the IOCs that relay to the power supplies alimenting the corrector magnets. 
+The mBox waits for the ADC interruption to read the new orbit data from the RFM. The correction is then calculated (in Amperes) and the values are converted in a format easily transmissible (basically unsigned integers). This data is written back to RFM and an interruption is sent to inform the other elements that the new values are available. This is read by the IOCs that relay to the power supplies alimenting the corrector magnets.
 
 This defines a real time process, repeated at the frequency of \SI{150}{\hertz}.
 
@@ -354,8 +374,8 @@ where a $Y(s)$ is the Laplace transform of the system output and $U(s)$ the Lapl
     \node [block, below=of delay] (ADC2) {$\downarrow$ \SI{150}{\hertz}};
     \coordinate [right= of Hring] (connectout) {};
     \node [input, right= of connectout] (out) {};
-    
-    % Once the nodes are placed, connecting them is easy. 
+
+    % Once the nodes are placed, connecting them is easy.
     \draw [->] (xref)     	-- node [pos=0.2] {$\vec{X}_\text{ref}$}
 							   node [pos=0.85, below]{$-$}  (sum);
     \draw [->] (sum)      	-- node {$\Delta\vec{X}$}    	(correct);

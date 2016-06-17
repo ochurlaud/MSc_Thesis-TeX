@@ -1,6 +1,6 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
-% !TeX root = ../main.tex
+% !TeX root = ../MasterThesis_OlivierChurlaud_2016.tex
 
 \chapter{Basics of particle accelerator physics}
 \label{sec:acc_physics}
@@ -15,7 +15,7 @@ The frame of reference is $K=(\vec{e}_x,\vec{e}_y, \vec{e}_s)$, which origin fol
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{img/orbit_coordinates.pdf}
-    \caption[Description of the co-moving coordinate system]{\label{fig:coordinate system}Description of the co-moving coordinate system (inspired by~\cite{book:wille})}
+    \caption[Description of the co-moving coordinate system]{\label{fig:coordinate system}Description of the co-moving coordinate system (inspired by~\cite{book:wille}, Fig~3.2)}
 \end{figure}
 Let $\varphi$ be the azimuth angle, oriented by $\vec{e}_y$. Then, since $ds = -R d\varphi$, it can be written
 \begin{equation}
@@ -66,7 +66,7 @@ The following assumptions are assumed to be valid.
 \label{sec:eq_motion}
 Newton's second law can be applied with the Lorentz force
 \begin{equation}
-\dot{\vec{p}} = e(\vec{E}+\vec{v} \times \vec{B}) 
+\dot{\vec{p}} = e(\vec{E}+\vec{v} \times \vec{B})
 \end{equation}
 which according to (A3) becomes
 \begin{equation}
@@ -136,7 +136,7 @@ y''(s) + k(s) y(s) &= 0
 \label{sec:beta_func}
 The beta function will provide a description of properties of a beam of many particles.
 
-The only further assumption is that $\frac{1}{R} = 0$ and $\frac{\Delta p}{p_0}=0$. The orbit curve is thus assumed almost flat and the momentum deviation negligible. \Cref{eq:motion_particle} turns in Hill's differential equation: 
+The only further assumption is that $\frac{1}{R} = 0$ and $\frac{\Delta p}{p_0}=0$. The orbit curve is thus assumed almost flat and the momentum deviation negligible. \Cref{eq:motion_particle} turns in Hill's differential equation:
 \begin{equation}
 \label{eq:hill_diff}
 	x''(s) - k(s) x(s) = 0
@@ -175,7 +175,7 @@ The \emph{beta function} $\beta(s)$ is defined as
 \label{eq:beta_func}
 \beta(s) := u^2(s).
 \end{equation}
-
+and allows to rewrite
 Substituting $A = \sqrt{\varepsilon}$ provides the final trajectory equation
 \begin{empheq}[box=\fbox]{equation}
 	\label{eq:orbit_equation}
@@ -184,13 +184,35 @@ Substituting $A = \sqrt{\varepsilon}$ provides the final trajectory equation
 
 The constant $\varepsilon$ is termed \emph{emittance} and the envelop of the orbit at each position $s$ is $E(s) = \sqrt{\varepsilon \beta(s)}$, which defines the size of the beam.
 
-Since the beta function controls the size of the beam, this is the function that must be finely controlled. A matrix calculation method is presented in \cite{book:wille} in order to calculate it step by step around the orbit. Knowing this, $\Psi$ can be calculated by rewriting \cref{eq:phase_psi} as 
-\begin{empheq}[box=\fbox]{equation}
-\Psi(s)=\int \limits_{0}^{s} \frac{d\sigma}{\beta(\sigma)},
-\end{empheq}
-and the particle trajectories can be calculated for a given emittance.
+Finally, deriving $x(s)$ leads to
+\begin{align}
+    x'(s) &= \frac{\sqrt{\varepsilon \beta'(s)}}{2\sqrt{\beta(s)}} \cos \left( \Psi(s) + \phi \right)
+         - \sqrt{\varepsilon \beta(s)}\frac{1}{\beta(s)} \sin \left(\Psi(s)+\phi \right) \nonumber \\
+          &= -\sqrt{\frac{\varepsilon}{\beta(s)}} \left[\alpha(s) \cos \left( \Psi(s) + \phi \right)
+             + \sin \left(\Psi(s)+\phi \right) \right]
+\end{align}
+with
+\begin{equation}
+    \alpha(s) := -\frac{\beta'(s)}{2}
+\end{equation}
 
-Theses two functions $\Psi$ and $\beta$ will be extensively used in the next sections as the perturbation localization process and several correction methods rely on them.
+Since the beta function controls the size of the beam, this is the function that must be finely controlled. A matrix calculation method is presented in \cite{book:wille} in order to calculate $\beta(s)$ and $\alpha(s)$ step by step around the orbit. Once these are known, the particle trajectory can be easily calculated through the matrix multiplication
+\begin{equation}
+\begin{pmatrix}x(s) \\ x'(s) \end{pmatrix} = \mat{M} \begin{pmatrix}x(0) \\ x'(0) \end{pmatrix}.
+\end{equation}
+From the equations of $x(s)$ and $x'(s)$, some trigonometrical manipulations and choosing $\phi(0)=0$ it can be shown that (with simplified notations)
+\begin{equation}
+\label{eq:motion_transfert_matrix}
+\mat{M} = \begin{pmatrix}
+                \sqrt{\dfrac{\beta}{\beta_0}}\left( \cos \Psi + \alpha_0 \sin \Psi  \right)
+              & \sqrt{\beta\beta_0}\sin \Psi
+             \\ \dfrac{( \alpha_0-\alpha ) \cos \Psi - (1+\alpha_0\alpha)\sin \Psi}{\sqrt{\beta\beta_0}}
+              & \sqrt{\dfrac{\beta_0}{\beta}}\left( \cos \Psi-\alpha \sin \Psi \right)
+          \end{pmatrix}.
+\end{equation}
+
+
+The two functions $\Psi$ and $\beta$ will be extensively used in the next sections as the perturbation localization process and several correction methods rely on them.
 
 \remark The calculation done for the $x$ direction can be done similarly for the $y$ one, which defines a $\beta_x(s)$, $\beta_y(s)$, $\varepsilon_x$, $\varepsilon_y$, $\Psi_x(s)$ and $\Psi_y(s)$
 
@@ -214,7 +236,7 @@ Q = \frac{\Delta \Psi}{2 \pi} = \frac{1}{2 \pi} \oint\frac{ds}{\beta(s)}.
 
 The tune is a constant for a circular accelerator: it describes the number of betatron oscillation undergone by a particle per revolution.
 
-It can be shown that tune values that satisfy 
+It can be shown that tune values that satisfy
 \begin{equation}
 \label{eq:coupled_resonance}
 m Q_x + n Q_y = p \qquad (m, n, p) \in \mathbb{Z}
@@ -222,7 +244,7 @@ m Q_x + n Q_y = p \qquad (m, n, p) \in \mathbb{Z}
 produce coupled resonance of order $|m|+|n|$. A pair of value $(Q_x,Q_y)$ is used as working point so that it either does not satisfy \cref{eq:coupled_resonance} or with a high order (above the 5th order for instance).
 
 \section{Summary}
-Two very important functions were defined here: $\beta (s)$ and $\Psi (s)$, respectively the variation of the trajectory amplitude and the betatron phase. These functions highly depend on the accelerator optic and when determined, knowing the real objects that produce them (e.g. magnets, spools) is no more needed.
+Two very important functions were defined here: $\beta (s)$ and $\Psi (s)$, respectively the variation of the trajectory amplitude and the betatron phase. These functions highly depend on the accelerator optic and when determined, knowing the real objects that produce them (e.g. magnets, coils) is no more needed.
 
 The tune $Q$ is a constant parameter defined from them as the number of betatron oscillation per revolution.
 
