@@ -1,12 +1,12 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
-% !TeX root = ../main.tex
+% !TeX root = ../MasterThesis_OlivierChurlaud_2016.tex
 
 \chapter{Localization of orbit perturbations}
 \label{sec:localization}
 
  A correction, as adapted as it can be, will never be perfect. Instead of dealing with the effects of the perturbation, its sources can first be investigated. When all possible sources are found and removed or isolated, a correction algorithm can be applied to the remaining perturbations, which will hopefully yield to better results.
- 
+
  If no source is really obvious (e.g. a non-isolated transformer, the \SI{50}{\hertz} perturbation of the main power), the orbit itself can give some hints to localize it. One local perturbation affects indeed the whole revolution. It results in an oscillation across the orbit which, because of the closed orbit property, will brutally change its angle at the position of the source  brutally changes its angle (see \cref{fig:kick}). This position is termed \textit{kick}.
 
 \begin{figure}[!h]
@@ -25,7 +25,7 @@ Two types of perturbations will be described in this section:
 \label{sec:loc_static}
 
 \subsection{Theoretical setting of the problem}
-The problem is described with the betatron phase variable 
+The problem is described with the betatron phase variable
 \begin{equation}
 \Psi = \int\limits_{0}^s \frac{d\sigma}{\beta(\sigma)}.
 \end{equation}
@@ -34,14 +34,14 @@ The spatial variable $s$ is only used to have a connection between the result an
 
 Let one kick be at $\Psi = \hat{\Psi}$. The orbit is modified and oscillates with a constant period of \SI{2 \pi}{\radian}. Because there is \emph{only one} kick and according to the closed orbit condition, the oscillation after the kick will be stable for one revolution. Furthermore, the orbit must be continuous on all points, thus at the kick position too. This is illustrated in \cref{fig:kick}.
 
-Two revolutions are considered, in order to be sure to find one full revolution without kick. Let $\Psi_\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\hat\Psi$ where the kick happens is the one so that 
+Two revolutions are considered, in order to be sure to find one full revolution without kick. Let $\Psi_\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\hat\Psi$ where the kick happens is the one so that
 \begin{equation}
 \exists (b, c) \in \mathbb{R}^2:
 \forall \Psi \in [\hat\Psi, \hat\Psi + 2 \pi Q], \quad
 x(\Psi) = b \sin(\Psi + c)
 \end{equation}
 
-This problem has 3 unknowns which should be determined: $\hat\Psi, b, c$. 
+This problem has 3 unknowns which should be determined: $\hat\Psi, b, c$.
 
 \subsection{Practical setting}
 In order to know the position of the orbit, BPMs are used.
@@ -77,7 +77,7 @@ It is then defined
 k_0 = \underset{k \in [0, m-1]}{\textrm{argmin}}\{||\tilde{\vec{x}}-\vec{x}^k||_2\}
 \end{equation}
 
-If there where no noise in the signal, and if the number $m$ of BPMs was infinite, then the kick would be exactly at $\Psi_{k_0}$. However in the real case (with noise), it can only be said that the kick is around $\Psi_{k_0}$, and the closest sine is $\tilde{x}(\Psi) = b \sin(\Psi + c)$. 
+If there where no noise in the signal, and if the number $m$ of BPMs was infinite, then the kick would be exactly at $\Psi_{k_0}$. However in the real case (with noise), it can only be said that the kick is around $\Psi_{k_0}$, and the closest sine is $\tilde{x}(\Psi) = b \sin(\Psi + c)$.
 
 To find the exact position of the kick, the property of closed orbit is used: the orbit must be continuous also at the kick phase, which means that $\hat{\Psi}$ is the solution of
 \begin{align}
@@ -89,7 +89,7 @@ b \sin(\Psi + c) &= b\sin(\Psi+c+2 \pi Q),\\
 \Psi + c &\equiv \Psi + c + 2 \pi Q \pmod{2 \pi} \\
 \Psi + c &\equiv \pi - (\Psi + c + 2 \pi Q) \pmod{2 \pi}
 \end{cases} \nonumber\\
-\iff &\begin{cases} 
+\iff &\begin{cases}
 2 \pi Q &\equiv 0\pmod \pi \qquad\qquad\textit{(Never true)}\\
 \Psi &\equiv \left(\frac{1}{2} - Q\right) \pi - c \pmod \pi
 \end{cases} \nonumber
@@ -143,7 +143,7 @@ x_0 \\ x_2 \\ \vdots \\ x_{m-1}
 \begin{pmatrix}
 a \\ a_1 \\ a_2
 \end{pmatrix}
-= 
+=
 \mathrm{pseudo\_inv}
 \begin{pmatrix}
 1 & \sin(\Psi_0) & \cos(\Psi_0) \\
@@ -156,7 +156,7 @@ x_0 \\ x_2 \\ \vdots \\ x_{m-1}
 \end{pmatrix}
 \end{align}
 
-The pseudo inverse is calculated in \texttt{Matlab} with 
+The pseudo inverse is calculated in \texttt{Matlab} with
 \begin{verbatim}
         a = M\x
 \end{verbatim}
@@ -187,7 +187,7 @@ In the numerical case, the scalar product is approximated by its vectorial count
 By defining $b = \sqrt{a_1^2+a_2^2}$ and $c = \mathrm{atan2}(a_2, a_1)$ the previous formulas can be written
 \begin{equation*}
 \tilde{x}(\Psi) = a + a_1 \sin(\Psi) + a_2 \cos(\Psi) = a + b \sin(\Psi + c).
-\end{equation*} 
+\end{equation*}
 
 \subsection{Results}
 
@@ -197,14 +197,14 @@ By defining $b = \sqrt{a_1^2+a_2^2}$ and $c = \mathrm{atan2}(a_2, a_1)$ the prev
 \todo[inline]{Linear system: perturbation f = source f}
 Some perturbations can be purely harmonic. The example of the \SI{50}{\hertz} field generated by the main power is an obvious one that cannot be easily isolated. \todo{figure fft signal}
 
-The spectrum of orbit is given in figure XXX. 
+The spectrum of orbit is given in figure XXX.
 
-In this section, the perturbation is supposed harmonic with a given frequency $f$. 
+In this section, the perturbation is supposed harmonic with a given frequency $f$.
 
 As the perturbation has a known frequency, its complex amplitude can be extracted from the signal of each BPM with a Fourier transform:
 
 \begin{equation}
-\forall i \in [1, \mathrm{BPM\_nb}], \qquad 
+\forall i \in [1, \mathrm{BPM\_nb}], \qquad
 \begin{cases}
 \vec{X}_i = \mathrm{FFT}(\vec{x}_i) \\
 c_i = \vec{X}_i(f)
@@ -224,7 +224,7 @@ The new signal $\vec{\hat{c}}$ can be used as an orbit signal: each BPM have one
 \remark To achieve the phase optimization given in \cref{eq:harm_perturb_opt}, the Karhunen–Loève transform (or principal component analysis) can be used~\cite{book:wang_2012}. A description of the algorithm is given in \cref{apx:KLT}. If the results are exactly the same, this allows the problem to be solved within a broader theoretical setting. The goal is not anymore to see the cosine part vanish but to deal with the perturbation space in which the distortion is the largest. In theory, dealing with each principal component would allow to find the position of each perturbation source.
 
 \subsection{Case of several perturbation sources}
-If there are several perturbation sources, a $\alpha_0$ that let the cosine part vanish cannot be found. 
+If there are several perturbation sources, a $\alpha_0$ that let the cosine part vanish cannot be found.
 
 
 \subsection{Results}
