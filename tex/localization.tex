@@ -32,14 +32,15 @@ The problem is described with the betatron phase variable
 
 The spatial variable $s$ is only used to have a connection between the result and the actual ring. The explanation will be led in the horizontal plane (with the $x$ variable), but is also valid in the vertical one ($y$).
 
-Let one kick be at $\Psi = \hat{\Psi}$. The orbit is modified and oscillates with a constant period of \SI{2 \pi}{\radian}. Because there is \emph{only one} kick and according to the closed orbit condition, the oscillation after the kick will be stable for one revolution. Furthermore, the orbit must be continuous on all points, thus at the kick position too. This is illustrated in \cref{fig:kick}.
+Let one kick be at a given phase $\Psi = \hat{\Psi}$. The orbit is modified and oscillates with a constant period of \SI{2 \pi}{\radian}. Because there is \emph{only one} kick and according to the closed orbit condition, the oscillation after the kick will be stable for one revolution. Furthermore, the orbit must be continuous on all points, thus at the kick position too. This is illustrated in \cref{fig:kick}.
 
 Two revolutions are considered, in order to be sure to find one full revolution without kick. Let $\Psi_\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\hat\Psi$ where the kick happens is the one so that
 \begin{equation}
 \exists (b, c) \in \mathbb{R}^2:
 \forall \Psi \in [\hat\Psi, \hat\Psi + 2 \pi Q], \quad
-x(\Psi) = b \sin(\Psi + c)
+x(\Psi) = b \cos(\Psi + c)
 \end{equation}
+where Q is the tune of the orbit (see \cref{eq:tune}).
 
 This problem has 3 unknowns which should be determined: $\hat\Psi, b, c$.
 
@@ -111,7 +112,7 @@ and the two remaining possible values are
 \end{equation}
 the kick being chosen as the closest one from $\Psi_{k_0}$.
 
-\subsection{Finding the good sine}
+\subsection{Finding the good sinusoidal}
 Several methods are possible to find the best matching sine, for example by using:
 \begin{itemize}
 	\item a pseudo-inversion
@@ -121,14 +122,14 @@ Several methods are possible to find the best matching sine, for example by usin
 \paragraph{Pseudo-inversion}
 The problem can be set as a linear equation problem as follow.
 \begin{align}
-&\forall k \in [0,m-1], \tilde{x}(\Psi_k) = a_1 \sin(\Psi_k) + a_2 \cos(\Psi_k) + a \nonumber \\
+&\forall k \in [0,m-1], \tilde{x}(\Psi_k) = a_1 \cos(\Psi_k) + a_2 \sin(\Psi_k) + a \nonumber \\
 %
 \implies &
 \begin{pmatrix}
-1 & \sin(\Psi_0) & \cos(\Psi_0) \\
-1 & \sin(\Psi_1) & \cos(\Psi_1) \\
+1 & \cos(\Psi_0) & \sin(\Psi_0) \\
+1 & \cos(\Psi_1) & \sin(\Psi_1) \\
 \vdots & \vdots & \vdots \\
-1 & \sin(\Psi_{m-1}) & \cos(\Psi_{m-1}) \\
+1 & \cos(\Psi_{m-1}) & \sin(\Psi_{m-1}) \\
 \end{pmatrix}
 \begin{pmatrix}
 a \\ a_1 \\ a_2
@@ -146,10 +147,10 @@ a \\ a_1 \\ a_2
 =
 \mathrm{pseudo\_inv}
 \begin{pmatrix}
-1 & \sin(\Psi_0) & \cos(\Psi_0) \\
-1 & \sin(\Psi_1) & \cos(\Psi_1) \\
+1 & \cos(\Psi_0) & \sin(\Psi_0) \\
+1 & \cos(\Psi_1) & \sin(\Psi_1) \\
 \vdots & \vdots & \vdots \\
-1 & \sin(\Psi_{m-1}) & \cos(\Psi_{m-1}) \\
+1 & \cos(\Psi_{m-1}) & \sin(\Psi_{m-1}) \\
 \end{pmatrix}
 \begin{pmatrix}
 x_0 \\ x_2 \\ \vdots \\ x_{m-1}
@@ -165,14 +166,14 @@ and in \texttt{Python} with the least-squares method
         a = numpy.linalg.lstsq(M, x).
 \end{verbatim}
 
-\paragraph{Scalar product with a sine (resp. cosine)}
+\paragraph{Projection on cosine/sine planes}
 Since the orbit is expected to be written as
 \begin{equation*}
-x(\Psi) = a+ a_1 \sin(\Psi) + a_2 \cos(\Psi)
+x(\Psi) = a+ a_1 \cos(\Psi) + a_2 \sin(\Psi)
 \end{equation*}
 it can also be described as
 \begin{equation}
-x(\Psi) = \scal{x}{1} + \scal{x}{\sin} \sin(\Psi) + \scal{x}{\cos} \cos(\Psi)
+x(\Psi) = \scal{x}{1} + \scal{x}{\cos} \cos(\Psi) + \scal{x}{\sin} \sin(\Psi)
 \end{equation}
 with $\scal{f}{g}$ being the scalar product for real functions: $\int_T f(t)g(u)dt$.
 
@@ -183,10 +184,12 @@ In the numerical case, the scalar product is approximated by its vectorial count
  & (\vec{f},\vec{g}) \quad\longmapsto \quad \frac{1}{n}\sum\limits_{k=0}^{n-1} f_i g_i
 \end{align*}
 
+This however provides less good results, as $\sin(\Psi)$ and $\cos(\Psi)$ are numerically orthogonal only if the frequency is a multiple of the sampling frequency divided by the number of samples ($F_s/N$) which cannot be always verified.
+
 \paragraph{Coefficient format}
-By defining $b = \sqrt{a_1^2+a_2^2}$ and $c = \mathrm{atan2}(a_2, a_1)$ the previous formulas can be written
+By defining $b = \sqrt{a_1^2+a_2^2}$ and $c = -\mathrm{arg}(a_1 + j a_2)$ the previous formulas can be written
 \begin{equation*}
-\tilde{x}(\Psi) = a + a_1 \sin(\Psi) + a_2 \cos(\Psi) = a + b \sin(\Psi + c).
+\tilde{x}(\Psi) = a + a_1 \cos(\Psi) + a_2 \sin(\Psi) = a + b \sin(\Psi + c).
 \end{equation*}
 
 \subsection{Results}
