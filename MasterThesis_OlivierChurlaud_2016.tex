@@ -11,6 +11,8 @@
 \usepackage{hyperref}
 \usepackage{titlesec} 
 \usepackage{tabulary}
+\usepackage{enumitem}
+\setlist{nosep, leftmargin=4em}
 
 % Maths
 \usepackage{amsmath}
@@ -21,6 +23,8 @@
 
 % Pictures
 \usepackage{graphicx}
+\usepackage{caption}
+\usepackage{subcaption}
 \usepackage{rotating}
 \usepackage{epstopdf}
 \usepackage{tikz}
@@ -110,11 +114,10 @@
 
 \appendix
 \renewcommand{\appendixname}{}
-%\appendixpage
-\makeatletter
-\titleformat{\chapter}{\bfseries\Huge}{}{0ex}{}
-\makeatother
-\chapter{Appendices}
+\appendixpage
+%\makeatletter
+%\titleformat{\chapter}{\bfseries\Huge}{}{0ex}{}
+%\makeatother
 \input{tex/appendix}
 
 \end{document}
