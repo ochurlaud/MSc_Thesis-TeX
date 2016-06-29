@@ -275,6 +275,7 @@ The correction is naturally automatized. Because the read/write actions should b
 
 All elements are connected to a reflective memory (RFM), which provides a high speed and low latency interface. This memory space is split in specified divisions to prevent data collisions: one part contains the configuration, a second the orbit values and the last one the correction values.
 
+\paragraph{Actors}
 The following actors are playing a role in the process:
 \begin{itemize}
     \item the \textbf{analog-to-digital converter (ADC)} reads the orbit displacement values from the BPMs and makes them available to the other actors.
@@ -284,6 +285,7 @@ The following actors are playing a role in the process:
     \item the \textbf{power supplies (PS)} provide a given power to the corrector magnets.
 \end{itemize}
 
+\paragraph{Process description}
 After having received the authorization to run from the cBox, the mBox process starts. It first does its full initialization, which only happens on start (the response matrix, the reference orbit, the PID parameters, etc. cannot change while the mBox process is running), and starts the ADC. From this time, the ADC will write new orbit values to the RFM at a rate of \SI{150}{\hertz}.
 
 The mBox waits for the ADC interruption to read the new orbit data from the RFM. The correction is then calculated (in Amperes) and the values are converted in the DAC input format (basically unsigned integers). This data is written back to RFM and an interruption is sent to inform the other elements that the new values are available. This is read by the IOCs that relay to the power supplies alimenting the corrector magnets.
@@ -297,9 +299,10 @@ The duration of each step is as following:
 \item writing the correction to the RFM: 0.5 to \SI{1}{\milli\second}
 \end{itemize}
 
-One of the side works done during this thesis was rewriting the whole mBox in C++ in a very object oriented way to allow a smaller computation time (the original one was written in \textsc{Matlab}), easier improvement and feature additions (like a dynamic correction, easier communication with external scripts, production/experimental modes, etc.). \todo{appendix}
+\remark One of the side works done during this thesis was rewriting the whole mBox in C++ in a very object oriented way to allow a smaller computation time (the original one was written in \textsc{Matlab}), easier improvement and feature additions (like a dynamic correction, easier communication with external scripts, production/experimental modes, etc.). This is fully presented in \cref{apx:mbox}.
 
-The result of this correction can be seen on \cref{fig:compare_fofb}: the low frequencies and most of the peaks are reduced, which is a real gain for the end users of the accelerator. It's however not always sufficient and other methods are experimented to have the remaining disturbance decreased.
+\subsection{Result overview}
+The results of this correction can be seen on \cref{fig:compare_fofb}: the low frequencies and most of the peaks are reduced, which is a real gain for the end users of the accelerator. Unfortunately, the correction gain provides only a correction up to $\sim\!\SI{12}{\hertz}$., and increasing it let the system become instable. Such a correction is therefore not always sufficient and other methods are experimented to decrease the remaining disturbances.
 
 \begin{figure}
     \centering
@@ -361,13 +364,13 @@ This can then be applied to the reference signal $x_{10}$: for the $i$th correct
 y[n] = h * x_{10} [n] =  \sum\limits_{k=0}^{14} h[k] \cdot x_{10}[n-k]
 \end{equation}
 
-The result of the algorithm is shown in \cref{fig:compare_dyn_corr}. Interestingly enough, the FIR filter needed a phase rotation of $-\frac{3}{4}\pi \text{~rad}$ to obtain a good result. It should be noted that the storage ring was filled with low current only.
+The result of the algorithm is shown in \cref{fig:compare_dyn_corr}. It can be seen that the perturbation is completely removed. Interestingly enough, the FIR filter needed a phase rotation of $-\frac{3}{4}\pi \text{~rad}$ to obtain a good result. It should be noted that the storage ring was filled with low current only.
 
 \begin{figure}
     \centering
     \begin{subfigure}[b]{0.8\textwidth}
         \includegraphics[width=\linewidth]{img/fft_fofb_low}
-        \caption{FOFB nnly}
+        \caption{FOFB only}
     \end{subfigure}
 %    \hfill
     \begin{subfigure}[b]{0.8\textwidth}
@@ -405,31 +408,41 @@ where a $Y(s)$ is the Laplace transform of the system output and $U(s)$ the Lapl
     % We start by placing the blocks
     \node [input] (xref) {};
     \node [operator, right=1.5 of xref] (sum) {$+$};
-    \node [block, right=of sum] (correct) {Correction};
-    \node [block, right=of correct] (DAC) {$\uparrow$};
-    \node [block, right=of DAC] (delay) {Delay T};
+    \node [operator, right=of sum] (xsmat) {$\times$};
+    \node [input, above=of xsmat] (smat) {};
+    \node [block, right=of xsmat] (corrector) {K};
+    \node [operator, right=of corrector] (suminit) {+};
+    \node [input, above=of suminit] (initval) {};
+    \node [block, right=of suminit] (DAC) {$\uparrow$};
+    \node [block, right=of DAC] (delay) {$\begin{matrix}\text{Delay T}\\\text{\footnotesize Computation}\end{matrix}$};
     \node [operator, right=of delay] (sumperturb) {$+$};
     \node [input, above=of sumperturb] (perturb) {};
     \node [block, right=of sumperturb] (Hring) {$\text{H}_\text{ring}$};
-    \node [block, below=of delay] (ADC2) {$\downarrow$ \SI{150}{\hertz}};
+    \node [block, below=of delay] (lowpass) {Low pass};
+    \node [block, below=of DAC] (ADC) {$\downarrow$ \SI{150}{\hertz}};
     \coordinate [right= of Hring] (connectout) {};
     \node [input, right= of connectout] (out) {};
 
     % Once the nodes are placed, connecting them is easy.
-    \draw [->] (xref)     	-- node [pos=0.2] {$\vec{X}_\text{ref}$}
-							   node [pos=0.85, below]{$-$}  (sum);
-    \draw [->] (sum)      	-- node {$\Delta\vec{X}$}    	(correct);
-    \draw [->] (correct)  	-- node {}                   	(DAC);
+    \draw [->] (xref)     	-- node [pos=0.2] {$\vec{X}_\text{ref}$} (sum);
+    \draw [->] (sum)      	-- node {$\Delta\vec{X}$}    	(xsmat);
+    \draw [->] (smat)      	-- node {$\mat{S}*$}    	    (xsmat);
+    \draw [->] (xsmat)  	-- node {}                   	(corrector);
+    \draw [->] (corrector) 	-- node {$\Delta\vec{\Theta}$} 	(suminit);
+    \draw [->] (initval) 	-- node {$\vec{\Theta}_0$}      (suminit);
+    \draw [->] (suminit)  	-- node {$\vec{\Theta}$}        (DAC);
     \draw [->] (DAC)      	-- node {}                   	(delay);
-    \draw [->] (delay)    	-- node[above] {}            	(sumperturb);
-    \draw [->] (perturb)  	-- node {$d$}               	(sumperturb);
+    \draw [->] (delay)    	-- node {$\theta(t)$}         	(sumperturb);
+    \draw [->] (perturb)  	-- node {$d(t)$}               	(sumperturb);
     \draw [->] (sumperturb) -- node {}                		(Hring);
     \draw [-]  (Hring)    	-- node {}                 		(connectout);
-    \draw [->] (connectout) -- node {}                 		(out);
-    \draw [->] (connectout) |- node {}                 		(ADC2);
-	\draw [->] (ADC2)     	-| node[pos=0.5] {$\vec{X}$}	(sum.south);
+    \draw [->] (connectout) -- node {$x(t)$}          		(out);
+    \draw [->] (connectout) |- node {}                 		(lowpass);
+    \draw [->] (lowpass)    -- node {}                 		(ADC);
+	\draw [->] (ADC)     	-| node[pos=0.5] {$\vec{X}$}
+                               node [pos=0.90, left]{$-$}	(sum.south);
     \end{tikzpicture}
-    \caption{\label{fig:model_simul}The full model}
+    \caption{\label{fig:model_simul}The full model, K being the corrector to define}
 \end{sidewaysfigure}
 \todo[inline]{TODO}
 
