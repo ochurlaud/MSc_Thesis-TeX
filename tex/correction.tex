@@ -319,23 +319,25 @@ The results of this correction can be seen on \cref{fig:compare_fofb}: the low f
 \end{figure}
 
 \section{Improvement of the correction for harmonic perturbations}
+\label{sec:dyn_corr}
 The correction presented until now only provides a correction for the continuous component. It can be seen in \cref{fig:compare_fofb}, that if the correction drastically reduces the perturbations in the lower frequencies (below \SI{10}{\hertz}), frequencies still have high components. This section will provide a method to correct harmonic perturbations.
 
 \subsection{General method}
 
-A simple extension of the previous method is to analyze a given harmonic of the orbit, and consider the Fourier coefficient of each monitor as the complex amplitude of the orbit
+A simple extension of the previous method is to analyze a given harmonic of the orbit, and consider the Fourier coefficient of each monitor as the complex amplitude of the harmonic orbit of interest
 \begin{equation}
-	\forall f \in \mathbb{R}, \qquad c_f = \frac{2}{T} \int_0^T x(t) e^{-j 2 \pi f t} dt
+	\label{eq:orbit_extract}
+	\forall f \in \mathbb{R}, \qquad X_f = \frac{2}{T} \int_0^T x(t) e^{-j 2 \pi f t} dt
 \end{equation}
 or, in the digital domain,
 \begin{equation}
-\forall f \in \left[0, \frac{Fs}{2}\right], \qquad c_f = \frac{2}{N} \sum\limits_{k=0}^{N-1} x(k) e^{-j 2 \pi f \frac{k}{F_s}}
+\forall f \in \left[0, \frac{Fs}{2}\right], \qquad X_f = \frac{2}{N} \sum\limits_{k=0}^{N-1} x(k) e^{-j 2 \pi f \frac{k}{F_s}}
 \end{equation}
 where $F_s$ is the sampling frequency, $f = \frac{1}{T}$ the frequency of interest and $N$ the number of samples.
 
 This method functions because it decomposes the signal in orthogonal functions. With the digitalization, the harmonic function are orthogonal only when the frequency $f$ is a multiple of $\frac{F_s}{N}$. This can be a problem here, as the frequency to analyze might be exactly \SI{10}{\hertz} (see \cref{sec:dyn_corr_ex_10Hz}) and not \SI{9.975}{\hertz} if $N=2000$, $F_s=\SI{150}{\hertz}$. The complex amplitude is therefore used as initial value in a least-square-error algorithm for curve-fitting that will provide a hopefully more precise amplitude if the frequency of interest did met the precedent condition.
 
-This provides an complex orbit $\Delta\vec{X}_f$ for the harmonic $f$. From there the corrector values can be calculated with the traditional method
+This provides an complex differential orbit $\Delta\vec{X}_f$ for the harmonic $f$. From there the corrector values can be calculated with the traditional method
 \begin{equation}
 \Delta\vec{\Theta}_f = \mat{S}^{1}\, \Delta\vec{X}_f   \in \mathbb{C}^n.
 \end{equation}
