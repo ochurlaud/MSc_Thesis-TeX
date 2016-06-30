@@ -1,7 +1,5 @@
 % !TeX encoding = UTF-8
 % !TeX spellcheck = en_US
-% !TeX root = ../MasterThesis_OlivierChurlaud_2016.tex
-
 
 \documentclass[11pt,oneside,a4paper]{memoir}
 
@@ -52,7 +50,8 @@
 \renewcommand{\vec}[1]{\underline{#1}}
 \newcommand{\mat}[1]{\underline{\underline{#1}}}
 \newcommand{\scal}[2]{\langle #1 {\,,\,} #2 \rangle}
-
+\newcommand{\Real}[1]{\mathcal{R}e\left(#1\right)}
+\newcommand{\Imag}[1]{\mathcal{I}m\left(#1\right)}
 \newcommand{\remark}{\paragraph{Remark ---}}
 \setsecnumdepth{subsubsection}
 %\maxtocdepth{subsection}
@@ -115,9 +114,6 @@
 \appendix
 \renewcommand{\appendixname}{}
 \appendixpage
-%\makeatletter
-%\titleformat{\chapter}{\bfseries\Huge}{}{0ex}{}
-%\makeatother
 \input{tex/appendix}
 
 \end{document}
