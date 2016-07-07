@@ -34,7 +34,7 @@ The spatial variable $s$ is only used to have a connection between the result an
 
 Let one kick be at a given phase $\Psi = \hat{\Psi}$. The orbit is modified and oscillates with a constant period of \SI{2 \pi}{\radian}. Because there is \emph{only one} kick and according to the closed orbit condition, the oscillation after the kick will be stable for one revolution. Furthermore, the orbit must be continuous on all points, thus at the kick position too. This is illustrated in \cref{fig:kick}.
 
-Two revolutions are considered, in order to be sure to find one full revolution without kick. Let $\Psi_\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\hat\Psi$ where the kick happens is the one so that
+Two revolutions are considered, in order to be sure to find one full revolution without kick. Let $\Psi^\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\hat\Psi$ where the kick happens is the one so that
 \begin{equation}
 \exists (b, c) \in \mathbb{R}^2:
 \forall \Psi \in [\hat\Psi, \hat\Psi + 2 \pi Q], \quad
@@ -54,8 +54,8 @@ Only $m$ BPMs are distributed around the orbit. The previous variable can thus b
 \vec{x} = [x_0, x_1, ..., x_{m-1}]
 \end{cases} \quad \mathrm{and} \quad
 \begin{cases}
-\vec{\Psi}_\mathrm{ext} = [\vec{\Psi}, \vec{\Psi}+2\pi Q ]\\
-\vec{x}_\mathrm{ext} = [\vec{x}, \vec{x}]
+\vec{\Psi}^\mathrm{ext} = [\vec{\Psi}, \vec{\Psi}+2\pi Q ]\\
+\vec{x}^\mathrm{ext} = [\vec{x}, \vec{x}]
 \end{cases}
 \end{align}
 
@@ -69,6 +69,15 @@ An algorithm is designed to find a sine over a revolution, beginning at each BPM
 &\begin{cases}
 \vec{\Psi}^k = [\vec{\Psi}_\mathrm{ext}(k), \vec{\Psi}_\mathrm{ext}(k+1), \cdots,  \vec{\Psi}_\mathrm{ext}(k+m-1)]\\
 \vec{x}^k = [\vec{x}_\mathrm{ext}(k), \vec{x}_\mathrm{ext}(k+1), \cdots,  \vec{x}_\mathrm{ext}(k+m-1)]\\
+\tilde{\vec{x}} = \mathtt{fit\_sine}(\vec{x}^k, \vec{\Psi}^k)
+\end{cases}
+\end{align}
+
+\begin{align}
+\forall~k \in \, &[0,m-1], \nonumber \\
+&\begin{cases}
+\vec{\Psi}^k = [\Psi^\mathrm{ext}_{k}, \Psi^\mathrm{ext}_{k+1}, \cdots,  \Psi^\mathrm{ext}_{k+m-1}]\\
+\vec{x}^k = [x^\mathrm{ext}_{k}, x^\mathrm{ext}_{k+1}, \cdots,  x^\mathrm{ext}_{k+m-1}]\\
 \tilde{\vec{x}} = \mathtt{fit\_sine}(\vec{x}^k, \vec{\Psi}^k)
 \end{cases}
 \end{align}
@@ -202,12 +211,13 @@ Because the storage ring is considered in a first approximation as a linear syst
 
 The harmonic orbit is calculated the same way as in \cref{sec:dyn_corr}, \cref{eq:orbit_extract}, providing a complex vector $\Delta\vec{X}_f$.
 
-
 \subsection{Case of a unique perturbation source}
-If the perturbation is unique, then it is expected to be writable as $d(t) = A_d\cos(2\pi f t + \phi)$, and the orbit time signal for the $i$th BPM as $x(t) = \vec{\hat{X}}_f \cos (2\pi f t)$.
-
+If the perturbation is unique, then it is expected to be writable as $d(t) = A_d\cos(2\pi f t + \phi)$ and, because the phase shift is the same for all BPMs, the orbit time signal for the $i$th BPM as 
+\begin{equation}
+	x_i(t) = \hat{X}_{f,i} \cos (2\pi f t), \qquad \hat{X}_{f,i} \in \mathbb{R}.
+\end{equation}
 All complex amplitude must thus exactly describe the same sinusoid of frequency $f$ and phase $\alpha_0$, only the amplitude being different at each BPM.
-The complex vector $\Delta\vec{X}_f$ can thus be fully described by its amplitude.
+The complex vector $\Delta\vec{X}_f$ can thus be fully described by their amplitudes.
 
 However, since the signal contains also noise and that the perturbation \emph{might} not be unique, it is rotated until the vector of sine (or imaginary part) is minimal, or zero in a ideal case.
 \begin{equation}

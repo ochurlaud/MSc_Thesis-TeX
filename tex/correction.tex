@@ -14,18 +14,18 @@
 \label{sec:correction}
 
 \section{Motivation}
-The accelerators are designed so that the particles follow a given path, which is defined in the case of synchrotrons by the successive bendings involved by dipole magnets. Quadrupole magnets are additionally needed to provide focusing and guarantee the closing of the orbit. As the precision of the positioning of the magnets is limited, some errors may destabilize the orbit and increase the deviation of the particles around the theoretical orbit. In addition, the environment produces perturbations: for instance the 50~Hz of the main power, some not perfectly isolated magnetic sources.
+The accelerators are designed so that the particles follow a given path, which is defined in the case of synchrotrons by the successive bending involved by dipole magnets. Quadrupole magnets are additionally needed to provide focusing and guarantee the closing of the orbit. As the precision of the positioning of the magnets is limited, some errors may destabilize the orbit and increase the deviation of the particles around the theoretical orbit.
+
+In addition, the environment produces perturbations: for instance the 50~Hz of the main power, some not perfectly isolated magnetic sources (like the booster at \SI{10}{\hertz}). \Cref{fig:fft_no_correction} shows the spectrum of the beam displacement from the reference orbit before correction. 
+\begin{figure}
+	\centering
+	\includegraphics[width=.9\linewidth]{img/fft_no_corr}
+	\caption{\label{fig:fft_no_correction} Spectrum of the beam motion, without correction (vertical)}
+\end{figure}
 
 In order not to lose electrons in the walls of the vacuum chamber but also to increase the brightness of the synchrotron radiations (and therefore to have focused electron beams), all these residual misalignment and magnetic field errors must be corrected.
 
-\Cref{fig:fft_no_correction,fig:fft_fofb} show the spectrum of the beam displacement from the reference orbit, respectively without correction, and with the Fast-Orbit Feedback (FOFB) correction which is described in \cref{sec:correction_state_of_art}.
-
-\begin{figure}
-    \centering
-    \includegraphics[width=.9\linewidth]{img/fft_no_corr}
-    \caption{\label{fig:fft_no_correction} Spectrum of the beam motion, without correction (vertical)}
-\end{figure}
-
+The most classical correction methods will be presented here, before explicitly describing the case of BESSY~II and the ameliorations proposed during this thesis.
 
 \section{Monitoring and correction instruments}
 To be able to correct the orbit or localize perturbations, some tools must be employed.
@@ -54,10 +54,10 @@ The number of monitors and correctors is quite important. Because the correction
 
 Therefore the number of BPMs is chosen quite greater than the number correctors.
 
-In BESSY~II there are
+At BESSY~II there are
 \begin{itemize}
-	\item 128~BPMs, measuring both horizontal ($\text{BPM}_x$) and vertical ($\text{BPM}_x$) direction,
-	\item 48~CMs for the horizontal direction ($\text{CM}_x$) and 64 for the vertical one ($\text{CM}_y$).
+	\item 128~BPMs, measuring both horizontal ($\text{BPM}_\text{x}$) and vertical ($\text{BPM}_\text{y}$) direction,
+	\item 48~CMs for the horizontal direction ($\text{CM}_\text{x}$) and 64 for the vertical one ($\text{CM}_\text{y}$).
 \end{itemize}
 
 \section{Some documented methods}
@@ -110,7 +110,7 @@ or
 \begin{pmatrix} a_{11} & a_{12} \\ a_{21} & a_{22} \end{pmatrix} \begin{pmatrix} 0 \\ \kappa_1 \end{pmatrix} +
 \begin{pmatrix} b_{11} & b_{12} \\ b_{21} & b_{22} \end{pmatrix} \begin{pmatrix} 0 \\ \kappa_2 \end{pmatrix}
 \end{equation*}
-Solving this system of equations and replacing the coefficients of the matrix by their expression in \cref{eq:motion_transfert_matrix} leads to the values of $\kappa_2$ and $\kappa_3$ in function of $\kappa_1$ (see \cite{book:wille}, p.130 for the exact equations). This can allow an arbitrary displacement of the orbit at a given position. This can be extended to a version with $N$ magnets, which allows the free setting of $N-2$ parameters ($x$ or $x'$).
+Solving this system of equations and replacing the coefficients of the matrix by their expression in \cref{eq:motion_transfert_matrix} leads to the values of $\kappa_2$ and $\kappa_3$ in function of $\kappa_1$ (see \cite{book:wille}, p.130 for the exact equations). This can allow an arbitrary displacement of the orbit at a given position. This can be extended to a version with $N$ magnets, which allows the free setting of $N-2$ parameters ($x$ or $x'$). This is extensively described in \cite{book:wille}.
 
 \subsubsection{In practice}
 This solution is used for instance to shift a part of the orbit during particle injections, in order not to disturb already stored particles. It can also be used to counter a known localized perturbation which source cannot be removed.
@@ -169,7 +169,7 @@ The response matrix $\mat{S}$ is defined by the equation $\vec{X} = \mat{S}\, \v
 
 Inversing the response matrix will provide the correction to apply. Since it's very common to have more monitors than correctors, the matrix is not square. A \emph{singular value decomposition} (SVD) is used on the matrix to provide a pseudo-inversion $\mat{S}^*$ of $\mat{S}$.
 
-Using the SVD also allows to use only the most significant singular values in the correction. This prevents to over-correct the orbit, by not considering less significant values that can result of noise in the monitors during the measure, or numerical artifacts for instance.
+Using the SVD also allows to use only the most significant singular values in the correction. This prevents to over-correct the orbit, by not considering less significant values that can result of noise in the monitors during the measure, numerical artifacts or incorrections in the response matrix.
 
 The correction can then be performed
 \begin{equation}
@@ -194,8 +194,15 @@ A more common and precise way of constructing the response matrix is empirical: 
 
 \section{State of the art at BESSY II}
 \label{sec:correction_state_of_art}
+BESSY II currently implements a Fast Orbit Feedback (FOFB) which is based on the response matrix inverse. The correction algorithm will be first described in \cref{sec:correction_sa_corr}, and current choices will be discussed by references found in literature. A technical overview will then be provided in \cref{sec:correction_sa_technical}, presenting the actual processes taking part in the correction.
+
 \subsection{The correction}
-BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on the response matrix inverse. However, as already highlighted, the matrix never perfectly represents the orbit and because of noises in the environment, it is not sufficient. Some corrections might be needed in the frequency domain. To cope with these additional requirements, a PID correction (proportional response with gain $K_p$, integral response with gain $K_i$ and derivative response with gain $K_d$) is implemented. The full process goes as presented in \cref{fig:block_correction}.
+\label{sec:correction_sa_corr}
+Using the response matrix to correct the orbit is quite common \cite{book:wille,art:plouviez-1999,art:li-2001}. However, as already highlighted in \cref{sec:response_matrix}, the matrix never perfectly represents the orbit and because of noises in the environment, it is not sufficient. In general only the largest singular values are used and some corrections are additionally needed in the frequency domain.
+
+To cope with these additional requirements, a PID correction (proportional response with gain $K_p$, integral response with gain $K_i$ and derivative response with gain $K_d$) is used at BESSY~II. It also deals with the delays introduced by the process between the time the orbit is read by the BPMs and the moment the correction is actually applied \cite{art:plouviez-1999}.
+
+The full process goes as presented in \cref{fig:block_correction}.
 
 \begin{figure}
     \centering
@@ -232,16 +239,16 @@ BESSY II currently uses a Fast Orbit Feedback (FOFB) which is based on the respo
         \draw [-]  (ring)     -| node {}             (leftback);
         \draw [->] (leftback) |- node[pos=0.5] {$\vec{X} $}  (sum.west);
 \end{tikzpicture}
-    \caption{\label{fig:block_correction}The correction process}
+    \caption{\label{fig:block_correction}The correction process used at BESSY~II}
 \end{figure}
 
 The control value at correction cycle $n$ is the differential orbit
 \begin{equation}
- \Delta \vec{X}(n) := \vec{X}(n)-\vec{X}_\text{ref}
+ \Delta \vec{X}[n] := \vec{X}[n]-\vec{X}_\text{ref}
 \end{equation}
-which is expected to be 0. The correction provided by the weighted response matrix is then processed
+which is expected to be close to 0. The correction provided by the weighted response matrix is then processed
 \begin{equation}
-\Delta \vec{\Theta}_\text{t}(n) :=  \left[ \mat{S}^{-1} \cdot \Delta \vec{X}(n) \right] \odot \vec{W}
+\Delta \vec{\Theta}_\text{t}[n] :=  \left(\mat{S}^{-1} \cdot \Delta \vec{X}[n] \right) \odot \vec{W}
 \end{equation}
 (with $\odot$ the point-wise multiplication and $\vec{W}$ the vector of weights) and modulated by the PID correction. The ideal PID in the Laplace form is described with
 \begin{equation}
@@ -253,15 +260,15 @@ H_{PID}(z) = K_p + \frac{K_i}{1-z} + K_d \cdot (1-z)
 \end{equation}
 which yields
 \begin{equation}
-\Delta \vec{\Theta}(n) =  K_p \cdot \Delta \vec{\Theta}_\text{t}(n) + K_i \cdot \sum\limits_{k=0}^{n-1}\Delta \vec{\Theta}_\text{t}(k) + K_d \cdot \left[\Delta \vec{\Theta}_\text{t}(n) - \Delta \vec{\Theta}_\text{t}(n-1)\right].
+\Delta \vec{\Theta}[n] =  K_p \cdot \Delta \vec{\Theta}_\text{t}[n] + K_i \cdot \sum\limits_{k=0}^{n-1}\Delta \vec{\Theta}_\text{t}[k] + K_d \cdot \left(\Delta \vec{\Theta}_\text{t}[n] - \Delta \vec{\Theta}_\text{t}[n-1]\right).
 \end{equation}
 
 The real correction is eventually the accumulation of all corrections
 \begin{equation}
-\vec{\Theta}(n) = \vec{\Theta}(n-1) - \Delta \vec{\Theta}(n).
+\vec{\Theta}(n) = \vec{\Theta}[n-1] - \Delta \vec{\Theta}[n].
 \end{equation}
 
-For stability reasons, the PID was always implemented as a proportional corrector ($K_i$ and $K_d$ being zero). Because of the last accumulation, it was of course behaving like a proportional integrator (PI), which forbid the use of the other coefficients in the PID correction. \todo{implemented in the future? or see section XXX}
+For stability reasons, the PID was always implemented as a pure proportional corrector ($K_i$ and $K_d$ being set to zero). Indeed, because of the last accumulation, it was of course behaving like a proportional integrator (PI), which forbade the use of the other coefficients in the PID correction. In the simulations described in \cref{sec:correction_simulation}, a corrector PID can be implemented with more optimal coefficients. It is however important that the correction starts from an initial value known to be stable, so that the beam stays focused.
 
 \subsection{Technical overview}
 \label{sec:correction_sa_technical}
@@ -270,7 +277,7 @@ The correction is naturally automatized. Because the read/write actions should b
 \begin{figure}[!h]
     \centering
     \includegraphics[width=.85\linewidth]{img/mBox_cBox}
-    \caption{\label{fig:cbox_mbox}cBox and mBox: the correction infrastructure in BESSY II}
+    \caption{\label{fig:cbox_mbox}cBox and mBox: the correction infrastructure at BESSY~II}
 \end{figure}
 
 All elements are connected to a reflective memory (RFM), which provides a high speed and low latency interface. This memory space is split in specified divisions to prevent data collisions: one part contains the configuration, a second the orbit values and the last one the correction values.
@@ -344,7 +351,7 @@ This provides an complex differential orbit $\Delta\vec{X}_f$ for the harmonic $
 
 To apply the correction, an oscillation must finally be generated with the obtained parameters. This is, for the $i$th corrector
 \begin{equation}\label{eq:th_dyn_corr}
-\forall t \in  \mathbb{R}, \qquad y(t) = \left| \Delta\vec{\Theta}_f(i) \right| \cdot \cos\left(2 \pi f t - \arg\left(\Delta\vec{\Theta}_f(i)\right)\right).
+\forall t \in  \mathbb{R}, \qquad y_i(t) = \left| \Delta\Theta_{f,i} \right| \cdot \cos\left(2 \pi f t - \arg\left(\Delta\Theta_{f,i}\right)\right).
 \end{equation}
 
 The main problem with the method as presented here is that the generated signal phase must be synchronized with the time the correction parameters were measured. This is possible only for perturbations for which the source is already known and could be used as reference signal.
@@ -357,7 +364,7 @@ A coil was used to measure the field generated by a magnet powered by the same s
 
 The orbit and the reference signal were measured during the exact same time. Both were analyzed with the method presented above. Instead of using \cref{eq:th_dyn_corr}, the reference signal was used and its phase and amplitude where changed for each corrector with the help of a finite impulse response (FIR) filter. Because the sampling frequency is \SI{150}{\hertz}, a FIR with $N_\text{taps} = 15$ for the $i$th corrector can be designed as follow
 \begin{equation}
-	h_i(n) = \frac{2}{N_\text{taps}}\cdot \frac{\left| \Delta\vec{\Theta}_f(i) \right|}{\left|A_{10}\right|} \cdot \cos\left(2\pi\cdot \frac{f_{10}}{F_s} n - \left[\arg\left(\Delta\vec{\Theta}_f(i)\right) - \phi_{10}\right] \right),\quad n \in 0..N_\text{taps}-1
+	h_i[n] = \frac{2}{N_\text{taps}}\cdot \frac{\left| \Delta\Theta_{f,i} \right|}{\left|A_{10}\right|} \cdot \cos\left(2\pi\cdot \frac{f_{10}}{F_s} n - \left[\arg\left(\Delta\Theta_{f,i}\right) - \phi_{10}\right] \right),\quad n \in 0..N_\text{taps}-1
 \end{equation}
 where $A_{10}$ and $\phi_{10}$ are respectively the amplitude and the phase of the reference signal, $Fs=\SI{150}{\hertz}$, $f_{10}=\SI{10}{\hertz}$.
 
@@ -386,22 +393,209 @@ The result of the algorithm is shown in \cref{fig:compare_dyn_corr}. It can be s
 \section{System and correction simulation}
 One difficulty in improving the current correction process is that machine time is expensive: tests cannot be done very often. A wrong correction can indeed destabilize the orbit or worse, lose the electrons in the vacuum chamber walls, and thus it cannot be tested when the storage ring is on service or other scientists do experiments or measurements for their own research. However, has presented previously, the process is complex and it must be sure that every actors will play correctly in an improved process. Simulating the whole environment is expected to mitigate this.
 
-\subsection{System identification}
-The first step in the model is to represent the storage ring. This could be done analytically, by writing the magnet equations and deriving the full differential equations that bind the correction to orbit displacement. However, it would take a full master thesis to realize a good model, as there are very different types of components all around the orbit, with some non linear behavior.
+\subsection{Theoretical background}
+\subsubsection{System}
+To model a practical process, a system is used. 
 
-Instead a system identification is conducted. A brief theoretical explanation will be followed by the actual results.
+A system is defined as an operator $\mathcal{L}$, changing a set of $q$ inputs $\vec{u}$ in into $p$ outputs $\vec{y}$. Generally, the inputs, outputs and operator can vary with time, position, temperature or any possible variable.
 
-\subsubsection{Theoretical background}
-\todo[inline]{Def: LTI, Transfer function, Laplace transform, system identification}
-A linear time invariant system (LTI) is described by its transfer function
+For example if the inputs, outputs and operators are only time dependent:
 \begin{equation}
-	G(s) = \frac{Y(s)}{U(s)}
+	\vec{y}(t) = \mathcal{L}[\vec{u}(t),t]
 \end{equation}
-where a $Y(s)$ is the Laplace transform of the system output and $U(s)$ the Laplace transform of its input.
 
-\subsubsection{Results}
-\todo[inline]{TODO}
+\subsubsection{Linear time invariant system}
+A linear time invariant (LTI) system is 
+\begin{itemize}
+	\item \textbf{time invariant}: the operator $\mathcal{L}$ does not depend of the time, meaning that a given input will always generate the same output: $\mathcal{L}[\vec{u},t]=\mathcal{L}[\vec{u}]$. This is can also being described as
+	\begin{equation}
+		\vec{y}(t) = \mathcal{L}[\vec{u}(t)] \implies \forall \tau, \quad \vec{y}(t-\tau) = \mathcal{L}[\vec{u}(t-\tau)]
+	\end{equation}
+	\item \textbf{linear}: 	the operator  $\mathcal{L}$ is linear
+	\begin{equation}
+		\begin{cases}
+			\vec{y}_1(t) = \mathcal{L}[\vec{u}_1(t)] \\
+			\vec{y}_2(t) = \mathcal{L}[\vec{u}_2(t)] 
+		\end{cases}
+		\implies \forall (\alpha, \beta) \in \mathbb{R}^2, \quad
+		\alpha \vec{y}_1(t) + \beta \vec{y}_2(t) = \mathcal{L}[\alpha\vec{u}_1(t)+\beta\vec{u}_2(t)]
+	\end{equation}
+	This linearity property allows analyzing any complicated input as a sum of easier ones that will be superposed. The system complexity can thus be more easily handled.
+\end{itemize}
+
+It can be proven that in a LTI system, an harmonic input signal of frequency $f_0$ will produced an harmonic output signal with the same frequency. Only the amplitude and the phase will be different.
+
+\subsubsection{Transfer function}
+LTI systems can be described with specific operators called transfer functions.
+
+Let a system with a single input and single output (SISO) be described as 
+\begin{equation}
+	\label{eq:controlth_diff_eq}
+	\sum\limits_{k=0}^M a_k \frac{d^k y}{dt^k}(t) = \sum\limits_{j=0}^N b_j \frac{d^j u}{dt^j}(t).
+\end{equation}
+Taking its Laplace transform yields
+\begin{equation}
+\sum\limits_{k=0}^N a_k s^k Y(s) = \sum\limits_{j=0}^M b_j s^j U(s).
+\end{equation}
+where a $Y(s) = \mathcal{L}\{y(t)\}$ and $U(s) = \mathcal{L}\{u(t)\}$ the Laplace transform of its output and input.
+
+The transfer function is defined as
+\begin{equation}
+	\label{eq:controlth_tf}
+	G(s) = \frac{Y(s)}{U(s)} = \frac{\sum\limits_{j=0}^M b_j s^j}{\sum\limits_{k=0}^N a_k s^k}.
+\end{equation}
+
+\begin{itemize}
+	\item $N$ is the order of the system (i.e. the order of the pole polynomial) 
+	\item $N-M$ is the relative order
+	\item A system $G(s)$ is defined as \emph{proper} if $\lim\limits_{\omega \rightarrow \infty} G(j\omega) = D \neq \infty$, which requires $M < N$. It means that it can be physically realized.
+\end{itemize}
+
+\subsubsection{State-space description}
+If transfer functions are a very useful tool (for example to represent the Bode diagram of a function or easily combine successive systems), computing their outputs is not very practical. Another representation is often used, with the help of a inner variable $x(t)$:
+\begin{equation}
+\begin{cases}
+	\dfrac{d \vec{x}}{dt}(t) &= \mat{A}\,\vec{x}(t) + \mat{B}\, \vec{u}(t) \\
+	\vec{y}(t) &= \mat{C}\,\vec{x}(t) + \mat{D} \,\vec{u}(t)
+\end{cases}
+\quad , \qquad \vec{x}(0) = \vec{x}_0
+\end{equation}
+where $\mat{A} \in \mathbb{R}^{n \times n}$, $\mat{B} \in \mathbb{R}^{n \times q}$, $\mat{C} \in \mathbb{R}^{p \times n}$ and $\mat{D} \in \mathbb{R}^{p \times q}$ can be defined from the transfer function \cref{eq:controlth_tf} or directly from the differential equation model \cref{eq:controlth_tf}. This will not be described here, as Python and \textsc{Matlab} libraries provide functions to directly calculate the matrices. A more thorough reference can be found in \cite{lect:king-ident}.
+
+This representation is however a continuous representation, that cannot be used directly on a DSP. It must be first be transformed as follow \cite{lect:king-ident}, for a sampling rate $F_s = \frac{1}{T_s}$ 
+\begin{equation}
+	\mat{\tilde{A}} = e^{\mat{A} T_s}, \quad
+	\mat{\tilde{B}} = \int_0^{T_s} e^{\mat{A} (T_s-\tau)} \mat{B} d\tau,\quad
+	\mat{\tilde{C}} = \mat{C}, \quad
+	\mat{\tilde{D}} = \mat{D}
+\end{equation}
+and then 
+\begin{equation}
+\label{eq:controlth_ss}
+	\begin{cases}
+		\vec{x}[k+1] &= \mat{\tilde{A}}\,\vec{x}[k] + \mat{\tilde{B}}\, \vec{u}[k] \\
+		\vec{y}[k] &= \mat{\tilde{C}}\,\vec{x}[k] + \mat{\tilde{D}} \,\vec{u}[k]
+	\end{cases}
+	\quad , \qquad \vec{x}[0] = \vec{x}_0.
+\end{equation}
+
+\Cref{eq:controlth_ss} is mostly used in the simulation algorithm.
+
+\subsubsection{Empirical transfer function estimation}
+In some cases, modeling the system with differential equation is either to complex or provides to simplistic results. The system can instead being used as a black box, and it's frequency response measured.
+
+\paragraph{Using Fourier transform}
+The Laplace transform evaluated in $s=j\omega$ results in the Fourier transform. Therefore, as shown in \cref{eq:controlth_tf}, using an input with enough frequency content should allow getting a good estimation of the transfer function:
+\begin{equation}
+	\tilde{G}(j\omega) = \frac{Y(j\omega)}{U(j\omega)}.
+\end{equation}
+However this naive method is not really used in practice as the measurement noises and artifacts in the output would have strong impact on the estimation.
+
+\paragraph{Spectral density}
+A better method is to use the spectral density and the cross-spectral density.
+
+In the time domain, the output can be written as a function of the input by using a impulse response $g(t) = \mathcal{L}^{-1}\{G(s)\}$
+\begin{equation}
+	y(t) = g * u\,(t) =  \int_0^{+\infty} g(\tau) u(t-\tau)d\tau
+\end{equation}
+
+The cross-correlation between the input and the output is given by
+\begin{align}
+R_{uy}(\tau) &= E \left\{ u(t) y(t+\tau)\right\} \nonumber\\
+			 &= E \left\{ u(t) \int_0^{+\infty} g(v) u(t+\tau-v)dv\right\} \nonumber\\
+			 &= ... \nonumber \\ 
+			 &= \int_0^{+\infty} g(v) R_{uu}(\tau-v) dv \nonumber\\
+			 &= g * R_{uu} \, (\tau)
+\end{align}
+where $R_{uu}$ is the autocorrelation of the input. Transforming this equation to the frequency domain yields
+\begin{equation}
+	S_{uy}(j\omega) = G(j\omega)\cdot S_{uu}(j\omega)   \iff 	G(j\omega) = \frac{S_{uy}(j\omega) }{ S_{uu}(j\omega)}
+\end{equation}
+where $S_{uy}$ is the cross-spectral density and $S_{uu}$ the spectral density of the input.
+
+This provides better results in practice because only the relevant information of the signal is used: the transfer function estimation is less dependent of the measurement noise and other possible artifacts.
+
+\paragraph{Correct input}
+It is important to choose a good input signal. It must contain enough harmonic components to provide an estimation of the full spectrum. Literature often propose a pink noise or a sine-sweep.
+
+A pink noise is a signal which power spectrum is decreasing like $1/\omega$. The spectrum is thus fully represented, with high frequencies having less impact and therefore being less likely to harm the system. In a system like the storage ring, using a noise as input is however not a good idea. 
+
+A sine sweep is a sine which frequency increases with the time, so that every frequencies are represented. A linear increase can be obtained by setting
+\begin{equation}
+	f(t) = 2 f_\text{min} \cdot t + \frac{f_\text{max}-f_\text{min}}{2 \cdot t_\text{max}} t^2
+\end{equation}
+The input is then
+\begin{equation}
+	u(t) = A \sin(2\pi f(t))
+\end{equation}
+
+
+
+\subsection{System identification}
+The first step in the model is to represent the storage ring. This could be done analytically, by writing the magnet equations and deriving the full differential equations that bind the correction to orbit displacement. However, it would take a full master thesis to realize a good model, as there are very different types of components all around the orbit, with some non-linear, some coupled and complex behaviors.
+
+Instead a system identification is conducted. The system is the storage ring, with the differential orbit as the output, and correction magnet amplitude as input. It is assumed that the system can be modeled as a first approximation as a SISO system, generalized as a MIMO one by pre-multiplying it by the response matrix (which is a mere gain):
+\begin{equation}
+	\Delta \vec{X}(t) = \mat{S}\cdot \left[ g * \Delta\vec{\theta} \, (t) \right]
+\end{equation}
+
+A sine sweep was designed to cover from $f_\text{min} = 0$ to $f_\text{max} = F_s/2 = \SI{75}{\hertz}$ and used as the corrector magnets input (one by one).
+
+By using the (cross-)spectral density of the input and output signal, an experimental estimation of the transfer function is provided. The estimation is then fitted with a \textsc{Matlab} routine implementing the Fast Relaxed Vector Fitting \cite{art:vfit3-1, art:vfit3-2, art:vfit3-3, web:vfit3} and provides the continuous time state-space matrices $\mat{A}$, $\mat{B}$, $\mat{C}$ and $\mat{D}$. The result is shown \cref{fig:ctl_vfit3}.
+
+\begin{figure}
+	\begin{subfigure}[t]{0.5\linewidth}
+		\includegraphics[width=1\linewidth]{img/ctl_id_amplitude}
+		\caption{Amplitude}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.5\linewidth}
+		\includegraphics[width=1\linewidth]{img/ctl_id_phase}
+		\caption{Phase}
+	\end{subfigure}
+	\caption{\label{fig:ctl_vfit3}Results of the vector fitting with vfit3}
+\end{figure}
+
+It appeared that after converting the system to a transfer function, the numerator was complex. Taking only the real part of each coefficient provided a solution that still fitted the experimental data. In order to obtain a transfer function usable with the response matrix, it was normalized so that its ground gain was 1.
+
+\Cref{fig:ctl_vfit3} shows however only the frequency domain below \SI{75}{\hertz}. In the first simulations, it appeared that the step response presented a large spike which was hardly physically possible (see \cref{fig:ctl_id_spike}). To correct this, the numerator highest degree coefficient was set to 0, which led to the result given in \cref{fig:ctl_id_nospike}. 
+
+\begin{figure}
+	\begin{subfigure}[t]{0.5\linewidth}
+		\includegraphics[width=1\linewidth]{img/ctl_id_3z}
+		\caption{Frequency response}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.5\linewidth}
+		\includegraphics[width=1\linewidth]{img/ctl_id_3z_step}
+		\caption{Step response}
+	\end{subfigure}
+	\caption{\label{fig:ctl_id_spike}Normalized transfer function}
+\end{figure}
+
+\begin{figure}
+	\begin{subfigure}[t]{0.5\linewidth}
+		\includegraphics[width=1\linewidth]{img/ctl_id_2z}
+		\caption{Frequency response}
+	\end{subfigure}
+	\hfill
+	\begin{subfigure}[t]{0.5\linewidth}
+		\includegraphics[width=1\linewidth]{img/ctl_id_2z_step}
+		\caption{Step response}
+	\end{subfigure}
+	\caption{\label{fig:ctl_id_nospike}Normalized, zeros-corrected transfer function}
+\end{figure}
+
+Finally it the transfer function estimation is 
+\begin{equation}
+G(s) = \frac{117.322203 \,s^2 + 319144.577 \,s + 6801819.36}
+{s^3 + 1171.05630 \,s^2 + 375569.975 \,s +	6801819.36}
+\end{equation}
+
+The frequency response given in \cref{fig:ctl_id_nospike} corresponds to what was expected: an amplitude that decreases with frequencies, without amplification domain. To be sure that it corresponds to reality, a simulation of the current situation was conducted.
+
 \subsection{Simulation model}
+\label{sec:correction_simulation}
 
 \begin{sidewaysfigure}
     \centering
