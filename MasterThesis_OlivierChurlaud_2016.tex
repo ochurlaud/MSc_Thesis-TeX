@@ -35,13 +35,12 @@
 \input{tex/code_env}
 % % % % % % % % % % % % % % % % % %
 % trick not to release comments   %
-  \newif\ifrelease
+  \newif\ifdraft
 %	                              %
-	%\releasetrue
-	\releasefalse
+	%\releasefalse
+	\drafttrue
 %	                              %
-	\ifrelease
-	\else
+	\ifdraft
 		\usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
 	\fi
 % end of trick                    %
@@ -86,6 +85,10 @@
 \thispagestyle{empty}
 
 \input{tex/title}
+
+\ifdraft
+	\listoftodos
+\fi
 
 \cleardoublepage
 \begin{abstract}
