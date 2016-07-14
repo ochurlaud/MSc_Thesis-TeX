@@ -7,7 +7,7 @@
 \usepackage[utf8]{inputenc}
 \usepackage[shorthands=off,english]{babel}
 \usepackage{hyperref}
-\usepackage{titlesec} 
+\usepackage{titlesec}
 \usepackage{tabulary}
 \usepackage{enumitem}
 \setlist{nosep, leftmargin=4em}
@@ -54,21 +54,23 @@
 \newcommand{\remark}{\paragraph{Remark ---}}
 \setsecnumdepth{subsubsection}
 %\maxtocdepth{subsection}
-\renewcommand{\baselinestretch}{1.5} 
+\renewcommand{\baselinestretch}{1.5}
 \setlrmarginsandblock{3cm}{2.5cm}{*}
 \setulmarginsandblock{3cm}{2.5cm}{*}
 \checkandfixthelayout
 
-\def\thetitle{Localization and correction of orbit perturbations in BESSY II storage ring}
+\def\thedoctitle{Localization and correction of orbit perturbations in BESSY II storage ring}
 \def\thesubject{Master Thesis}
 \def\theauthor{Olivier Churlaud}
 \def\theauthorinfo{Matriculation number: 366\,964}
 \author{\theauthor}
-\title{\thetitle}
+\title{\thedoctitle}
+
+%\makeoddfoot{headings}{\footnotesize O. Churlaud}{}{\textit{\footnotesize \thesubject: \thedoctitle}}
 
 \hypersetup{
     unicode=true,
-    pdftitle={\thetitle},
+    pdftitle={\thedoctitle},
     pdfauthor={\theauthor},
     pdfsubject={\thesubject},
     colorlinks=true,       % false: boxed links; true: colored links

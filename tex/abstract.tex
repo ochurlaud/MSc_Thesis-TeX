@@ -3,6 +3,16 @@
 % !TeX root = ../MasterThesis_OlivierChurlaud_2016.tex
 
 \begin{abstract}
-\todo[inline]{TODO: abstract anglais + Allemand}
+BESSY~II is a \SI{240}{\meter} circular electron particle accelerator in Berlin, DE, aimed at producing stable and high-energy light ray by synchrotron radiation. This light source is used by various scientific projects and must therefore provide a very stable and reliable light, which means that the electrons must be very focused in middle of their vacuum-chamber. One of the key requirement is thus to be able to control and remove perturbations from the electron beam.
+
+The electron beam is described as an orbit, characterized by some parameters: the beta function $\beta$ which defines the size of the beam, the tune $Q$ which is the number of oscillations done by the beam around its ideal path in one revolution and the phase $\Psi$ of the orbit, which represents the magnet influence on the orbit.
+
+From this can be derived several correction methods, based on the activation of corrector magnets around the orbit. An inverse problem can being solved thanks to the pseudo-inversion of the response matrix representing the changes of the orbit when a corrector magnet is activated. This, used with a PID correction, already provides an acceptable stable orbit. Additionally, to correct some specific harmonic perturbation, a finite impulse response (FIR) filter that generates the opposite harmonic is implemented, removing most of the targeted perturbation. A simulation environment is designed to help improving the current correction.
+
+Finally, algorithms are written to localize harmonic and non-harmonic static sources of the perturbations, at a precision of 2 to \SI{4}{\meter} in the case of a vertical perturbation, and \SI{10}{\meter} in the horizontal case. This allows to manually isolate or remove the source, instead of correcting its effects.
 \end{abstract}
 
+\renewcommand{\abstractname}{Zusammenfassung}
+\begin{abstract}
+    \todo[inline]{TODO: abstract Allemand}
+\end{abstract}
