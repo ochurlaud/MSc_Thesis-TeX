@@ -290,4 +290,12 @@ A similar simulation was conducted for the harmonic simulation. Instead of setti
 The localization results are exactly the same as in the static case, provided that enough samples are used (for example, \SI{10}{\second} at \SI{150}{\hertz}, for frequencies up to \SI{70}{\hertz}) and that the added noise is not too high.
 
 \section{Summary}
-\todo[inline]{Loc: summary}
+Instead of trying to correct some perturbations with more or less success, trying to isolate or remove their source would be very appealing. With the described algorithms, one can expect reduce the potential zone to up to \SI{2}{\meter} (which is less than 1\% of the ring circumference) in perfect conditions, and in the worse case around 10 to \SI{20}{\meter} (or around 10\% of the circumference). With such a reduced area, it is very conceivable to determine the actual source, either with a mobile magnetometer or simply by observing the suspicious devices.
+
+A step further would be to localize several sources. To do this, one must be able to describe the orbit as an arbitrary piecewise sinusoid function, which is equivalent to the following requirements:
+\begin{enumerate}
+    \item Find the number of perturbation sources (or piece junctions)
+    \item Find the position of theses perturbation sources (or where the junctions are)
+\end{enumerate}
+
+The only work in this direction resulted in a brute-force algorithm which would test every single possibility and finally keep the one with the lowest RMS. Further mathematical and algorithmic literature must be studied before deepening this idea.

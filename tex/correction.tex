@@ -597,10 +597,17 @@ The frequency response given in \cref{fig:ctl_id_nospike} corresponds to what wa
 \subsection{Simulation model}
 \label{sec:correction_simulation}
 
+In order to represent at best the environment, the simulation needs to take in account computation delays and that the correction happens at a given sampled time \SI{150}{\hertz}) whereas other systems perform in continuous time. To achieve that, the simulation is played step by step, at \SI{150}{\hertz} for the correction process and \SI{1.5}{\kilo\hertz} for the continuous time.
+
+\Cref{fig:model_simul} represents the block diagram of the environment, $\text{H}_\text{ring}$ being the identified transfer function of storage ring, and the low pass filter representing the averaging of orbit values in the BPM recording. A initial correction $\vec{\theta}_0$, which is normally provided by a punctual correction process (the slow orbit feedback or SOFB), is needed to ensure the stability of the orbit.
+
 \begin{sidewaysfigure}
     \centering
     \begin{tikzpicture}[auto, node distance=1,>=latex']
-    %\draw[help lines, yellow] (-1,-4)grid(15,3);
+%    \draw[help lines, yellow] (-1,-4)grid(15,3);
+    \draw [dashed, black] (-.5, 1.7) -- (10.1, 1.7) -- (10.1, -3.5) -- (-.5, -3.5) -- cycle;
+    \draw [black](2.8, -3.7) node [above right=0 0.2] {\small mBox --- $F_s=\SI{150}{\hertz}$};
+
     % We start by placing the blocks
     \node [input] (xref) {};
     \node [operator, right=1.5 of xref] (sum) {$+$};
@@ -618,7 +625,7 @@ The frequency response given in \cref{fig:ctl_id_nospike} corresponds to what wa
     \node [block, below=of DAC] (ADC) {$\downarrow$ \SI{150}{\hertz}};
     \coordinate [right= of Hring] (connectout) {};
     \node [input, right= of connectout] (out) {};
-
+    
     % Once the nodes are placed, connecting them is easy.
     \draw [->] (xref)     	-- node [pos=0.2] {$\vec{X}_\text{ref}$} (sum);
     \draw [->] (sum)      	-- node {$\Delta\vec{X}$}    	(xsmat);
@@ -640,10 +647,48 @@ The frequency response given in \cref{fig:ctl_id_nospike} corresponds to what wa
     \end{tikzpicture}
     \caption{\label{fig:model_simul}The full model, K being the corrector to define}
 \end{sidewaysfigure}
-\todo[inline]{CTL : Simulation}
 
 \subsection{Simulation results}
-\todo[inline]{CTL : Simulation results}
+Several scenari were designed to validate the simulation, and propose some enhancement to current correction. The delay of the computation is approximated by $\delta t = \SI{3}{\milli\second}$.
+ 
+\subsubsection{Current configuration at BESSY~II}
+To represent the current configuration in BESSY~II, the PID corrector presented in \cref{sec:correction_state_of_art} was implemented as a pure integrator of amplitude 0.8. The closed-loop system frequency response would be as given in \cref{fig:ctl_freqresp_pid}. As in the reality, frequencies below \SI{10}{\hertz} are damped, and are slightly amplified above. Applying the simulation step by step with a plausible perturbation leads to the result presented in \cref{fig:ctl_sim_pid}.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{img/ctl_freqresp_pid}
+        \caption{\label{fig:ctl_freqresp_pid} Bode diagram of the closed-loop}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{img/ctl_sim_pid}
+        \caption{\label{fig:ctl_sim_pid}Simulation}
+        \end{subfigure}    
+    \caption{Frequency response for K = PID(0, $0.8\cdot F_s$, 0)}
+\end{figure}
+
+The PID can then be slightly enhanced by finding better coefficients, for example with K~=~PID($0.9$, $0.5\cdot F_s$, $0.15/F_s$), which result can be seen in \cref{fig:ctl_freqresp_bestpid,fig:ctl_sim_bestpid}. It can be seen there that more frequencies are slightly damped and that the amplified area is smaller, with less gain, providing better results.
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{img/ctl_freqresp_bestpid}
+        \caption{\label{fig:ctl_freqresp_bestpid} Bode diagram of the closed-loop}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{img/ctl_sim_bestpid}
+        \caption{\label{fig:ctl_sim_bestpid}Simulation}
+    \end{subfigure}    
+    \caption{Frequency response for a better PID}
+\end{figure}
+
+\subsubsection{Best correction at BESSY~II}
+Following the design rules defined in \cite{book:Skogestad-2005}, one can synthesize an $\mathcal{H}_\infty$ controller, which is an optimal controller obtained by optimizing the closed and opened loop over the $\infty$-norm with given parameters. The Robust Control Toolbox from \textsc{Matlab} was used for this effect.
+
+The 
+\todo[inline]{Optimal correction: Maybe theory in first part and only results at the end?}
 
 \section{Summary}
 \todo[inline]{CTL : Conclusion}
