@@ -61,3 +61,30 @@
     \lstset{#1}
 }
 {}
+
+% Matlab style for highlighting
+\newcommand\matlabstyle{\lstset{
+    language=Matlab,
+    basicstyle=\linespread{1}\footnotesize\ttfamily,
+    otherkeywords={self},             % Add keywords here
+    keywordstyle=\footnotesize\ttfamily\bfseries\color{deepblue},
+    emph={},          % Custom highlighting
+    emphstyle=\bf\color{deepred},    % Custom highlighting style
+    stringstyle=\color{violet},
+    frame=tb,                         % Any extra options here
+    showstringspaces=false,           % 
+    tabsize=4,
+    numbers=left,    
+    numberstyle=\tiny\color{gray}, 
+    breaklines=true,
+    autogobble=true,
+    commentstyle=\color{deepgreen},           
+}}
+
+% Matlab environment
+\lstnewenvironment{Matlab}[1][]
+{
+    \matlabstyle
+    \lstset{#1}
+}
+{}

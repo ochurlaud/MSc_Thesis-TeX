@@ -684,11 +684,63 @@ The PID can then be slightly enhanced by finding better coefficients, for exampl
     \caption{Frequency response for a better PID}
 \end{figure}
 
-\subsubsection{Best correction at BESSY~II}
-Following the design rules defined in \cite{book:Skogestad-2005}, one can synthesize an $\mathcal{H}_\infty$ controller, which is an optimal controller obtained by optimizing the closed and opened loop over the $\infty$-norm with given parameters. The Robust Control Toolbox from \textsc{Matlab} was used for this effect.
+\subsubsection{Optimal correction}
+Following the design rules defined in \cite{book:Skogestad-2005}, one can synthesize an $\mathcal{H}_\infty$-corrector, which is an optimal corrector obtained by optimizing the closed and opened loop over the $\infty$-norm\footnote{The $\infty$-norm is defined for vectors as $||\vec{x}||_\infty = \max\limits_{i} |x_i|$} with given parameters. The Robust Control Toolbox from \textsc{Matlab} was used for this effect. The \textsc{Matlab} script given below is an adapted copy of what can be found in Skogestad \cite{book:Skogestad-2005}, page 60. The computation delay is modeled with the Padé approximation of first order \cite{book:matrix} provided by \textsc{Matlab} and added to the system, so that the corrector takes this in account.
+\begin{Matlab}
+% The robust control toolbox is needed.
 
-The 
-\todo[inline]{Optimal correction: Maybe theory in first part and only results at the end?}
+% Load ring transfert function
+[G_num, G_den] = load(G) 
+
+% Create delay
+delay = 0.003;
+[dnum, dden] = pade(delay, 1);
+
+G = nd2sys(conv(G_num,d_num),conv(G_den,d_den),1);
+
+% Define parameters
+fb = 30  % Bandwidth
+wb = fb*2*pi;  
+M = 1.001;  % Lim sup (high freq.)
+Am = 10^-4;  % Lim sup (low freq.)
+
+% Create weights
+Wp = nd2sys([1/M wb], [1 wb*Am]);
+Wu = 1;
+
+% Define the system
+systemnames = 'G Wp Wu';
+inputvar = '[r(1) ; u(1)]';
+outputvar = '[Wp; Wu; r-G]';
+input_to_G = '[u]';
+input_to_Wp = '[r-G]';
+input_to_Wu = '[u]';
+sysoutname = 'P';
+cleanupsysic = 'yes';
+sysic;
+
+% Compute corrector
+nmeas=1; nu=1; gmn=0.5; gmx=20; tol=0.001;
+[khinf,ghinf,gopt] = hinfsyn(P,nmeas,nu,gmn,gmx,tol);
+\end{Matlab}
+
+This provides a corrector, which frequency response can be seen in \cref{fig:ctl_freqresp_hinf}: very efficient in low frequencies, it has however an amplification area that can be a problem. Correctors with different bandwidth where synthesize. The simulation is given in \cref{fig:ctl_sim_hinf}. The results are strangely enough always less efficient than the proposed PID (in \cref{fig:ctl_freqresp_bestpid}). \todo{$\mathcal{H}_\infty$: Review this part with Maxim}
+
+\begin{figure}
+    \centering
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{img/ctl_freqresp_hinf}
+        \caption{\label{fig:ctl_freqresp_hinf} Bode diagram of the closed-loop, $f_b$ = \SI{50}{Hz}}
+    \end{subfigure}
+    \hfill
+    \begin{subfigure}{0.49\textwidth}
+        \includegraphics[width=\textwidth]{img/ctl_sim_hinf}
+        \caption{\label{fig:ctl_sim_hinf}Simulation (several bandwidths)}
+    \end{subfigure}    
+    \caption{Frequency response of $\mathcal{H}_\infty$-correctors}
+\end{figure}
 
 \section{Summary}
-\todo[inline]{CTL : Conclusion}
+In order to be sure that the electron beam remains focused and stable, a control process is needed. The concerned hardware and software stack at BESSY~II was first studied and the main actor (the mBox) modernized. To the original correction was added a dynamic correction, that can correct static harmonic perturbations and have them almost completely disappear.
+
+In parallel, a simulation environment was built in order to be able to predict the influence of some parameters on the system and to closely study how to correct at best the orbit position. From this was predicted that a more optimized PID corrector is possible, which only needs to be validated experimentally. The optimal correction direction must be considered in more depth and, on a more ambitious perspective, the design of robust MIMO correctors would certainly provide better and more reliable results.
