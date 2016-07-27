@@ -5,7 +5,7 @@
 \chapter{Conclusion}
 
 \section{Master thesis summary}
-To provide BESSY~II users a reliable light, the electrons orbit in the storage ring must be finely controlled. To remove perturbations, a process based on multiple actors implement an inverse problem solving coupled with a PID corrector. After the process was modernized so that it is easily expendable, a dynamic correction was designed resulted in totally removing the \SI{10}{\hertz} harmonic perturbation. A the implementation of a simulation environment allowed synthesizing and testing correctors, which will finally provide an enhancement to the current correction process.
+To provide BESSY~II users a reliable light, the electrons orbit in the storage ring must be finely controlled. To remove perturbations, a process based on multiple actors implement an inverse problem solving coupled with a PID corrector. After the process was modernized so that it is easily expendable, a dynamic correction was designed resulted in totally removing the \SI{10}{\hertz} harmonic perturbation. The implementation of a simulation environment allowed synthesizing and testing correctors. An improved PID and an optimal corrector were proposed to enhance the current correction process.
 
 As some perturbations cannot or are difficult to correct, algorithms were able localize their source with a precision of around 1\% of the circumference if they affect orbit vertically, and around 10 to 20\% if horizontally.
 
@@ -16,7 +16,7 @@ All the tools having developed in very modular ways and precisely documented, th
 The duration of the master thesis being limited, some interesting developments were only slightly considered and not deepened.
 
 \begin{itemize}
-    \item To achieve better correction and control results, a more precise system analysis of the storage ring should be conducted. In this thesis, the system identification did not use any theoretical and physical input to allow a more constrained and less noise sensible identification. 
-    \item As the storage ring is a MIMO system (several corrector magnet, influencing the response of several BPMs) with coupling effect also between the horizontal and vertical axes, it is sensible to work in the direction of synthesizing robust MIMO correctors.
+    \item To achieve better correction and control results, a more precise system analysis of the storage ring should be conducted, which would allow a more constrained and less noise sensitive identification.  In this thesis, the system identification did not use any theoretical and physical input.
+    \item As the storage ring is a MIMO system (several corrector magnet, influencing the response of several BPMs) with coupling effect also between the horizontal and vertical axes, future work should go in the direction of synthesizing robust MIMO correctors.
     \item On the localization side, implementing an algorithm able to localize several perturbation seems to be a very challenging mathematical study.
 \end{itemize}

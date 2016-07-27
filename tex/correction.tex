@@ -115,7 +115,7 @@ Solving this system of equations and replacing the coefficients of the matrix by
 \subsubsection{In practice}
 This solution is used for instance to shift a part of the orbit during particle injections, in order not to disturb already stored particles. It can also be used to counter a known localized perturbation which source cannot be removed.
 
-It is indeed very efficient to locally shift the orbit. However it cannot be used for correction, as it only modify the path of the orbit itself and only locally.
+It is indeed very efficient to locally shift the orbit. However it cannot be used for correction, as it needs a precise knowledge of the optic of the ring, which is not the case (some devices have no theoretical optic model). Further more, it would be an iterative method as the correction would need to be calculated and applied for each orbit segment.
 
 \subsection{Most effective corrector method}
 \label{sec:most_effective_corr}
@@ -303,7 +303,7 @@ The duration of each step is as following:
 \begin{itemize}
 \item orbit value acquisition (BPMs): 0.3 to \SI{1.7}{\milli\second}
 \item correction computation: 0.5 to \SI{1}{\milli\second}
-\item writing the correction to the RFM: 0.5 to \SI{1}{\milli\second}
+\item transmission of the correction date to the power supplies: 0.5 to \SI{1}{\milli\second}
 \end{itemize}
 
 \remark One of the side works done during this thesis was rewriting the whole mBox in C++ in a very object oriented way to allow a smaller computation time (the original one was written in \textsc{Matlab}), easier improvement and feature additions (like a dynamic correction, easier communication with external scripts, production/experimental modes, etc.). This is fully presented in \cref{apx:mbox}.
@@ -322,7 +322,7 @@ The results of this correction can be seen on \cref{fig:compare_fofb}: the low f
         \includegraphics[width=\linewidth]{img/fft_fofb}
         \caption{FOFB correction}
     \end{subfigure}
-    \caption{\label{fig:compare_fofb}Orbit motion spectrum: with and without FOFB (vertical)}
+    \caption{\label{fig:compare_fofb}Orbit motion spectrum: with and without FOFB (vertical, current: \SI{300}{\milli\ampere})}
 \end{figure}
 
 \section{Improvement of the correction for harmonic perturbations}
@@ -386,7 +386,7 @@ The result of the algorithm is shown in \cref{fig:compare_dyn_corr}. It can be s
     \includegraphics[width=\linewidth]{img/fft_fofb_dyn_low}
     \caption{FOFB + \SI{10}{\hertz} correction}
     \end{subfigure}
-    \caption{\label{fig:compare_dyn_corr}Orbit motion spectrum: with and without \SI{10}{\hertz} harmonic correction (vertical)}
+    \caption{\label{fig:compare_dyn_corr}Orbit motion spectrum: with and without \SI{10}{\hertz} harmonic correction (vertical, current: \SI{15}{\milli\ampere})}
 \end{figure}
 
 
@@ -528,8 +528,6 @@ The input is then
 \begin{equation}
 	u(t) = A \sin(2\pi f(t))
 \end{equation}
-
-
 
 \subsection{System identification}
 The first step in the model is to represent the storage ring. This could be done analytically, by writing the magnet equations and deriving the full differential equations that bind the correction to orbit displacement. However, it would take a full master thesis to realize a good model, as there are very different types of components all around the orbit, with some non-linear, some coupled and complex behaviors.
