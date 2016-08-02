@@ -5,7 +5,7 @@
 \chapter{Localization of orbit perturbations}
 \label{sec:localization}
 
- A correction, as adapted as it can be, will never be perfect. Instead of dealing with the effects of the perturbation, its sources can first be investigated. When all possible sources are found and removed or isolated, a correction algorithm can be applied to the remaining perturbations, which will hopefully yield to better results.
+ A correction, as adapted as it can be, will never be perfect. Instead of dealing with the effects of the perturbation, its sources can first be investigated. When all possible sources are found and removed or isolated, a correction algorithm can be applied to the remaining perturbations, which will hopefully yield better results.
 
  If no source is really obvious (e.g. a non-isolated transformer, the \SI{50}{\hertz} perturbation of the main power), the orbit itself can give some hints to localize it. One local perturbation affects indeed the whole revolution. It results in an oscillation across the orbit which, because of the closed orbit property, will brutally change its angle at the position of the source  brutally changes its angle (see \cref{fig:kick}). This position is termed \textit{kick}.
 
@@ -216,7 +216,7 @@ Some perturbations can be purely harmonic. The example of the \SI{50}{\hertz} fi
 
 As the shown in \cref{fig:compare_fofb}, the correction leaves some spikes in the spectrum, which is to be avoided. Hopefully some of them might be localized and removed or isolated, dealing again with the cause of the perturbation instead of its symptom.
 
-Because the storage ring is considered in a first approximation as a linear system, the source of an harmonic perturbation can be localized as an harmonic disturbance with the same frequency. The same very same algorithm can thus be used on a pseudo-orbit extracted from the harmonic of interest. 
+Because the storage ring is considered in a first approximation as a linear system, the source of an harmonic perturbation can be localized as an harmonic disturbance with the same frequency. The very same algorithm can thus be used on a pseudo-orbit extracted from the harmonic of interest. 
 
 The harmonic orbit is calculated the same way as in \cref{sec:dyn_corr}, \cref{eq:orbit_extract}, providing a complex vector $\Delta\vec{X}_f$.
 
@@ -285,7 +285,7 @@ Finally on \cref{fig:loc_reconstructed_sine} can be seen the orbit and the sinus
 
 The same artificial experiment was conducted by setting each corrector separately to an arbitrary value and trying to localize it back. \Cref{fig:loc_all_corr} shows the localization errors. It appears that the localization error in such an environment is quite precise in the vertical direction ($d \approx \SI{2}{\meter}$ on a ring of \SI{240}{\meter}), except around the 11th corrector. In this area, during the measurement of the response matrix used to generate the artificial orbit was activated a 7 Tesla wiggler, which is a device for producing intense X-rays from the electron beam; this means that it has a significant impact on the orbit optics and is therefore likely to degrade the localization process. A real test, directly on the storage ring, would certainly provide better results at this position, but reduce the overall precision because of measurement noises. In the horizontal direction, the results are less accurate because the number of available points by oscillation is lower. The horizontal tune is approximatively 17.85 whereas the vertical one is 6.74, while the number of BPMs is identical in both directions.
 
-Even by taking the worse localization error, it reduces the source position to less than $1/10$ of the orbit circumference, which is already a non-negligible gain in the perturbation source removal process.
+Even by taking the worst localization error, it reduces the source position to less than $1/10$ of the orbit circumference, which is already a non-negligible gain in the perturbation source removal process.
 
 \subsection{10 Hertz harmonic perturbation}
 A similar simulation was conducted for the harmonic simulation. Instead of setting the selected corrector magnet to an arbitrary amplitude, it is set to a sine with an arbitrary phase (in this case, random between 0 and $\SI{2\pi}{\radian}$), sampled at $F_s=\SI{150}{\hertz}$. Every sample vector is then multiplied with the response matrix, which results in an orbit sample. This orbit can then be used as the input of the algorithm presented in \cref{sec:loc_dyn}.
@@ -293,4 +293,4 @@ A similar simulation was conducted for the harmonic simulation. Instead of setti
 The localization results are exactly the same as in the static case, provided that enough samples are used (for example, \SI{10}{\second} at \SI{150}{\hertz}, for frequencies up to \SI{70}{\hertz}) and that the added noise is not too high.
 
 \section{Summary}
-Instead of trying to correct some perturbations with more or less success, trying to isolate or remove their source would be very appealing. With the described algorithms, one can expect reduce the potential zone to up to \SI{2}{\meter} (which is less than 1\% of the ring circumference) in perfect conditions, and in the worse case around 10 to \SI{20}{\meter} (or around 10\% of the circumference). With such a reduced area, it is very conceivable to determine the actual source, either with a mobile magnetometer or simply by observing the suspicious devices.
+Instead of trying to correct some perturbations with more or less success, trying to isolate or remove their source would be very appealing. With the described algorithms, one can expect to reduce the potential zone to up to \SI{2}{\meter} (which is less than 1\% of the ring circumference) in perfect conditions, and in the worst case around 10 to \SI{20}{\meter} (or around 10\% of the circumference). With such a reduced area, it is very conceivable to determine the actual source, either with a mobile magnetometer or simply by observing the suspicious devices.

@@ -82,6 +82,15 @@
 
 \begin{document}
 
+\tikzset{
+    block/.style = {draw, fill=white, rectangle, minimum height=3em, minimum width=4em},
+    gain/.style = {draw, fill=white, isosceles triangle, minimum height=3em, minimum width=2em},
+    operator/.style= {draw, fill=white, circle},
+    input/.style = {coordinate},
+    output/.style= {coordinate},
+    pinstyle/.style = {pin edge={to-,thin,black}},
+}
+
 \frontmatter
 \cleardoublepage
 \thispagestyle{empty}
@@ -114,6 +123,7 @@
 \input{tex/background}
 \input{tex/accphysics}
 \input{tex/correction}
+\input{tex/control}
 \input{tex/localization}
 \input{tex/conclusion}
 
