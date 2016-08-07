@@ -52,7 +52,7 @@ The following assumptions are taken to be valid.
     \begin{equation*}
         \vec{v} = v_s \vec{e}_s.
     \end{equation*}
-    \item{A2 --} The magnetic field has only transverse components:
+    \item{A2 --} The magnetic field $Vvec{E}$ has only transverse components:
         \begin{equation*}
         \vec{B} = (B_x, B_y, 0).
         \end{equation*}
@@ -147,14 +147,14 @@ which solution is the transverse oscillation of the orbit, or \emph{betatron osc
 x(s) = A u(s) \cos \left(\Psi(s)+\phi \right).
 \end{equation}
 
-The phase and the amplitude depend of the position $s$; $A$ and $\phi$ being integration constants.
+The phase $\Psi(s)$ and the amplitude $u(s)$ depend of the position $s$; $A$ and $\phi$ being integration constants.
 
-Inserting \cref{eq:hill_sol_cst} in \eqref{eq:hill_diff} it follows
+Inserting \cref{eq:hill_sol_cst} in \eqref{eq:hill_diff} yields to
 \begin{equation}
 A\left[u''- u \Psi'^2 - k u \right] \cos\left(\Psi+\phi\right) - A\left[2u'\Psi'+u\Psi''\right]\sin\left(\Psi+\phi\right) = 0.
 \end{equation}
 
-$A \ne 0$ and $\Psi(s)$ having different values for every $s$, the previous equation provides two conditions
+As $A \ne 0$, $u(s) \ne 0$ and $\Psi(s)$ has different values for every $s$, the previous equation provides two conditions
 \begin{align}
 u''- u \Psi'^2 - k u = 0 \label{eq:hill_cond1}\\
 2u'\Psi'+u\Psi'' = 0 \label{eq:hill_cond2}.
@@ -217,7 +217,7 @@ The two functions $\Psi$ and $\beta$ will be extensively used in the next sectio
 \remark The calculation done for the $x$ direction can be done similarly for the $y$ one, which defines a $\beta_x(s)$, $\beta_y(s)$, $\varepsilon_x$, $\varepsilon_y$, $\Psi_x(s)$ and $\Psi_y(s)$
 
 \section{Tune}
-In circular accelerator, the particle undergo periodically the same magnetic fields and therefore the same force. This can lead the amplitude of the beam transverse oscillation to increase, risking to lose the particles in the vacuum chamber walls. This phenomenon is called optical resonance and must be avoided.
+In circular accelerator, the particle undergoes periodically the same magnetic fields and therefore the same force. This can lead the amplitude of the beam transverse oscillation to increase, risking to lose the particles in the vacuum chamber walls. This phenomenon is called optical resonance and must be avoided.
 
 As exposed in \cref{sec:eq_motion,sec:beta_func}, if $\frac{\Delta p}{p_0} = 0$ and $K(s)=\frac{1}{R(s)}-k(s)$, the trajectory is given by
 \begin{equation}
@@ -244,7 +244,7 @@ m Q_x + n Q_y = p \qquad (m, n, p) \in \mathbb{Z}
 produce coupled resonance of order $|m|+|n|$. A pair of value $(Q_x,Q_y)$ is used as working point so that it either does not satisfy \cref{eq:coupled_resonance} or with a high order (above the 5th order for instance).
 
 \section{Summary}
-Two very important functions were defined here: $\beta (s)$ and $\Psi (s)$, respectively the variation of the trajectory amplitude and the betatron phase. These functions highly depend on the accelerator optics and when determined, knowing the real objects that produce them (e.g. magnets, coils) is no more needed.
+Two very important functions were defined here: $\beta (s)$ and $\Psi (s)$, defined in \cref{eq:beta_func,eq:phase_psi}, respectively the variation of the trajectory amplitude and the betatron phase. These functions highly depend on the accelerator optics and when determined, knowing the real objects that produce them (e.g. magnets, coils) is no more needed.
 
 The tune $Q$ is a constant parameter defined as the number of betatron oscillation per revolution.
 

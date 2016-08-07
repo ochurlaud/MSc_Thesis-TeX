@@ -3,9 +3,10 @@
 % !TeX root = ../MasterThesis_OlivierChurlaud_2016.tex
 
 \chapter{System and correction simulation}
+\label{sec:control}
 One difficulty in improving the current correction process is that machine time is expensive: tests cannot be done very often. A wrong correction can indeed destabilize the orbit or worse, lose the electrons in the vacuum chamber walls, and thus it cannot be tested when the storage ring is on service or other scientists do experiments or measurements for their own research. Furthermore, as presented previously, the process is complex and one must be sure that every actor will play correctly in the improvement proposition. Simulating the whole environment is expected to mitigate this problem, and reduce the online experimental time needed during nights and weekends.
 
-Additionally,  Based on theses observations, the 
+Additionally, based on previous observations, the correction architecture was reexamined. The simulation environment made possible to test it and propose new parameters.
 
 A short theoretical background will be first presented to introduce the formalism needed to describe control processes. Based on this, the way the system identification was conducted to model the storage ring will be presented. As the study of the correction architecture at BESSY~II showed that some improvements in the correction process were possible, a new architecture of the correction, allowing better results, will be described. Finally the simulation results will be discussed.
 
@@ -23,7 +24,7 @@ For example if the inputs, outputs and operators are only time dependent:
 \subsection{Linear time invariant system}
 A linear time invariant (LTI) system is 
 \begin{itemize}
-	\item \textbf{time invariant}: the operator $\mathcal{L}$ does not depend on the time, meaning that a given input will always generate the same output: $\mathcal{L}[\vec{u},t]=\mathcal{L}[\vec{u}]$. This is can also being described as
+	\item \textbf{time invariant}: the operator $\mathcal{L}$ does not depend on the time, meaning that a given input will always generate the same output: $\mathcal{L}[\vec{u},t]=\mathcal{L}[\vec{u}]$. This can also being described as
 	\begin{equation}
 		\vec{y}(t) = \mathcal{L}[\vec{u}(t)] \implies \forall \tau, \quad \vec{y}(t-\tau) = \mathcal{L}[\vec{u}(t-\tau)]
 	\end{equation}
@@ -68,7 +69,7 @@ The transfer function is defined as
 \end{itemize}
 
 \subsection{State-space description}
-If transfer functions are a very useful tool (for example to represent the Bode diagram of a function or easily combine successive systems), computing their outputs is not very practical. Another representation is often used, with the help of a inner variable $x(t)$:
+If transfer functions are a very useful tool (for example to represent the Bode diagram of a function or easily combine successive systems), computing their outputs is not very practical. Another representation is often used, with the help of a inner state variable $x(t)$:
 \begin{equation}
 \begin{cases}
 	\dfrac{d \vec{x}}{dt}(t) &= \mat{A}\,\vec{x}(t) + \mat{B}\, \vec{u}(t) \\
@@ -97,7 +98,7 @@ and then
 
 \Cref{eq:controlth_ss} is mostly used in the simulation algorithm.
 
-\subsection{Empirical transfer function estimation}
+\subsection{Transfer function estimation}
 In some cases, modeling the system with differential equation is either too complex or provides to simplistic results. The system can instead be used as a black box, and it's frequency response measured.
 
 \paragraph{Using Fourier transform}
@@ -138,13 +139,13 @@ It is important to choose a good input signal. It must contain enough harmonic c
 
 A pink noise is a signal which power spectrum is decreasing like $1/\omega$. The spectrum is thus fully represented, with high frequencies having less impact and therefore being less likely to harm the system. In a system like the storage ring, using a noise as input is however not a good idea. 
 
-A sine sweep is a sine which frequency increases with the time, so that every frequencies are represented. A linear increase can be obtained by setting
+A sine sweep is a sine in which the frequency increases with the time, so that every frequency between the up and down limits $f_\text{max}$ and $f_\text{min}$ are represented. A linear increase can be obtained by setting
 \begin{equation}
-	f(t) = 2 f_\text{min} \cdot t + \frac{f_\text{max}-f_\text{min}}{2 \cdot t_\text{max}} t^2
+	f(t) = 2 f_\text{min} \cdot t + \frac{f_\text{max}-f_\text{min}}{2 \cdot t_\text{max}} t^2.
 \end{equation}
 The input is then
 \begin{equation}
-	u(t) = A \sin(2\pi f(t))
+	u(t) = A \sin(2\pi f(t)).
 \end{equation}
 
 \section{System identification}
@@ -152,9 +153,9 @@ The first step in the model is to represent the storage ring. This could be done
 
 As for the defining the response matrix, it is a difficult problem, with no perfect solution: some instrument optics are unknown and their positioning is never perfectly known.
 
-Instead a system identification is conducted. The system is the storage ring, with the differential orbit as the output, and correction magnet amplitude as input. It is assumed that the system can be modeled as a first approximation as a SISO system, generalized as a MIMO one by pre-multiplying it by the response matrix (which is a mere gain):
+Instead a system identification is conducted. The system is the storage ring, with the differential orbit as the output, and correction magnet amplitude as input. It is assumed that the system can be modeled in first approximation as a SISO system, generalized as a MIMO one by pre-multiplying it by the response matrix (which is a mere gain):
 \begin{equation}
-	\Delta \vec{X}(t) = \mat{S}\cdot \left[ g * \Delta\vec{\theta} \, (t) \right]
+	\Delta \vec{X}(t) = \mat{S}\cdot \left[ g * \Delta\vec{\theta} \, (t) \right].
 \end{equation}
 
 A sine sweep was designed to cover from $f_\text{min} = 0$ to $f_\text{max} = F_s/2 = \SI{75}{\hertz}$ and used as the corrector magnets input (one by one).
@@ -204,13 +205,15 @@ It appeared that after converting the system to a transfer function, the numerat
 	\caption{\label{fig:ctl_id_nospike}Normalized, zeros-corrected transfer function}
 \end{figure}
 
-Finally it the transfer function estimation is 
+Finally the transfer function estimation is 
 \begin{equation}
 G(s) = \frac{117.322203 \,s^2 + 319144.577 \,s + 6801819.36}
 {s^3 + 1171.05630 \,s^2 + 375569.975 \,s +	6801819.36}
 \end{equation}
 
-The frequency response given in \cref{fig:ctl_id_nospike} corresponds to what was expected: an amplitude that decreases with frequencies, without amplification domain. To be sure that it corresponds to reality, a simulation of the current situation was conducted.
+The frequency response given in \cref{fig:ctl_id_nospike} corresponds to what was expected: an amplitude that decreases with frequencies, without amplification domain. 
+
+This was validated by simulation (see below), where the current situation was reproduced, with similar parameters.
 
 \section{Simulation model}
 \label{sec:correction_simulation}
@@ -342,7 +345,7 @@ nmeas=1; nu=1; gmn=0.5; gmx=20; tol=0.001;
 [khinf,ghinf,gopt] = hinfsyn(P,nmeas,nu,gmn,gmx,tol);
 \end{Matlab}
 
-This provides a corrector, which frequency response can be seen in \cref{fig:ctl_freqresp_hinf}: very efficient in low frequencies, it has however an amplification area that can be a problem. Correctors with different bandwidth were synthesized. The simulation is given in \cref{fig:ctl_sim_hinf}. The results are strangely enough always less efficient than the proposed PID (in \cref{fig:ctl_freqresp_bestpid}). \todo{$\mathcal{H}_\infty$: Review this part with Maxim}
+This provides a corrector, which frequency response can be seen in \cref{fig:ctl_freqresp_hinf}: very efficient in low frequencies, it has however an amplification area that can be a problem. Correctors with different bandwidth were synthesized. The simulation is given in \cref{fig:ctl_sim_hinf}. The results are strangely enough always less efficient than the proposed PID (in \cref{fig:ctl_freqresp_bestpid}).
 
 \begin{figure}
     \centering
@@ -361,4 +364,4 @@ This provides a corrector, which frequency response can be seen in \cref{fig:ctl
 \section{Summary}
 A simulation environment was built in order to be able to predict the influence of some parameters on the system and to closely study how to correct at best the orbit position.
 
-A first system approximation was identified from the ring. From this was predicted that a more optimized PID corrector is possible, which only needs to be validated experimentally.  \todo{Un mot sur la correction optimale}The optimal correction direction must be considered in more depth and, on a more ambitious perspective, the design of robust MIMO correctors would certainly provide better and more reliable results.
+A first system approximation was identified from the ring. From this was predicted that a more optimized PID corrector is possible, which only needs to be validated experimentally. The optimal correction line of research must be considered in more depth and, on a more ambitious perspective, the design of robust MIMO correctors would certainly provide better and more reliable results.

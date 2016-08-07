@@ -20,7 +20,7 @@ In order not to lose electrons in the walls of the vacuum chamber but also to in
 The most classical correction methods will be presented here, before explicitly describing the case of BESSY~II and the improvement proposed during this thesis.
 
 \section{Monitoring and correction instruments}
-To be able to correct the orbit or localize perturbations, some tools must be employed.
+To be able to correct the orbit or localize perturbations, some tools must be used.
 
 \subsection{Beam Position Monitors}
 The position of the beam in a given direction is monitored with \emph{beam position monitors} (BPM).
@@ -42,7 +42,7 @@ The raw values output by the BPMs are thus never considered and every orbit posi
 To correct the orbit, BESSY~II uses dipole magnets, also called \emph{corrector magnets} (CM) positioned around the storage ring. Each dipole contributes to correcting in a given direction, at a specific position.
 
 \subsection{Monitor and corrector numbers}
-The number of monitors and correctors is quite important. Because the correction method used is based on an inversion problem (see \cref{sec:response_matrix}), it is important to have an over-constrained problem. Else a perfect correction would be reached at monitor positions but unconstrained (and thus potentially arbitrary bad) elsewhere.
+The number of monitors and correctors is quite important. Because the correction method used is based on an inversion problem (see \cref{sec:response_matrix}), it is important to have an over-constrained problem. In the opposite case, a perfect correction would be always reached at monitor positions but unconstrained (and thus potentially arbitrary bad) elsewhere.
 
 Therefore the number of BPMs is chosen quite greater than the number of correctors.
 
@@ -53,14 +53,14 @@ At BESSY~II there are
 \end{itemize}
 
 \section{Orbit correction methods}
-Several global corrections methods are well documented in the literature. Local orbit bumps (presented in \cref{sec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example). The most common ones are the best corrector method and the response matrix method (see \cref{sec:most_effective_corr,sec:response_matrix}), as they provide a global correction, over the whole orbit.
+Several global correction methods are well documented in the literature. Local orbit bumps (presented in \cref{sec:orbit_bump}) allow local correction and are used to change the path of the orbit (during the injection time for example). The most common ones are the best corrector method and the response matrix method (see \cref{sec:most_effective_corr,sec:response_matrix}), as they provide a global correction, over the whole orbit.
 
 \subsection{Local orbit bumps}
 \label{sec:orbit_bump}
 Using local orbit bumps is a basic method that gives the operator a total control on the orbit local modification.
 
 \subsubsection{Principle}
-Adding a simple dipole on the path of a particle will bring it closer or push it away. As the particles must eventually return to the planned orbit, a series of dipoles can be set one after the other to design an arbitrary path. \Cref{fig:local_bump} shows a minimal example, where the black points represent the magnets, and the dashed line the original orbit. Each magnet $M_i$ has position $s_i$, where the phase is $\Psi_i$ and the beta function  $\beta_i$. The orbit motion at this position is described by the vector $\vec{x}_i = (x_i , x'_i)$.
+Adding a simple dipole on the path of a particle will bring it closer or push it away. As the particles must eventually return to the planned orbit, a series of dipoles can be set one after the other to design an arbitrary path. \Cref{fig:local_bump} shows a minimal example, where the black points represent the magnets, and the dashed line the original orbit. Each magnet $M_i$ has the position $s_i$, where the phase is $\Psi_i$ and the beta function  $\beta_i$. The orbit motion at this position is described by the vector $\vec{x}_i = (x_i , x'_i)$.
 \begin{figure}
 	\centering
 	\begin{tikzpicture}[auto, node distance=1.2,>=latex']
@@ -263,7 +263,7 @@ The real correction is eventually the accumulation of all corrections
 \vec{\Theta}(n) = \vec{\Theta}[n-1] - \Delta \vec{\Theta}[n].
 \end{equation}
 
-For stability reasons, the PID was always implemented as a pure proportional corrector ($K_i$ and $K_d$ being set to zero). Indeed, because of the last accumulation, it was of course behaving like a proportional integrator (PI), which forbade the use of the other coefficients in the PID correction. In the simulations described in \cref{sec:correction_simulation}, a corrector PID can be implemented with more optimal coefficients. It is however important that the correction starts from an initial value known to be stable, so that the beam stays focused.
+For stability reasons, the PID was always implemented as a pure proportional corrector ($K_i$ and $K_d$ being set to zero). Indeed, because of the last accumulation, it was of course behaving like a proportional integrator (PI), which forbade the use of the other coefficients in the PID correction. In the simulations described in \cref{sec:correction_simulation}, a corrector PID can be implemented with more efficient coefficients. It is however important that the correction starts from an initial value known to be stable, so that the beam stays focused.
 
 \subsection{Technical overview}
 \label{sec:correction_sa_technical}
@@ -280,11 +280,11 @@ All elements are connected to a reflective memory (RFM), which provides a high s
 \paragraph{Actors}
 The following actors are playing a role in the process:
 \begin{itemize}
-    \item the \textbf{analog-to-digital converter (ADC)} reads the orbit displacement values from the BPMs and makes them available to the other actors.
-    \item the \textbf{cBox} controls (= \textit{c}) the correction. It defines when to read the values of the BPMs and when to write the new correction values, it provides initializations values. The operators are communicating with this process to configure the correction.
-    \item the \textbf{mBox} does the maths (= \textit{m}) of the correction. When allowed by the cBox, it reads the BPMs values, does the maths to define the new correction values (multiplication with the response matrix, PID correction) and writes them to the communication bus. This process also publishes the values it reads and writes so that client programs can subscribe to this data stream and reuse the values internally.
-    \item the \textbf{input-output controllers (IOCs)} write the correction values to the power supplies commands when they are available.
-    \item the \textbf{power supplies (PS)} provide a given power to the corrector magnets.
+    \item The \textbf{analog-to-digital converter (ADC)} reads the orbit displacement values from the BPMs and makes them available to the other actors.
+    \item The \textbf{cBox} controls (= \textit{c}) the correction. It defines when to read the values of the BPMs and when to write the new correction values, it provides initializations values. The operators are communicating with this process to configure the correction.
+    \item The \textbf{mBox} does the maths (= \textit{m}) of the correction. When allowed by the cBox, it reads the BPMs values, does the maths to define the new correction values (multiplication with the response matrix, PID correction) and writes them to the communication bus. This process also publishes the values it reads and writes so that client programs can subscribe to this data stream and reuse the values internally.
+    \item The \textbf{input-output controllers (IOCs)} write the correction values to the power supplies commands when they are available.
+    \item The \textbf{power supplies (PS)} provide a given power to the corrector magnets.
 \end{itemize}
 
 \paragraph{Process description}
@@ -304,7 +304,7 @@ The duration of each step is as following:
 \remark One of the side works done during this thesis was rewriting the whole mBox in C++ in a very object oriented way to allow a smaller computation time (the original one was written in \textsc{Matlab}), easier improvement and feature additions (like a dynamic correction, easier communication with external scripts, production/experimental modes, etc.). This is fully presented in \cref{apx:mbox}.
 
 \subsection{Overview and needed improvements}
-The results of this correction can be seen on \cref{fig:compare_fofb}: the low frequencies and most of the peaks are reduced, which is a real gain for the end users of the accelerator. These correction results where reached again after having rewritten the mBox in C++, which ensured that no dramatic regressions were introduced and allowed going forward.
+The results of this correction can be seen in \cref{fig:compare_fofb}: the low frequencies and most of the peaks are reduced, which is a real gain for the end users of the accelerator. These correction results where reached again after having rewritten the mBox in C++, which ensured that no dramatic regressions were introduced and allowed going forward.
 
 \begin{figure}
     \centering
@@ -320,11 +320,11 @@ The results of this correction can be seen on \cref{fig:compare_fofb}: the low f
     \caption{\label{fig:compare_fofb}Orbit motion spectrum: with and without FOFB (vertical, current: \SI{300}{\milli\ampere})}
 \end{figure}
 
-It must be noted that correction gain provides only a correction up to $\sim\!\SI{12}{\hertz}$, and increasing it would let the system become instable. The presented correction is therefore not always sufficient and some specific frequencies (like 10, 17.5 or \SI{32}{\hertz}) must be corrected with a dedicated method, which would need to be added to the full correction process.
+It must be noted that correction gain provides only a correction up to $\sim\!\SI{12}{\hertz}$, and increasing it would let the system become unstable. The presented correction is therefore not always sufficient and some specific frequencies (like for example 10, 17.5 or \SI{32}{\hertz}) must be corrected with a dedicated method, which would need to be added to the full correction process.
 
 \section{Improvement of the correction for harmonic perturbations}
 \label{sec:dyn_corr}
-The correction presented until now, which already existed at BESSY~II, only provides a correction for the continuous component. It can be seen in \cref{fig:compare_fofb}, that if the correction drastically reduces the perturbations in the lower frequencies (below \SI{10}{\hertz}), other frequencies still have high components. This section will provide a method implemented during this thesis for a dedicated correction of harmonic perturbations.
+The correction presented until now, which already existed at BESSY~II, only provides a correction for the continuous component. It can be seen in \cref{fig:compare_fofb}, that the correction drastically reduces the perturbations in the lower frequencies (below \SI{10}{\hertz}) but other frequencies still have high components. This section will provide a method implemented during this thesis for a dedicated correction of harmonic perturbations.
 
 \subsection{General method}
 A simple extension of the previous method is to analyze a given harmonic of the orbit, and consider the Fourier coefficient of each monitor as the complex amplitude of the harmonic orbit of interest

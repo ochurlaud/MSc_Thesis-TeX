@@ -37,8 +37,7 @@
 % trick not to release comments   %
   \newif\ifdraft
 %	                              %
-	%\releasefalse
-	\drafttrue
+	\draftfalse
 %	                              %
 	\ifdraft
 		\usepackage[colorinlistoftodos,textsize=scriptsize]{todonotes}
@@ -114,9 +113,14 @@
 \input{tex/acknowledgment}
 \cleardoublepage
 
+{
+\hypersetup{linkcolor=black}
 \tableofcontents*
 \cleardoublepage
-\listoffigures*
+\listoffigures
+}
+
+\input{tex/notations}
 
 \mainmatter
 
