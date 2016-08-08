@@ -47,11 +47,11 @@ and diagonalized so that the eigenvalues are sorted in a decreasing order (the f
 \mat{D} = \mat{P}^{t} \mat{A} \, \mat{P}
 \end{equation}
 
-The principal components are
+The principal components are the columns of
 \begin{equation}
 \hat{\mat{X}} = \mat{P}^{t} \mat{X}
 \end{equation}
-and in the first column of the matrix is the most significant one.
+and in the first column of the matrix resides the most significant of theses principal components.
 
 \chapter{mBox++}
 \label{apx:mbox}
@@ -72,7 +72,7 @@ licensed with the GNU General Public License v2.
 \subsection{Constrains}
 \begin{itemize}
     \item mBox++ must work without any change in the current architecture and environment
-    \item mBox++ must be easily maintainable and improved: modularized, encapsulated and namespaced code (e.g. object oriented) is needed (global scope must not be used to much to be able to trace variable evolutions)
+    \item mBox++ must be easily maintainable and improved: modularized, encapsulated and namespaced code (e.g. object oriented) is needed (global scope must not be used too much to be able to trace variable evolutions)
 \end{itemize}
 
 \subsection{Performance}
@@ -95,14 +95,14 @@ licensed with the GNU General Public License v2.
 \subsection{Language and paradigm used}
 \begin{description}
     \item[Technology:] C++, Standard Template Library (STL)
-    \item[Rationale:] Compiled language, thus faster than \textsc{Matlab} or Python. It is higher level than C and thus more manageable. It supports and eases object oriented programming, which allows encapsulation and to organize the code in business objects (e.g. one class is called \textit{Logger} and deals with the logs and debug strings, another acquire the data qnd is called \textit{ADC}..). Every needed types exist in the STL (vectors, strings, etc.) and it is a widely used library very well documented and experienced. The C++\,11 version is used as it provides several improvements compared to previous ones and is now available on most platforms.
+    \item[Rationale:] Compiled language, thus faster than \textsc{Matlab} or Python. It is higher level than C and thus more manageable. It supports and eases object oriented programming, which allows encapsulation and to organize the code in business objects (e.g. one class is called \textit{Logger} and deals with the logs and debug strings, another acquire the data and is called \textit{ADC}..). Every needed types exist in the STL (vectors, strings, etc.) and it is a widely used library very well documented and time tested. The C++\,11 version is used as it provides several improvements compared to previous ones and is now available on most platforms.
     \item[Resources:] \url{http://www.cplusplus.com} --- \url{http://en.cppreference.com}
 \end{description}
 
 \subsection{Algebra computation}
 \begin{description}
     \item[Technology:] Armadillo
-    \item[Rationale:] Open source C++ library which API is close to \textsc{Matlab}'s and supports multi-thread calculation. It is a long tested technology (currently version 7.x) with a large and active scientific community.
+    \item[Rationale:] Open source C++ library whose API is close to \textsc{Matlab}'s and supports multi-thread calculation. It is a long tested technology (currently version 7.x) with a large and active scientific community.
     \item[Resources:] \url{http://arma.sourceforge.net}
 \end{description}
 
@@ -130,18 +130,18 @@ licensed with the GNU General Public License v2.
 
 The class \texttt{mBox} is the one from which everything begins. It creates the shared objects and deals with the state machine process. It owns a \texttt{Handler} which can be a \texttt{CorrectionHandler} if mBox++ runs in normal mode, or a \texttt{MeasureHandler} if it runs in experiment mode.
 
-The actual mathematics (computation of the calculation) happens in the processors. If the handler is a \texttt{CorrectionHandler}, then the processor can be a \texttt{CorrectionProcessor} which does exactly what the \textsc{Matlab} code did (see \cref{sec:correction_state_of_art}) or a \texttt{Dynamic10HzCorrectionProcessor} which implements what was described in \cref{sec:dyn_corr_ex_10Hz}. Else if the handler is a \texttt{MeasureHandler}, the processor is directly the Python script provided by the user.
+The actual mathematics (computation of the calculation) happens in the processors. If the handler is a \texttt{CorrectionHandler}, then the processor can be a \texttt{CorrectionProcessor} which does exactly what the \textsc{Matlab} code did (see \cref{sec:correction_state_of_art}) or a \texttt{Dynamic10HzCorrectionProcessor} which implements what was described in \cref{sec:dyn_corr_ex_10Hz}. Otherwise, if the handler is a \texttt{MeasureHandler}, the processor is directly the Python script provided by the user.
 
 A handler delegates the actions to objects it owns:
 \begin{enumerate}
     \item The \texttt{ADC} reads the data from the ADC reserved area in the RFM.
-    \item The handler reads the data from the \texttt{ADC} object, do some conversions (mostly from a integer representation to doubles) and provides the data to its processor that calculates the correction.
+    \item The handler reads the data from the \texttt{ADC} object, does some conversions (mostly from a integer representation to doubles) and provides the data to its processor that calculates the correction.
     \item The correction is then converted to integers by the handler and provided to the \texttt{DAC} which writes it to the DAC reserved area in the RFM.
 \end{enumerate}
 
 To access the RFM, the C functions provided by the constructor are used. An interface \texttt{RFMDriverInterface} is implemented by the \texttt{RFMDriver} which provides a more object oriented version of the C~API.
 
-\remark In order to be able to test the program without having access to a RFM hardware, a second \texttt{RFMDriver} (accessible by compiling with the \texttt{-DDUMMY\_DRIVER=ON} flag) implements the interface: it reads and writes in a 64~Mb binary file that represents the RFM. This can allow to create a simulation of the whole environment and to interact with the program quite easily.
+\remark In order to be able to test the program without having access to a RFM hardware, a second \texttt{RFMDriver} (accessible by compiling with the \texttt{-DDUMMY\_DRIVER=ON} flag) implements the interface: it reads and writes in a 64~Mb binary file that represents the RFM. This can allow the creation of a simulation of the whole environment and expedient interaction with the program..
 
 Three modules are statically constructed and globally defined (in their own namespaces):
 \begin{itemize}
@@ -161,7 +161,7 @@ Three modules are statically constructed and globally defined (in their own name
 
     \item \texttt{Logger} which is a class logging actions and errors. By defaults, errors only are shown to the stdout (standard output stream). Logs and errors are published on a given port (3333 by default) with ZeroMQ and can be read by subscribed services (the logs and errors can thus be output, saved in a file, published on a website stream or whatever crazy idea the user can have). It uses the ZeroMQ Publisher mode. A debug mode is also available (see \texttt{--help} command). It publishes incoming and outgoing values that can be used by other scripts or programs for display, scripting, value-checking... The full description of the uses are given in the Doxygen\footnote{Popular documentation generator that extracts specific comments to produce PDF or HTML documentation. See \url{http://www.stack.nl/~dimitri/doxygen/index.html}} documentation
     
-    \item \texttt{Messenger} which is a class for exchanging information with outside scripts and programs. It is listening on a given port (3334 by default). It is using the ZeroMQ Router mode. Every time it receives a request, it processes it and either return the value of the requested variable, or set the given variable to the received value. The difference with the \texttt{Logger} is that the logger publishes values even if no one is listening and sends it when the asked by the code, whereas the \texttt{Messenger} only answers queries. It is notably used in the harmonic correction process described in \cref{sec:dyn_corr_ex_10Hz}: a python script calculates all the phases and amplitudes and sends the outcome, which are then used by \texttt{Dynamic10HzCorrectionProcessor}.
+    \item \texttt{Messenger} which is a class for exchanging information with outside scripts and programs. It is listening on a given port (3334 by default). It is using the ZeroMQ Router mode. Every time it receives a request, it processes it and either returns the value of the requested variable, or sets the given variable to the received value. The difference with the \texttt{Logger} is that the logger publishes values even if no one is listening and sends it when asked by the code, whereas the \texttt{Messenger} only answers queries. It is notably used in the harmonic correction process described in \cref{sec:dyn_corr_ex_10Hz}: a python script calculates all the phases and amplitudes and sends the outcome, which are then used by \texttt{Dynamic10HzCorrectionProcessor}.
 \end{itemize}
 
 \section{Project organization}
@@ -179,7 +179,7 @@ Finally at the root of the project is \texttt{README.md} file giving the depende
 \end{verbatim}
    
 \section{Use}
-mBox++ cannot run if it does not receive the order from the cBox: it would else hang in a waiting state.
+mBox++ cannot run if it does not receive the order from the cBox: it would otherwise hang in a waiting state.
 It can be used in normal mode
 \begin{verbatim}
     $ mbox --rw
