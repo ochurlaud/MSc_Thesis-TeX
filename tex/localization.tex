@@ -7,7 +7,7 @@
 
  A correction, as adapted as it can be, will never be perfect. Instead of dealing with the effects of the perturbation, its sources can first be investigated. When all possible sources are found and removed or isolated, a correction algorithm can be applied to the remaining perturbations, which will hopefully yield better results.
 
- If no source is really obvious (e.g. a non-isolated transformer, the \SI{50}{\hertz} perturbation of the main power), the orbit itself can give some hints to localize it. One local perturbation affects indeed the whole revolution. It results in an oscillation across the orbit which, because of the closed orbit property, will brutally change its angle at the position of the source  brutally changes its angle (see \cref{fig:kick}). This position is termed \textit{kick}.
+ If no source is really obvious (e.g. a non-isolated transformer, the \SI{50}{\hertz} perturbation of the main power), the orbit itself can give some hints to localize it. One local perturbation affects indeed the whole revolution. It results in an oscillation across the orbit which, because of the closed orbit property, will dramatically change its angle at the position of the source (see \cref{fig:kick}). This position is termed \textit{kick}.
 
 \begin{figure}[!h]
 	\centering
@@ -30,11 +30,11 @@ The problem is described with the betatron phase variable
 \Psi = \int\limits_{0}^s \frac{d\sigma}{\beta(\sigma)}.
 \end{equation}
 
-The spatial variable $s$ is only used to have a connection between the result and the actual ring. The explanation will be led in the horizontal plane (with the $x$ variable), but is also valid in the vertical one ($y$).
+The spatial variable $s$ is only used to have a connection between the result and the actual ring. The explanation will be led in the horizontal plane (with the $x$ variable), but is also valid in the vertical plane ($y$).
 
-Let one kick be at a given phase $\Psi = \hat{\Psi}$. The orbit is modified and oscillates with a constant period of \SI{2 \pi}{\radian}. Because there is \emph{only one} kick and according to the closed orbit condition, the oscillation after the kick will be stable for one revolution. Furthermore, the orbit must be continuous on all points, thus at the kick position too. This is illustrated in \cref{fig:kick}.
+Let one kick be at a given phase $\Psi = \hat{\Psi}$. The orbit is modified and oscillates with a constant period of \SI{2 \pi}{\radian}. According to the closed orbit condition, because there is \emph{only} one kick, the oscillation after the kick will be stable for one revolution. Furthermore, the orbit must be continuous on all points, thus at the kick position too. This is illustrated in \cref{fig:kick}.
 
-Two revolutions are considered, in order to be sure to find one full revolution without kick. Let $\Psi^\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\hat\Psi$ where the kick happens is the one so that
+Two revolutions are considered, in order to be sure to find one full revolution without a kick. Let $\Psi^\mathrm{ext} \in [0, 4 \pi Q]$ be this new phase (\textit{ext} for extended). The phase $\hat\Psi$ where the kick happens is the one so that
 \begin{equation}
 \exists (b, c) \in \mathbb{R}^2:
 \forall \Psi \in [\hat\Psi, \hat\Psi + 2 \pi Q], \quad
@@ -61,9 +61,9 @@ Only $m$ BPMs are distributed around the orbit. The previous variable can thus b
 
 \subsection{Solving the problem}
 
-The problem is solved in two steps: first the sine that fits at best the orbit is determined, and second the position of the kick verifying the closed orbit condition (or continuity condition) is found.
+The problem is solved in two steps: first, the sine that fits at best the orbit is determined, and second, the position of the kick verifying the closed orbit condition (or continuity condition) is found.
 
-An algorithm is designed to find a sine over a revolution, beginning at each BPM and keep the one that fits at best:
+An algorithm is designed to find a sine over a revolution, beginning at each BPM and keeping the one that fits at best:
 \begin{align}
 \forall~k \in \, [0,m-1]&, \nonumber \\
 &\begin{cases}
@@ -207,18 +207,18 @@ Some perturbations can be purely harmonic. The example of the \SI{50}{\hertz} fi
 
 As shown in \cref{fig:compare_fofb}, the correction leaves some spikes in the spectrum, which is to be avoided. Hopefully some of them might be localized and removed or isolated, dealing again with the cause of the perturbation instead of its symptom.
 
-Because the storage ring is considered in a first approximation as a linear system, the source of an harmonic perturbation can be localized as an harmonic disturbance with the same frequency. The very same algorithm can thus be used on a pseudo-orbit extracted from the harmonic of interest. 
+Because the storage ring is considered in a first approximation as a linear system, the source of a harmonic perturbation can be localized as a harmonic disturbance with the same frequency. The very same algorithm can thus be used on a pseudo-orbit extracted from the harmonic of interest. 
 
 The harmonic orbit is calculated the same way as in \cref{sec:dyn_corr}, \cref{eq:orbit_extract}, providing a complex vector $\Delta\vec{X}_f$.
 
-If the perturbation is unique, then it is expected to be writable as $d(t) = A_d\cos(2\pi f t + \phi)$ and, because the phase shift is the same for all BPMs, the orbit time signal for the $i$th BPM as 
+If the perturbation is unique, then it is expected to be writable as $d(t) = A_d\cos(2\pi f t + \phi)$. Because the phase shift is the same for all BPMs, the orbit time signal for the $i$th BPM can be written as 
 \begin{equation}
 	x_i(t) = \hat{X}_{f,i} \cos (2\pi f t), \qquad \hat{X}_{f,i} \in \mathbb{R}.
 \end{equation}
-All complex amplitude must thus exactly describe the same sinusoid of frequency $f$ and phase $\alpha_0$, only the amplitude being different at each BPM.
+All complex amplitude must thus exactly describe the same sinusoid of frequency $f$ and phase $\alpha_0$, only with the amplitude being different at each BPM.
 The complex vector $\Delta\vec{X}_f$ can thus be fully described by their amplitudes.
 
-However, since the signal contains also noise and that the perturbation \emph{might} not be unique, it is rotated until the vector of sine (or imaginary part) is minimal, or zero in a ideal case.
+However, since the signal also contains noise and since that the perturbation \emph{might} not be unique, it is rotated until the vector of sine (or imaginary part) is minimal, or zero in an ideal case.
 \begin{equation}
 \begin{cases}\alpha_0 = \underset{\alpha \in [0, 2\pi[}{\textrm{argmin}}\{\Imag{\Delta\vec{X}_f \cdot e^{-j\alpha}} \} \label{eq:harm_perturb_opt}\\
 \vec{\hat{X}}_f = \Real {\Delta\vec{X}_f \cdot e^{-j\alpha_0}}
@@ -227,13 +227,13 @@ However, since the signal contains also noise and that the perturbation \emph{mi
 
 This way only one perturbation is considered: the one which contributes the most to the signal.
 
-The new signal $\vec{\hat{X}}_f$ can be used as an differential orbit signal. The kick position is then calculated it with the method described in the static case, \cref{sec:loc_static}.
+The new signal $\vec{\hat{X}}_f$ can be used as a differential orbit signal. The kick position is then calculated with the method described in the static case, \cref{sec:loc_static}.
 
-\remark To achieve the phase optimization given in \cref{eq:harm_perturb_opt}, the Karhunen–Loève transform (or principal component analysis) can be used~\cite{book:wang_2012}. A description of the algorithm is given in \cref{apx:KLT}. If the results are exactly the same, this allows the problem to be solved within a broader theoretical setting. The goal is not anymore to see the sine part vanish but to deal with the perturbation space in which the distortion is the largest. In theory, dealing with each principal component would allow to find the position of each perturbation source.
+\remark To achieve the phase optimization given in \cref{eq:harm_perturb_opt}, the Karhunen–Loève transform (or principal component analysis) can be used~\cite{book:wang_2012}. A description of the algorithm is given in \cref{apx:KLT}. If the results are exactly the same, this allows the problem to be solved within a broader theoretical setting. The goal is not anymore to see the sine part vanish, but to deal with the perturbation space in which the distortion is the largest. In theory, dealing with each principal component would allow to find the position of each perturbation source.
 
 \section{Experimental results}
 \subsection{Artificial static perturbation}
-The localization algorithm described above is used on an artificial experiment. All correctors are set to 0, except one which is randomly chosen and given an arbitrary amplitude. The orbit is generated by using the response matrix (see \cref{sec:response_matrix}) and is represented by the green curve on \cref{fig:loc_orbit} (in blue is the final localization).
+The localization algorithm described above is used on an artificial experiment. All correctors are set to 0, except one which is randomly chosen and given an arbitrary amplitude. The orbit is generated by using the response matrix (see \cref{sec:response_matrix}) and is represented by the green curve on \cref{fig:loc_orbit} (the final localization is in blue).
 
 \begin{figure}
     \centering
@@ -241,7 +241,7 @@ The localization algorithm described above is used on an artificial experiment. 
     \caption{\label{fig:loc_orbit} Orbit with unique static perturbation}
 \end{figure}
 
-The localization algorithm iterations are shown in \cref{fig:loc_errorplots}. The top graph presents in blue the RMS errors between the orbit and a generated sine while setting the kick at each BPM. In green and red are respectively the best fitting amplitudes and phases for each iteration. The convergence is visible and verifies that there are very few risk of being far from the position of the perturbation. However the region where the RMS reaches its smallest value is very flat and thus not very precise.
+The localization algorithm iterations are shown in \cref{fig:loc_errorplots}. The top graph presents in blue the RMS errors between the orbit and a generated sine while setting the kick at each BPM. In green and red are respectively the best fitting amplitudes and phases for each iteration. The convergence is visible and verifies that there is very little risk of being far from the position of the perturbation. However the region where the RMS reaches its smallest value is very flat and thus not very precise.
 
 \begin{figure}
     \centering
@@ -249,11 +249,11 @@ The localization algorithm iterations are shown in \cref{fig:loc_errorplots}. Th
     \caption{\label{fig:loc_errorplots} Error (RMS) and parameters curve of the localization algorithm}
 \end{figure}
 
-What is worth remarking is that the amplitude and phase vary quite continually, meaning that choosing the wrong position to set the sinus parameters is not too harmful. This validates the idea of first setting the sinusoid parameters and then find the exact position of the kick.
+What is worth remarking is that the amplitude and phase vary quite continually, meaning that choosing the wrong position to set the sinus parameters is not too harmful. This validates the idea of first setting the sinusoid parameters and then finding the exact position of the kick.
 
 On the second graph (\cref{fig:loc_errorplots}, below) is represented the jump done by the curve left and right from the BPM chosen to set the sinusoid parameters. In the algorithm, the first minimum of the curve is defined as the kick position.
 
-Finally the orbit and the sinusoid constructed by the algorithm can be seen on \cref{fig:loc_reconstructed_sine}. They are quite overlapping and the closed orbit condition is verified.
+Finally the orbit and the sinusoid constructed by the algorithm can be seen on \cref{fig:loc_reconstructed_sine}. They are quite overlapping, and the closed orbit condition is verified.
 
 \begin{figure}
     \centering
@@ -274,7 +274,7 @@ Finally the orbit and the sinusoid constructed by the algorithm can be seen on \
 	\caption{\label{fig:loc_all_corr} Localization error for all correctors}
 \end{figure}
 
-The same artificial experiment was conducted by setting each corrector separately to an arbitrary value and trying to localize it back. \Cref{fig:loc_all_corr} shows the localization errors. It appears that the localization error in such an environment is quite precise in the vertical direction ($d \approx \SI{2}{\meter}$ on a ring of \SI{240}{\meter}), except around the 11th corrector. In this area, during the measurement of the response matrix used to generate the artificial orbit was activated a 7 Tesla wiggler, which is a device for producing intense X-rays from the electron beam; this means that it has a significant impact on the orbit optics and is therefore likely to degrade the localization process. A real test, directly on the storage ring, would certainly provide better results at this position, but reduce the overall precision because of measurement noises. In the horizontal direction, the results are less accurate because the number of available points by oscillation is lower. The horizontal tune is approximatively 17.85 whereas the vertical one is 6.74, while the number of BPMs is identical in both directions.
+The same artificial experiment was conducted by setting each corrector separately to an arbitrary value and trying to localize it back. \Cref{fig:loc_all_corr} shows the localization errors. It appears that the localization error in such an environment is quite precise in the vertical direction ($d \approx \SI{2}{\meter}$ on a ring of \SI{240}{\meter}), except around the 11th corrector. In this area, during the measurement of the response matrix used to generate the artificial orbit, a 7 Tesla wiggler (a device for producing intense X-rays from the electron beam) was activated; this means that it has a significant impact on the orbit optics and is therefore likely to degrade the localization process. A real test, directly on the storage ring, would certainly provide better results at this position, but reduce the overall precision because of measurement noises. In the horizontal direction, the results are less accurate because the number of available points by oscillation is lower. The horizontal tune is approximatively 17.85 whereas the vertical one is 6.74, while the number of BPMs is identical in both directions.
 
 Even by taking the worst localization error, it reduces the source position to less than $1/10$ of the orbit circumference, which is already a non-negligible gain in the perturbation source removal process.
 

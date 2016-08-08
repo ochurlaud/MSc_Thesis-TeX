@@ -6,7 +6,7 @@
 \label{sec:background}
 
 \section{BESSY II -- General presentation}
-BESSY II (\textbf{B}erliner \textbf{E}lektronen \textbf{S}peicherring-Gesellschaft für \textbf{Sy}n\-chro\-tron\-strahlung m.b.H.) is Berlin's electron storage ring, aimed at producing high energy light ray by synchrotron radiation. It emits extremely brilliant photons pulse ranging from Terahertz to hard X rays, with an emphasis on the soft X-ray range ~\cite{web:bessy_homepage}.
+BESSY II (\textbf{B}erliner \textbf{E}lektronen \textbf{S}peicherring-Gesellschaft für \textbf{Sy}n\-chro\-tron\-strahlung m.b.H.) is Berlin's electron storage ring, aimed at producing high energy light rays by synchrotron radiation. It emits extremely brilliant photons pulses ranging from Terahertz to hard X rays, with an emphasis on the soft X-ray range ~\cite{web:bessy_homepage}.
 
 Scientific projects can freely apply for beam time at an experimental station, where they are able to adjust the wavelength, polarization and photon energy. More than 2000 scientists are using BESSY II equipment every year.
 
@@ -14,12 +14,12 @@ The storage ring has a circumference of \SI{240}{\meter} and provides around 50 
 
 BESSY II was inaugurated in 1998 to let scientists study material structures and processes. Since 2009 it is a facility of the \textit{Helmholtz-Zentrum Berlin für Materialien und Energie} (HZB)
 
-Additionally to the guest scientists, operators and researchers ensure the good functioning of the whole facility and work on refining the quality and the stability of the light rays.
+In addition to the guest scientists, operators and researchers work to ensure the good functioning of the whole facility and work on refining the quality and the stability of the light rays.
 
 \section{BESSY II -- General functioning}
-In the BESSY II  accelerator, particles are circularly accelerated, all of them turning in the same direction. The goal is to produce light, instead of collisions.
+In the BESSY II  accelerator, particles are circularly accelerated in the same direction. The goal is to produce light, instead of collisions.
 
-The way BESSY II functions is based on the synchrotron radiation phenomenon: any accelerated particle emits radiations (in the form of photons). It can be shown~\cite{book:wille} that the radiated power in circular acceleration can be given as
+BESSY II functions based on the synchrotron radiation phenomenon: any accelerated particle emits radiations (in the form of photons). It can be shown~\cite{book:wille} that the radiated power in circular acceleration can be given as
 \begin{equation}
 P_s = \frac{e^2 c}{6 \pi \varepsilon_0}\frac{1}{(m_0 c^2)^4}\frac{E^4}{R^2}.
 \end{equation}
@@ -42,22 +42,22 @@ Considering their low mass, electrons are very good candidates to produce high e
 In order to reach an energy of \SI{1.7}{\giga\electronvolt}, the electrons undergo several chained accelerations (see \cref{fig:bessy_acc_web}), namely:
 \begin{enumerate}
     \item DC electrons are provided by an electron gun at an energy of \SI{90}{\kilo\electronvolt},
-    \item a LINAC (\textbf{lin}ear \textbf{ac}celerator) increase the energy to \SI{50}{\mega\electronvolt},
+    \item a LINAC (\textbf{lin}ear \textbf{ac}celerator) increases the energy to \SI{50}{\mega\electronvolt},
     \item the booster (a fast rumping synchrotron) accelerate the particles to their full energy of \SI{1.7}{\giga\electronvolt} in not more than \SI{30}{\milli\second}.
 \end{enumerate}
 
 When this energy is reached, the electrons are injected to the storage ring, which ensure that the electrons are kept at the same energy.
 
-Another important property of BESSY~II is that it is operated in \textit{top-up mode}. This means that its current must be constant over time (in this case: \SI{300}{\milli\ampere}). However electrons are likely to collide into each other or with the rest-gas atoms of the vacuum chamber. To achieve the top-up mode and counter the loss of electrons, new injections from the acceleration chain take place approximatively every 2~minutes to repopulate the storage ring.
+Another important property of BESSY~II is that it is operated in \textit{top-up mode}. This means that its current must be constant over time (in this case: \SI{300}{\milli\ampere}). However, electrons are likely to collide into each other or with the rest-gas atoms of the vacuum chamber. To achieve the top-up mode and counter the loss of electrons, new injections from the acceleration chain take place approximatively every 2~minutes to repopulate the storage ring.
 
 \section{Motivation}
 The most important properties of the synchrotron radiation are its brilliance and brightness, which represent the quality of the beam. The brightness describes the angular divergence of the beam, and the brilliance includes information about its transverse dimension: both are expected to be as small as possible to be in the configuration in which the beam is the most point-like. (See \cref{apx:brightness_brilliance} for the exact definitions).
 
-The main purpose of BESSY~II is to provide a light radiation with high quality brilliance and brightness over time. To achieve this, the light source itself must be very stable and the electron beam very small. The stability of the orbit is required to be well bellow the transverse beam dimensions, which are for BESSY~II storage ring \SI{100}{\micro\meter} in the horizontal direction and \SI{20}{\micro\meter} in the vertical one.
+The main purpose of BESSY~II is to provide a light radiation with high quality brilliance and brightness over time. To achieve this, the light source itself must be very stable and the electron beam very small. The stability of the orbit is required to be well bellow the transverse beam dimensions, which are for BESSY~II storage ring \SI{100}{\micro\meter} in the horizontal direction and \SI{20}{\micro\meter} in the vertical direction.
 
-Therefore a significant attention is drawn to the control of the storage ring orbit: the beam diameter must be as small as possible and therefore always well centered in the vacuum chamber. Although the storage ring is designed to achieve this, perturbations or misalignment in the accelerator optics must be corrected. Orbit feedback is used here to correct and stabilize the orbit and to keep it focused.
+Therefore, significant attention is drawn to the control of the storage ring orbit: the beam diameter must be as small as possible and therefore always well centered in the vacuum chamber. Although the storage ring is designed to achieve this, perturbations or misalignment in the accelerator optics occur, and must be corrected. Orbit feedback is used here to correct and stabilize the orbit and to keep it focused.
 
 \section{Summary}
 BESSY~II is a powerful light source, with a nominal energy of \SI{1.7}{\giga\electronvolt}, that produces a light of high quality, which is a wide spectrum and high brilliance. In order to keep the quality of these properties, removing perturbation sources or correcting the orbit is needed.
 
-In the following, \cref{sec:acc_physics} will provide the needed accelerator physics backgrounds. \Cref{sec:correction} will treat of correction methods, first introducing a state of the art in the particle accelerator community, and more specially at BESSY~II. Based on this, the improvement conducted during this work will be described. \Cref{sec:control} will discuss how models and simulations where conducted in order to propose better controllers. In \cref{sec:localization}, algorithms conceived and implemented during this thesis to localize perturbation sources will be presented. Finally \cref{sec:conclusion} will provide an overview of the results achieved with this work and some insights on how to go further.
+In the following, \cref{sec:acc_physics} will provide the needed accelerator physics backgrounds. \Cref{sec:correction} will cover correction methods, first introducing the state of the art in the particle accelerator community, and more specially at BESSY~II. Based on this, the improvement conducted during this work will be described. \Cref{sec:control} will discuss how models and simulations where conducted in order to propose better controllers. In \cref{sec:localization}, algorithms conceived and implemented during this thesis to localize perturbation sources will be presented. Finally \cref{sec:conclusion} will provide an overview of the results achieved with this work and some insights on how to go further.

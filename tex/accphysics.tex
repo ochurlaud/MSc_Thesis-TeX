@@ -11,7 +11,7 @@ The beam trajectory can be studied in various ways. One easier and well used met
 \section{Geometry -- Frame of reference -- Kinematics}
 The term \emph{orbit} refers to the ideal trajectory of the particles, which is fixed by the construction of the accelerator.
 
-The frame of reference is $K=(\vec{e}_x,\vec{e}_y, \vec{e}_s)$, which origin follows the beam. $\vec{e}_x$ is the horizontal axis directed towards the exterior of the orbit and normal to its curve, $\vec{e}_y$ is the vertical axis and $\vec{e}_s$ the tangential axis to the orbit.
+The frame of reference is $K=(\vec{e}_x,\vec{e}_y, \vec{e}_s)$, with which origin follows the beam. $\vec{e}_x$ is the horizontal axis directed towards the exterior of the orbit and normal to its curve, $\vec{e}_y$ is the vertical axis and $\vec{e}_s$ the tangential axis to the orbit.
 \begin{figure}
     \centering
     \includegraphics[width=0.8\linewidth]{img/orbit_coordinates.pdf}
@@ -136,7 +136,7 @@ y''(s) + k(s) y(s) &= 0
 \label{sec:beta_func}
 The beta function will provide a description of properties of a beam of many particles.
 
-The only further assumption is that $\frac{1}{R} = 0$ and $\frac{\Delta p}{p_0}=0$. The orbit curve is thus assumed almost flat and the momentum deviation negligible. \Cref{eq:motion_particle} turns in Hill's differential equation:
+The only further assumption is that $\frac{1}{R} = 0$ and $\frac{\Delta p}{p_0}=0$. The orbit curve is thus assumed almost flat and the momentum deviation negligible. \Cref{eq:motion_particle} turns into Hill's differential equation:
 \begin{equation}
 \label{eq:hill_diff}
 	x''(s) - k(s) x(s) = 0
@@ -147,9 +147,9 @@ which solution is the transverse oscillation of the orbit, or \emph{betatron osc
 x(s) = A u(s) \cos \left(\Psi(s)+\phi \right).
 \end{equation}
 
-The phase $\Psi(s)$ and the amplitude $u(s)$ depend of the position $s$; $A$ and $\phi$ being integration constants.
+The phase $\Psi(s)$ and the amplitude $u(s)$ depend of the position $s$; $A$ and $\phi$ are integration constants.
 
-Inserting \cref{eq:hill_sol_cst} in \eqref{eq:hill_diff} yields to
+Inserting \cref{eq:hill_sol_cst} in \eqref{eq:hill_diff} results in
 \begin{equation}
 A\left[u''- u \Psi'^2 - k u \right] \cos\left(\Psi+\phi\right) - A\left[2u'\Psi'+u\Psi''\right]\sin\left(\Psi+\phi\right) = 0.
 \end{equation}
@@ -214,10 +214,10 @@ From the equations of $x(s)$ and $x'(s)$, some trigonometrical manipulations and
 
 The two functions $\Psi$ and $\beta$ will be extensively used in the next sections as the perturbation localization process and several correction methods rely on them.
 
-\remark The calculation done for the $x$ direction can be done similarly for the $y$ one, which defines a $\beta_x(s)$, $\beta_y(s)$, $\varepsilon_x$, $\varepsilon_y$, $\Psi_x(s)$ and $\Psi_y(s)$
+\remark The calculation done for the $x$ direction can be done similarly for the $y$ direction, which defines a $\beta_x(s)$, $\beta_y(s)$, $\varepsilon_x$, $\varepsilon_y$, $\Psi_x(s)$ and $\Psi_y(s)$
 
 \section{Tune}
-In circular accelerator, the particle undergoes periodically the same magnetic fields and therefore the same force. This can lead the amplitude of the beam transverse oscillation to increase, risking to lose the particles in the vacuum chamber walls. This phenomenon is called optical resonance and must be avoided.
+In circular accelerators, the particles undergo periodically the same magnetic fields and therefore the same force. This can lead the amplitude of the beam transverse oscillation to increase, putting particles at risk to be lost in the vacuum chamber walls. This phenomenon is called optical resonance, and it must be avoided.
 
 As exposed in \cref{sec:eq_motion,sec:beta_func}, if $\frac{\Delta p}{p_0} = 0$ and $K(s)=\frac{1}{R(s)}-k(s)$, the trajectory is given by
 \begin{equation}
@@ -241,10 +241,10 @@ It can be shown that tune values that satisfy
 \label{eq:coupled_resonance}
 m Q_x + n Q_y = p \qquad (m, n, p) \in \mathbb{Z}
 \end{equation}
-produce coupled resonance of order $|m|+|n|$. A pair of value $(Q_x,Q_y)$ is used as working point so that it either does not satisfy \cref{eq:coupled_resonance} or with a high order (above the 5th order for instance).
+produce coupled resonance of order $|m|+|n|$. A pair of values $(Q_x,Q_y)$ is used as a working point so that it either does not satisfy the \cref{eq:coupled_resonance} or with a high order (above the 5th order for instance).
 
 \section{Summary}
-Two very important functions were defined here: $\beta (s)$ and $\Psi (s)$, defined in \cref{eq:beta_func,eq:phase_psi}, respectively the variation of the trajectory amplitude and the betatron phase. These functions highly depend on the accelerator optics and when determined, knowing the real objects that produce them (e.g. magnets, coils) is no more needed.
+Two very important functions were defined here: $\beta (s)$ and $\Psi (s)$, defined in \cref{eq:beta_func,eq:phase_psi}, respectively the variation of the trajectory amplitude and the betatron phase. These functions highly depend on the accelerator optics and when determined, knowing the real objects that produce them (e.g. magnets, coils) is no longer needed.
 
 The tune $Q$ is a constant parameter defined as the number of betatron oscillation per revolution.
 
