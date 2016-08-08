@@ -11,7 +11,7 @@
 
 \begin{figure}[!h]
 	\centering
-	\includegraphics[width=.9\linewidth]{img/kick}
+	\includegraphics[width=\linewidth]{img/kick}
 	\caption{\label{fig:kick}Example of kick in the orbit}
 \end{figure}
 
@@ -253,7 +253,7 @@ What is worth remarking is that the amplitude and phase vary quite continually, 
 
 On the second graph (\cref{fig:loc_errorplots}, below) is represented the jump done by the curve left and right from the BPM chosen to set the sinusoid parameters. In the algorithm, the first minimum of the curve is defined as the kick position.
 
-Finally on \cref{fig:loc_reconstructed_sine} can be seen the orbit and the sinusoid constructed by the algorithm. They are quite overlapping and the closed orbit condition is verified.
+Finally the orbit and the sinusoid constructed by the algorithm can be seen on \cref{fig:loc_reconstructed_sine}. They are quite overlapping and the closed orbit condition is verified.
 
 \begin{figure}
     \centering
@@ -263,11 +263,11 @@ Finally on \cref{fig:loc_reconstructed_sine} can be seen the orbit and the sinus
 
 \begin{figure}
 	\centering
-	\begin{subfigure}[b]{0.8\textwidth}
+	\begin{subfigure}[b]{\textwidth}
 		\includegraphics[width=\linewidth]{img/loc_all_x}
 		\caption{Horizontal}
 	\end{subfigure}
-	\begin{subfigure}[b]{0.8\textwidth}
+	\begin{subfigure}[b]{\textwidth}
 		\includegraphics[width=\linewidth]{img/loc_all_y}
 		\caption{Vertical}
 	\end{subfigure}
@@ -284,4 +284,4 @@ A similar simulation was conducted for the harmonic simulation. Instead of setti
 The localization results are exactly the same as in the static case, provided that enough samples are used (for example, \SI{10}{\second} at \SI{150}{\hertz}, for frequencies up to \SI{70}{\hertz}) and that the added noise is not too high.
 
 \section{Summary}
-Instead of trying to correct some perturbations with more or less success, trying to isolate or remove their source would be very appealing. With the described algorithms, one can expect to reduce the potential zone to up to \SI{2}{\meter} (which is less than 1\% of the ring circumference) in perfect conditions, and in the worst case around 10 to \SI{20}{\meter} (or around 10\% of the circumference). With such a reduced area, it is very conceivable to determine the actual source, either with a mobile magnetometer or simply by observing the suspicious devices.
+Instead of trying to correct some perturbations, isolating or removing their source would be very appealing. With the described algorithms, one can expect to reduce the potential zone to up to \SI{2}{\meter} (which is less than 1\% of the ring circumference) in perfect conditions, and in the worst case around 10 to \SI{20}{\meter} (or around 10\% of the circumference). With such a reduced area, it is very conceivable to determine the actual source, either with a mobile magnetometer or simply by observing the suspicious devices.

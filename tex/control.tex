@@ -54,7 +54,7 @@ Taking its Laplace transform yields
 \begin{equation}
 \sum\limits_{k=0}^N a_k s^k Y(s) = \sum\limits_{j=0}^M b_j s^j U(s).
 \end{equation}
-where a $Y(s) = \mathcal{L}\{y(t)\}$ and $U(s) = \mathcal{L}\{u(t)\}$ the Laplace transform of its output and input.
+where $Y(s) = \mathcal{L}\{y(t)\}$ and $U(s) = \mathcal{L}\{u(t)\}$ are the Laplace transform of its output and input.
 
 The transfer function is defined as
 \begin{equation}
@@ -172,7 +172,7 @@ By using the (cross-)spectral density of the input and output signal, an experim
 		\includegraphics[width=1\linewidth]{img/ctl_id_phase}
 		\caption{Phase}
 	\end{subfigure}
-	\caption{\label{fig:ctl_vfit3}Results of the vector fitting with vfit3}
+	\caption[Results of the vector fitting with vfit3]{\label{fig:ctl_vfit3}Results of the vector fitting with vfit3 (blue: raw data, red: fitted transfer function)}
 \end{figure}
 
 It appeared that after converting the system to a transfer function, the numerator was complex. Taking only the real part of each coefficient provided a solution that still fitted the experimental data. In order to obtain a transfer function usable with the response matrix, it was normalized so that its ground gain was 1.
@@ -284,7 +284,7 @@ To represent the current configuration in BESSY~II, and validate the model, the 
     \hfill
     \begin{subfigure}{0.49\textwidth}
         \includegraphics[width=\textwidth]{img/ctl_sim_pid}
-        \caption{\label{fig:ctl_sim_pid}Simulation}
+        \caption{\label{fig:ctl_sim_pid}Simulation, top: perturbation $d$, bottom: output $x$}
         \end{subfigure}    
     \caption{Frequency response for K = PID(0, $0.8\cdot F_s$, 0)}
 \end{figure}
@@ -293,14 +293,14 @@ The PID can then be slightly enhanced by finding better coefficients, for exampl
 
 \begin{figure}
     \centering
-    \begin{subfigure}{0.49\textwidth}
+    \begin{subfigure}[t]{0.49\textwidth}
         \includegraphics[width=\textwidth]{img/ctl_freqresp_bestpid}
         \caption{\label{fig:ctl_freqresp_bestpid} Bode diagram of the closed-loop}
     \end{subfigure}
     \hfill
-    \begin{subfigure}{0.49\textwidth}
+    \begin{subfigure}[t]{0.49\textwidth}
         \includegraphics[width=\textwidth]{img/ctl_sim_bestpid}
-        \caption{\label{fig:ctl_sim_bestpid}Simulation}
+        \caption{\label{fig:ctl_sim_bestpid}Simulation, top: perturbation $d$, bottom: output $x$}
     \end{subfigure}    
     \caption{Frequency response for a better PID}
 \end{figure}
